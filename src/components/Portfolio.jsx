@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import SpotlightCard from './SpotlightCard'
 import Reveal from './Reveal'
 
@@ -47,12 +48,12 @@ function Portfolio() {
             >
               <h3 className="text-xl md:text-2xl mb-4 font-semibold">{project.title}</h3>
               <p className="text-gray-600 leading-relaxed mb-4">{project.description}</p>
-              <a
-                href={project.link}
+              <Link
+                to={project.link}
                 className="inline-block text-emerald-600 font-medium hover:text-emerald-500 transition-colors no-underline"
               >
                 {project.linkText} →
-              </a>
+              </Link>
             </SpotlightCard>
           </Reveal>
         ))}
