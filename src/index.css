@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* Estilos globais */
+* {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+/* Animated infinite gradient border for avatar */
+.infinite-border {
+  position: relative;
+}
+.infinite-border::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 16px;
+  background: conic-gradient(from 0deg, #10b981, #34d399, #10b981);
+  filter: blur(6px);
+  animation: spin-border 5s linear infinite;
+  z-index: 0;
+}
+.infinite-border > * {
+  position: relative;
+  z-index: 1;
+  border-radius: 16px;
+}
+@keyframes spin-border {
+  to { transform: rotate(360deg); }
+}
+
+/* Call-to-action blinking glow */
+@keyframes blinkGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(16,185,129,0.0); transform: translateZ(0) scale(1); }
+  50% { box-shadow: 0 0 24px rgba(16,185,129,0.55); transform: translateZ(0) scale(1.04); }
+}
+.blink-attention {
+  animation: blinkGlow 1.2s ease-in-out infinite;
+}
