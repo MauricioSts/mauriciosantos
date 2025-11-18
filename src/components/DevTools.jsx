@@ -49,17 +49,17 @@ function DevTools() {
   const navItems = groups.map((g) => ({ label: g.title, href: '#devtools' }))
 
   return (
-    <section id="devtools" className="py-16 px-5">
+    <section id="devtools" className="py-12 sm:py-16 px-4 sm:px-5">
       <div className="max-w-5xl mx-auto text-center">
         <Reveal>
-          <h2 className="text-3xl md:text-4xl mb-6 font-bold tracking-tight text-white">DevTools</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-6 font-bold tracking-tight text-white px-4">DevTools</h2>
         </Reveal>
         <Reveal delay={0.05}>
-          <p className="text-gray-300 mb-8">Stack e ferramentas que uso no dia a dia.</p>
+          <p className="text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base px-4">Stack e ferramentas que uso no dia a dia.</p>
         </Reveal>
 
         {/* Selector as gooey tabs */}
-        <div className="flex justify-center mb-8 w-full overflow-x-auto">
+        <div className="flex justify-center mb-6 sm:mb-8 w-full overflow-x-auto px-4 sm:px-0 scrollbar-hide">
           <GooeyNav
             items={navItems}
             initialActiveIndex={active}

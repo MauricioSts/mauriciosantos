@@ -7,12 +7,12 @@ import TrueFocus from './TrueFocus'
 
 function Hero() {
   return (
-    <section className="py-20 px-5 text-center" id="home">
+    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-5 text-center" id="home">
       <Reveal y={24}>
         <img
           src="/profile.jpeg"
           alt="Foto de perfil"
-          className="mx-auto mb-11 block w-44 h-60 md:w-64 md:h-80 object-cover rounded-lg border-2 border-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.25)]"
+          className="mx-auto mb-8 sm:mb-10 md:mb-11 block w-36 h-48 sm:w-44 sm:h-60 md:w-64 md:h-80 object-cover rounded-lg border-2 border-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.25)]"
         />
       </Reveal>
       <Reveal>
@@ -25,13 +25,13 @@ function Hero() {
           loop={false}
           showCursor={true}
           cursorCharacter="|"
-          className="text-4xl md:text-5xl mb-3.5 font-bold tracking-tight text-white"
+          className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-3.5 font-bold tracking-tight text-white px-4"
           cursorClassName="text-emerald-400"
           textColors={["#ffffff"]}
         />
       </Reveal>
       <Reveal delay={0.05}>
-        <div id="tagline" className="mb-9">
+        <div id="tagline" className="mb-6 sm:mb-8 md:mb-9 px-4">
           <TrueFocus
             sentence="Estudante Front-end Empreendedor"
             manualMode={false}
@@ -40,13 +40,13 @@ function Hero() {
             glowColor="rgba(52, 211, 153, 0.55)"
             animationDuration={0.4}
             pauseBetweenAnimations={0.7}
-            wordClass="text-xl md:text-2xl"
+            wordClass="text-lg sm:text-xl md:text-2xl"
           />
         </div>
       </Reveal>
       
       <Reveal delay={0.1}>
-      <div className="mb-14 flex justify-center">
+      <div className="mb-10 sm:mb-12 md:mb-14 flex justify-center px-4">
         <Dock
           panelHeight={68}
           baseItemSize={50}
@@ -62,8 +62,8 @@ function Hero() {
       </Reveal>
 
       <Reveal delay={0.12}>
-      <div className="max-w-4xl mx-auto text-base md:text-lg leading-relaxed text-gray-300 text-left tracking-wide">
-        <p className="mb-6 pl-4 md:pl-6 tracking-wide">
+      <div className="max-w-4xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed text-gray-300 text-left tracking-wide px-4 sm:px-5">
+        <p className="mb-5 sm:mb-6 pl-2 sm:pl-4 md:pl-6 tracking-wide">
           <DecryptedText
             text="Sou estudante de Sistemas para Internet no IFRN e Desenvolvedor Front-end. Gosto de criar interfaces práticas e eficientes."
             className="inline"
@@ -73,7 +73,7 @@ function Hero() {
             characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%"
           />
         </p>
-        <p className="mb-6 pl-4 md:pl-6 tracking-wide">
+        <p className="mb-5 sm:mb-6 pl-2 sm:pl-4 md:pl-6 tracking-wide">
           <DecryptedText
             text="Já participei de bolsas voluntárias no IFRN e sou empreendedor, dono da loja de camisas de time PFCsports."
             className="inline"
@@ -83,7 +83,7 @@ function Hero() {
             characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%"
           />
         </p>
-        <p className="mb-6 pl-4 md:pl-6 tracking-wide">
+        <p className="mb-5 sm:mb-6 pl-2 sm:pl-4 md:pl-6 tracking-wide">
           <DecryptedText
             text="Confira meus projetos ou entre em contato!"
             className="inline"

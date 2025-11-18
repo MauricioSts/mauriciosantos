@@ -34,20 +34,20 @@ function AllProjects() {
     <div className="min-h-screen relative bg-gray-900 text-gray-200">
       <Particles />
       <header className="sticky top-0 z-40 bg-gray-900/85 backdrop-blur-sm border-b border-gray-800">
-        <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
-          <Link to="/" className="text-gray-200 hover:text-emerald-400 transition-colors">Voltar</Link>
-          <div className="font-bold text-emerald-400">{`{ Projetos }`}</div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between">
+          <Link to="/" className="text-gray-200 hover:text-emerald-400 transition-colors text-sm sm:text-base">Voltar</Link>
+          <div className="font-bold text-emerald-400 text-sm sm:text-base md:text-lg">{`{ Projetos }`}</div>
           <div />
         </div>
       </header>
 
-      <main className="relative z-10 max-w-6xl mx-auto px-5 py-10">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-12 tracking-tight text-emerald-400">{`{ All Works }`}</h1>
+      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-5 py-6 sm:py-8 md:py-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-8 sm:mb-10 md:mb-12 tracking-tight text-emerald-400 px-4 sm:px-0">{`{ All Works }`}</h1>
 
-        <div className="space-y-24">
+        <div className="space-y-16 sm:space-y-20 md:space-y-24">
           {projects.map((p, idx) => (
-            <section key={p.id} className={`group relative py-28 md:py-36 grid grid-cols-1 md:grid-cols-2 gap-36 md:gap-44 items-center`}>
-              <div className={`order-1 ${idx % 2 === 1 ? 'md:order-last md:flex md:justify-end md:pr-10 lg:pr-12' : 'md:order-none md:pl-10 lg:pl-12'}`}>
+            <section key={p.id} className={`group relative py-12 sm:py-16 md:py-20 lg:py-28 xl:py-36 grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-36 xl:gap-44 items-center px-4 sm:px-0`}>
+              <div className={`order-1 ${idx % 2 === 1 ? 'md:order-last md:flex md:justify-end md:pr-6 lg:pr-10 xl:pr-12' : 'md:order-none md:pl-6 lg:pl-10 xl:pl-12'}`}>
                 <div className="relative [perspective:1400px]">
                   {/* 3D picture frame - tilt towards text */}
                   <div className={`relative z-0 inline-block w-full md:w-[140%] max-w-none overflow-visible [transform-style:preserve-3d] transform-gpu ${idx % 2 === 1 ? 'origin-right' : 'origin-left'}`}>
@@ -62,18 +62,20 @@ function AllProjects() {
                 </div>
               </div>
               <div className={`${idx % 2 === 1
-                ? 'md:pr-20 lg:pr-24 xl:pr-28 md:text-right'
-                : 'md:pl-20 lg:pl-24 xl:pl-28'} relative z-10`}> 
-                <div className="inline-block border-2 border-emerald-500 text-emerald-300 rounded-md px-5 py-2.5 mb-6 font-semibold tracking-wide text-xl shadow-[0_0_20px_rgba(16,185,129,0.25)]">
+                ? 'md:pr-8 lg:pr-12 xl:pr-20 md:text-right'
+                : 'md:pl-8 lg:pl-12 xl:pl-20'} relative z-10`}> 
+                <div className="inline-block border-2 border-emerald-500 text-emerald-300 rounded-md px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 mb-4 sm:mb-5 md:mb-6 font-semibold tracking-wide text-base sm:text-lg md:text-xl shadow-[0_0_20px_rgba(16,185,129,0.25)]">
                   {p.title.toUpperCase()}
                 </div>
-                <div className="max-w-3xl text-[1.08rem] md:text-[1.2rem] text-gray-300 leading-8 md:leading-9 tracking-normal">
-                  <div className="mb-3"><span className="text-emerald-400 font-semibold">Problema:</span> {p.problem}</div>
+                <div className="max-w-3xl text-sm sm:text-base md:text-[1.08rem] lg:text-[1.2rem] text-gray-300 leading-6 sm:leading-7 md:leading-8 lg:leading-9 tracking-normal">
+                  <div className="mb-2 sm:mb-3"><span className="text-emerald-400 font-semibold">Problema:</span> {p.problem}</div>
                   <div><span className="text-emerald-400 font-semibold">Solução:</span> {p.solution}</div>
                 </div>
-                <div className="mt-8">
-                  <a href={p.href} target="_blank" rel="noopener noreferrer" className="inline-block bg-emerald-500 text-gray-900 font-semibold px-7 py-3 rounded-md shadow hover:brightness-95 transition text-base md:text-lg blink-attention">Acessar projeto →</a>
-                </div>
+                {p.href && p.href !== '#' && (
+                  <div className="mt-6 sm:mt-8">
+                    <a href={p.href} target="_blank" rel="noopener noreferrer" className="inline-block bg-emerald-500 text-gray-900 font-semibold px-5 sm:px-6 md:px-7 py-2 sm:py-2.5 md:py-3 rounded-md shadow hover:brightness-95 transition text-sm sm:text-base md:text-lg blink-attention">Acessar projeto →</a>
+                  </div>
+                )}
               </div>
             </section>
           ))}

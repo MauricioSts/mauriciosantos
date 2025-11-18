@@ -12,7 +12,7 @@ function Home() {
     <div className="min-h-screen relative bg-gray-900 text-gray-200">
       <Particles />
       <Header />
-      <main className="relative z-10 max-w-7xl mx-auto px-5">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-5">
         <Hero />
         <Portfolio />
         <ExperienceSection />

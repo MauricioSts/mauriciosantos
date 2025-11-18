@@ -70,69 +70,71 @@ function ExperienceSection() {
   }
 
   return (
-    <section className="py-16 px-5 bg-gray-900 text-gray-200" id="experience">
-      <h2 className="text-3xl md:text-4xl mb-12 font-bold text-center tracking-tight text-white font-mono">
+    <section className="py-12 sm:py-16 px-4 sm:px-5 bg-gray-900 text-gray-200" id="experience">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl mb-8 sm:mb-10 md:mb-12 font-bold text-center tracking-tight text-white font-mono px-4">
         Experiências Profissionais
       </h2>
 
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
           {/* Sidebar */}
-          <aside className="w-full md:w-64 flex-shrink-0">
-            <div className="sticky top-8 space-y-2">
-              {experiences.map((exp) => (
-                <button
-                  key={exp.id}
-                  onClick={() => handleSelectExperience(exp)}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 font-mono text-sm ${
-                    selectedExperience.id === exp.id
-                      ? 'bg-emerald-500/20 text-emerald-400 border-l-4 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
-                      : 'text-gray-400 hover:text-emerald-400 hover:bg-gray-800/50 border-l-4 border-transparent'
-                  }`}
-                >
-                  {exp.company}
-                </button>
-              ))}
+          <aside className="w-full lg:w-64 flex-shrink-0">
+            <div className="lg:sticky lg:top-8 space-y-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
+              <div className="flex lg:flex-col gap-2 lg:gap-0 min-w-max lg:min-w-0">
+                {experiences.map((exp) => (
+                  <button
+                    key={exp.id}
+                    onClick={() => handleSelectExperience(exp)}
+                    className={`text-left px-3 sm:px-4 py-2 sm:py-3 rounded-lg transition-all duration-300 font-mono text-xs sm:text-sm whitespace-nowrap lg:whitespace-normal ${
+                      selectedExperience.id === exp.id
+                        ? 'bg-emerald-500/20 text-emerald-400 border-l-4 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
+                        : 'text-gray-400 hover:text-emerald-400 hover:bg-gray-800/50 border-l-4 border-transparent'
+                    }`}
+                  >
+                    {exp.company}
+                  </button>
+                ))}
+              </div>
             </div>
           </aside>
 
           {/* Conteúdo Principal */}
-          <div className="flex-1 min-h-[400px]">
+          <div className="flex-1 min-h-[300px] sm:min-h-[400px]">
             <div
               key={selectedExperience.id}
               className={`transition-opacity duration-300 ${
                 isTransitioning ? 'opacity-0' : 'opacity-100'
               }`}
             >
-              <div className="bg-gray-800/50 rounded-xl p-6 md:p-8 border border-gray-700/50">
+              <div className="bg-gray-800/50 rounded-xl p-4 sm:p-6 md:p-8 border border-gray-700/50">
                 {/* Cabeçalho */}
-                <div className="mb-6">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white font-mono mb-2">
+                <div className="mb-4 sm:mb-6">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white font-mono mb-2">
                     {selectedExperience.role}
                   </h3>
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-emerald-400 font-mono font-semibold">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                    <span className="text-emerald-400 font-mono font-semibold text-sm sm:text-base">
                       {selectedExperience.company}
                     </span>
-                    <span className="text-gray-500">•</span>
-                    <span className="text-gray-400 font-mono text-sm">
+                    <span className="text-gray-500 hidden sm:inline">•</span>
+                    <span className="text-gray-400 font-mono text-xs sm:text-sm">
                       {selectedExperience.period}
                     </span>
                   </div>
                 </div>
 
                 {/* Responsabilidades */}
-                <div className="mb-6">
-                  <h4 className="text-emerald-400 font-mono font-semibold mb-4 text-sm uppercase tracking-wider">
+                <div className="mb-4 sm:mb-6">
+                  <h4 className="text-emerald-400 font-mono font-semibold mb-3 sm:mb-4 text-xs sm:text-sm uppercase tracking-wider">
                     Responsabilidades
                   </h4>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2 sm:space-y-3">
                     {selectedExperience.responsibilities.map((responsibility, index) => (
                       <li
                         key={index}
-                        className="flex items-start gap-3 text-gray-300 font-mono text-sm leading-relaxed"
+                        className="flex items-start gap-2 sm:gap-3 text-gray-300 font-mono text-xs sm:text-sm leading-relaxed"
                       >
-                        <span className="text-emerald-500 mt-1.5 flex-shrink-0">▸</span>
+                        <span className="text-emerald-500 mt-1 sm:mt-1.5 flex-shrink-0">▸</span>
                         <span>{responsibility}</span>
                       </li>
                     ))}
@@ -141,11 +143,11 @@ function ExperienceSection() {
 
                 {/* Tags */}
                 {selectedExperience.tags && selectedExperience.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-700/50">
+                  <div className="flex flex-wrap gap-2 pt-3 sm:pt-4 border-t border-gray-700/50">
                     {selectedExperience.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-md text-xs font-mono border border-emerald-500/20"
+                        className="px-2 sm:px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-md text-xs font-mono border border-emerald-500/20"
                       >
                         {tag}
                       </span>
