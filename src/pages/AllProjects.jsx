@@ -14,8 +14,8 @@ const projects = [
   {
     id: 2,
     title: 'JerseyAndBits',
-    problem: 'Eu tinha dificuldade em gerenciar múltiplos clientes via WhatsApp e precisava ter controle sobre os clientes e o lucro bruto mensal.',
-    solution: 'Sistema de gestão de pedidos e clientes para lojas de camisas de time, com controle financeiro completo e disponibilizado para outros donos de loja.',
+    problem: 'Como dono de uma loja de camisas de time, eu enfrentava desafios para gerenciar múltiplos pedidos e clientes através do WhatsApp, além de não ter visibilidade clara sobre o lucro bruto mensal e o histórico de vendas.',
+    solution: 'Desenvolvi este sistema completo de gestão para suprir minhas próprias necessidades como empreendedor. A plataforma oferece controle total de pedidos, cadastro e histórico de clientes, gestão financeira com cálculo automático de lucro bruto mensal. Após resolver meus problemas, disponibilizei gratuitamente para outros empreendedores do setor.',
     image: '/jersey.jpeg',
     href: 'https://jerseyandbits.vercel.app/',
   },

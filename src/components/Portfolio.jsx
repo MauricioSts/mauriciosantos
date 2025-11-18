@@ -14,7 +14,7 @@ function Portfolio() {
     {
       id: 2,
       title: 'JerseyAndBits',
-      description: 'Sistema de gestão de pedidos e clientes para lojas de camisas de time, com controle financeiro completo e disponibilizado para outros donos de loja.',
+      description: 'Sistema de gestão desenvolvido para suprir minhas necessidades como dono de loja de camisas de time. Oferece controle de pedidos, cadastro de clientes e gestão financeira. Disponibilizado gratuitamente para outros empreendedores do setor.',
       link: '/projetos',
       linkText: 'Ver mais'
     },
