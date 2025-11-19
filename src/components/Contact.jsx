@@ -1,11 +1,14 @@
 import Reveal from './Reveal'
+import { useTranslation } from '../hooks/useTranslation'
 
 function Contact() {
+  const t = useTranslation()
+  
   return (
     <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen py-12 sm:py-16 px-4 sm:px-5 bg-white text-gray-900 shadow-sm" id="contact">
       <div className="max-w-5xl mx-auto text-center">
         <Reveal>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-6 sm:mb-8 md:mb-10 font-bold tracking-tight font-mono px-4">Entre em contato</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-6 sm:mb-8 md:mb-10 font-bold tracking-tight font-mono px-4">{t.contact.title}</h2>
         </Reveal>
         <Reveal delay={0.05}>
           <a 

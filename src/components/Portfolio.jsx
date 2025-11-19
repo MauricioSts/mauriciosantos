@@ -1,29 +1,32 @@
 import { Link } from 'react-router-dom'
 import SpotlightCard from './SpotlightCard'
 import Reveal from './Reveal'
+import { useTranslation } from '../hooks/useTranslation'
 
 function Portfolio() {
+  const t = useTranslation()
+  
   const projects = [
     {
       id: 1,
       title: 'BridgeAndBits',
-      description: 'Dashboard completo para gerenciamento de múltiplos provedores de internet, com cadastro, consulta, acompanhamento de status de conformidade, KPIs e geração automatizada de relatórios mensais.',
+      description: t.projects.bridgeAndBits.description,
       link: '/projetos',
-      linkText: 'Ver mais'
+      linkText: t.portfolio.seeMore
     },
     {
       id: 2,
       title: 'JerseyAndBits',
-      description: 'Sistema de gestão desenvolvido para suprir minhas necessidades como dono de loja de camisas de time. Oferece controle de pedidos, cadastro de clientes e gestão financeira. Disponibilizado gratuitamente para outros empreendedores do setor.',
+      description: t.projects.jerseyAndBits.description,
       link: '/projetos',
-      linkText: 'Ver mais'
+      linkText: t.portfolio.seeMore
     },
     {
       id: 3,
       title: 'Chovinista',
-      description: 'Sistema de gestão financeira pessoal para controle e visualização de rendimento fixo, permitindo anotações e acompanhamento da renda mensal.',
+      description: t.projects.chovinista.description,
       link: '/projetos',
-      linkText: 'Ver mais'
+      linkText: t.portfolio.seeMore
     }
   ]
 
@@ -31,11 +34,11 @@ function Portfolio() {
     <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen py-12 sm:py-16 px-4 sm:px-5 bg-white text-gray-900 shadow-sm" id="portfolio">
       <div className="max-w-5xl mx-auto">
       <Reveal>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl mb-6 sm:mb-8 md:mb-10 font-bold text-center tracking-tight px-4">Projetos</h2>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl mb-6 sm:mb-8 md:mb-10 font-bold text-center tracking-tight px-4">{t.portfolio.title}</h2>
       </Reveal>
       <Reveal delay={0.05}>
       <h3 className="text-lg sm:text-xl md:text-2xl text-center mb-6 sm:mb-8 md:mb-10 font-semibold text-emerald-600 px-4">
-        Meus principais projetos
+        {t.portfolio.subtitle}
       </h3>
       </Reveal>
       

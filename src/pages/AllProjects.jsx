@@ -1,48 +1,58 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Particles from '../components/Particles'
-
-const projects = [
-  {
-    id: 1,
-    title: 'BridgeAndBits',
-    problem: 'A consultoria do meu amigo tinha dificuldade em gerenciar múltiplos provedores de internet e gerar relatórios mensais para eles de forma eficiente.',
-    solution: 'Dashboard completo para gerenciamento de múltiplos provedores de internet, com cadastro, consulta, acompanhamento de status de conformidade, KPIs e geração automatizada de relatórios mensais.',
-    image: '/provedores.png',
-    href: 'https://providersmanagement.vercel.app/',
-  },
-  {
-    id: 2,
-    title: 'JerseyAndBits',
-    problem: 'Como dono de uma loja de camisas de time, eu enfrentava desafios para gerenciar múltiplos pedidos e clientes através do WhatsApp, além de não ter visibilidade clara sobre o lucro bruto mensal e o histórico de vendas.',
-    solution: 'Desenvolvi este sistema completo de gestão para suprir minhas próprias necessidades como empreendedor. A plataforma oferece controle total de pedidos, cadastro e histórico de clientes, gestão financeira com cálculo automático de lucro bruto mensal. Após resolver meus problemas, disponibilizei gratuitamente para outros empreendedores do setor.',
-    image: '/jersey.jpeg',
-    href: 'https://jerseyandbits.vercel.app/',
-  },
-  {
-    id: 3,
-    title: 'Chovinista',
-    problem: 'Minha namorada precisava gerenciar e acompanhar o rendimento fixo mensal dela de forma organizada, registrando valores recebidos e visualizando o histórico financeiro para ter controle sobre a renda.',
-    solution: 'Sistema de gestão financeira pessoal para controle e visualização de rendimento fixo, permitindo anotações e acompanhamento da renda mensal.',
-    image: '/chovinista.jpeg',
-    href: '#',
-  },
-]
+import { useTranslation } from '../hooks/useTranslation'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function AllProjects() {
+  const t = useTranslation()
+  const { language, toggleLanguage } = useLanguage()
+  
+  const projects = [
+    {
+      id: 1,
+      title: 'BridgeAndBits',
+      problem: t.projects.bridgeAndBits.problem,
+      solution: t.projects.bridgeAndBits.solution,
+      image: '/provedores.png',
+      href: 'https://providersmanagement.vercel.app/',
+    },
+    {
+      id: 2,
+      title: 'JerseyAndBits',
+      problem: t.projects.jerseyAndBits.problem,
+      solution: t.projects.jerseyAndBits.solution,
+      image: '/jersey.jpeg',
+      href: 'https://jerseyandbits.vercel.app/',
+    },
+    {
+      id: 3,
+      title: 'Chovinista',
+      problem: t.projects.chovinista.problem,
+      solution: t.projects.chovinista.solution,
+      image: '/chovinista.jpeg',
+      href: '#',
+    },
+  ]
   return (
     <div className="min-h-screen relative bg-gray-900 text-gray-200">
       <Particles />
       <header className="sticky top-0 z-40 bg-gray-900/85 backdrop-blur-sm border-b border-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between">
-          <Link to="/" className="text-gray-200 hover:text-emerald-400 transition-colors text-sm sm:text-base">Voltar</Link>
-          <div className="font-bold text-emerald-400 text-sm sm:text-base md:text-lg">{`{ Projetos }`}</div>
-          <div />
+          <Link to="/" className="text-gray-200 hover:text-emerald-400 transition-colors text-sm sm:text-base">{t.projects.back}</Link>
+          <div className="font-bold text-emerald-400 text-sm sm:text-base md:text-lg">{`{ ${t.projects.projectsTitle} }`}</div>
+          <button
+            onClick={toggleLanguage}
+            className="px-3 py-1.5 text-xs sm:text-sm font-mono text-gray-300 hover:text-emerald-400 border border-gray-700 hover:border-emerald-500 rounded-md transition-colors"
+            aria-label="Toggle language"
+          >
+            {language === 'pt' ? 'EN' : 'PT'}
+          </button>
         </div>
       </header>
 
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-5 py-6 sm:py-8 md:py-10">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-8 sm:mb-10 md:mb-12 tracking-tight text-emerald-400 px-4 sm:px-0">{`{ All Works }`}</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-8 sm:mb-10 md:mb-12 tracking-tight text-emerald-400 px-4 sm:px-0">{`{ ${t.projects.allWorks} }`}</h1>
 
         <div className="space-y-16 sm:space-y-20 md:space-y-24">
           {projects.map((p, idx) => (
@@ -68,12 +78,12 @@ function AllProjects() {
                   {p.title.toUpperCase()}
                 </div>
                 <div className="max-w-3xl text-sm sm:text-base md:text-[1.08rem] lg:text-[1.2rem] text-gray-300 leading-6 sm:leading-7 md:leading-8 lg:leading-9 tracking-normal">
-                  <div className="mb-2 sm:mb-3"><span className="text-emerald-400 font-semibold">Problema:</span> {p.problem}</div>
-                  <div><span className="text-emerald-400 font-semibold">Solução:</span> {p.solution}</div>
+                  <div className="mb-2 sm:mb-3"><span className="text-emerald-400 font-semibold">{t.projects.problem}</span> {p.problem}</div>
+                  <div><span className="text-emerald-400 font-semibold">{t.projects.solution}</span> {p.solution}</div>
                 </div>
                 {p.href && p.href !== '#' && (
                   <div className="mt-6 sm:mt-8">
-                    <a href={p.href} target="_blank" rel="noopener noreferrer" className="inline-block bg-emerald-500 text-gray-900 font-semibold px-5 sm:px-6 md:px-7 py-2 sm:py-2.5 md:py-3 rounded-md shadow hover:brightness-95 transition text-sm sm:text-base md:text-lg blink-attention">Acessar projeto →</a>
+                    <a href={p.href} target="_blank" rel="noopener noreferrer" className="inline-block bg-emerald-500 text-gray-900 font-semibold px-5 sm:px-6 md:px-7 py-2 sm:py-2.5 md:py-3 rounded-md shadow hover:brightness-95 transition text-sm sm:text-base md:text-lg blink-attention">{t.projects.accessProject}</a>
                   </div>
                 )}
               </div>

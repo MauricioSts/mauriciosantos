@@ -1,57 +1,40 @@
 import { useState } from 'react'
+import { useTranslation } from '../hooks/useTranslation'
 
 function ExperienceSection() {
+  const t = useTranslation()
+  
   const experiences = [
     {
       id: 1,
       company: 'IFRN',
-      role: 'Flutter Developer',
+      role: t.experience.ifrnFlutter.role,
       period: '2025',
-      responsibilities: [
-        'Bolsista voluntário no projeto de desenvolvimento de aplicativos em Flutter',
-        'Criação de software para apoiar e gerenciar as ações dos agentes de campo',
-        'Desenvolvimento de interfaces responsivas e funcionais',
-        'Colaboração em equipe multidisciplinar'
-      ],
+      responsibilities: t.experience.ifrnFlutter.responsibilities,
       tags: ['Flutter', 'Dart']
     },
     {
       id: 2,
       company: 'Inspire Logic',
-      role: 'Desenvolvedor Front-end Freelancer',
+      role: t.experience.inspireLogic.role,
       period: '2025',
-      responsibilities: [
-        'Desenvolvimento do site de gerenciamento de alunos e professores',
-        'Aprimoramento da segurança escolar',
-        'Integração de catracas digitais',
-        'Implementação de sistema de reconhecimento facial (Face ID) para controle de acesso'
-      ],
+      responsibilities: t.experience.inspireLogic.responsibilities,
       tags: ['React.js', 'PostgreSQL']
     },
     {
       id: 3,
       company: 'IFRN',
-      role: 'Desenvolvedor de Aplicativos em Realidade Aumentada',
+      role: t.experience.ifrnAR.role,
       period: '2024',
-      responsibilities: [
-        'Bolsista voluntário no projeto de desenvolvimento de aplicativos em AR',
-        'União de biologia e tecnologia através de realidade aumentada',
-        'Criação de experiências imersivas educacionais',
-        'Desenvolvimento de interfaces 3D interativas'
-      ],
+      responsibilities: t.experience.ifrnAR.responsibilities,
       tags: ['Unity', 'C#', 'AR', 'VR']
     },
     {
       id: 4,
       company: 'Secretaría de Infraestrutura do Rio Grande do Norte',
-      role: 'Estagiário',
+      role: t.experience.secretaria.role,
       period: '2023',
-      responsibilities: [
-        'Suporte de TI para funcionários',
-        'Manutenção de redes e computadores',
-        'Resolução de problemas técnicos',
-        'Atendimento presencial e remoto'
-      ],
+      responsibilities: t.experience.secretaria.responsibilities,
       tags: ['Suporte de TI']
     }
   ]
@@ -72,7 +55,7 @@ function ExperienceSection() {
   return (
     <section className="py-12 sm:py-16 px-4 sm:px-5 bg-gray-900 text-gray-200" id="experience">
       <h2 className="text-2xl sm:text-3xl md:text-4xl mb-8 sm:mb-10 md:mb-12 font-bold text-center tracking-tight text-white font-mono px-4">
-        Experiências Profissionais
+        {t.experience.title}
       </h2>
 
       <div className="max-w-6xl mx-auto">
@@ -126,7 +109,7 @@ function ExperienceSection() {
                 {/* Responsabilidades */}
                 <div className="mb-4 sm:mb-6">
                   <h4 className="text-emerald-400 font-mono font-semibold mb-3 sm:mb-4 text-xs sm:text-sm uppercase tracking-wider">
-                    Responsabilidades
+                    {t.experience.responsibilities}
                   </h4>
                   <ul className="space-y-2 sm:space-y-3">
                     {selectedExperience.responsibilities.map((responsibility, index) => (

@@ -2,13 +2,15 @@ import Reveal from './Reveal'
 import Dock from './Dock'
 import GooeyNav from './GooeyNav'
 import { SiReact, SiTypescript, SiTailwindcss, SiNodedotjs, SiVite, SiGithub, SiVercel, SiJavascript, SiHtml5, SiCss3, SiFlutter, SiDart, SiDocker, SiPostgresql, SiFirebase } from 'react-icons/si'
-
+import { useTranslation } from '../hooks/useTranslation'
 import { useState } from 'react'
 
 function DevTools() {
+  const t = useTranslation()
+  
   const groups = [
     {
-      title: 'Web',
+      title: t.devtools.groups.web,
       items: [
         { icon: <SiReact size={22} />, label: 'React', onClick: () => window.open('https://react.dev/', '_blank') },
         { icon: <SiTypescript size={22} />, label: 'TypeScript', onClick: () => window.open('https://www.typescriptlang.org/', '_blank') },
@@ -20,14 +22,14 @@ function DevTools() {
       ],
     },
     {
-      title: 'Mobile',
+      title: t.devtools.groups.mobile,
       items: [
         { icon: <SiFlutter size={22} />, label: 'Flutter', onClick: () => window.open('https://flutter.dev/', '_blank') },
         { icon: <SiDart size={22} />, label: 'Dart', onClick: () => window.open('https://dart.dev/', '_blank') },
       ],
     },
     {
-      title: 'Back-end & DevOps',
+      title: t.devtools.groups.backend,
       items: [
         { icon: <SiNodedotjs size={22} />, label: 'Node.js', onClick: () => window.open('https://nodejs.org/', '_blank') },
         { icon: <SiDocker size={22} />, label: 'Docker', onClick: () => window.open('https://www.docker.com/', '_blank') },
@@ -36,7 +38,7 @@ function DevTools() {
       ],
     },
     {
-      title: 'Banco de Dados',
+      title: t.devtools.groups.database,
       items: [
         { icon: <SiPostgresql size={22} />, label: 'PostgreSQL', onClick: () => window.open('https://www.postgresql.org/', '_blank') },
         { icon: <SiFirebase size={22} />, label: 'Firebase', onClick: () => window.open('https://firebase.google.com/', '_blank') },
@@ -52,10 +54,10 @@ function DevTools() {
     <section id="devtools" className="py-12 sm:py-16 px-4 sm:px-5">
       <div className="max-w-5xl mx-auto text-center">
         <Reveal>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-6 font-bold tracking-tight text-white px-4">DevTools</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-6 font-bold tracking-tight text-white px-4">{t.devtools.title}</h2>
         </Reveal>
         <Reveal delay={0.05}>
-          <p className="text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base px-4">Stack e ferramentas que uso no dia a dia.</p>
+          <p className="text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base px-4">{t.devtools.subtitle}</p>
         </Reveal>
 
         {/* Selector as gooey tabs */}
