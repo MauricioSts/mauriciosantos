@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useEffect } from 'react'
 import Particles from '../components/Particles'
 import { useTranslation } from '../hooks/useTranslation'
 import { useLanguage } from '../contexts/LanguageContext'
@@ -7,7 +8,19 @@ import { useLanguage } from '../contexts/LanguageContext'
 function AllProjects() {
   const t = useTranslation()
   const { language, toggleLanguage } = useLanguage()
-  
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1))
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 400)
+      }
+    }
+  }, [location.hash])
+
   const projects = [
     {
       id: 1,
@@ -15,7 +28,8 @@ function AllProjects() {
       problem: t.projects.bridgeAndBits.problem,
       solution: t.projects.bridgeAndBits.solution,
       image: '/provedores.png',
-      href: 'https://providersmanagement.vercel.app/',
+      href: 'https://bridgeandbits.mauriciosts.com/',
+      tags: ['React.js', 'PostgreSQL', 'Tailwind CSS'],
     },
     {
       id: 2,
@@ -24,26 +38,66 @@ function AllProjects() {
       solution: t.projects.jerseyAndBits.solution,
       image: '/jersey.jpeg',
       href: 'https://jerseyandbits.vercel.app/',
+      tags: ['React.js', 'Firebase', 'Tailwind CSS'],
     },
     {
       id: 3,
+      title: 'Salviano Burguer',
+      problem: t.projects.salvianoBurguer.problem,
+      solution: t.projects.salvianoBurguer.solution,
+      image: '/salvianoburguer.png',
+      href: '#',
+      tags: ['JavaScript', 'Tailwind CSS', 'WhatsApp API'],
+    },
+    {
+      id: 4,
       title: 'Chovinista',
       problem: t.projects.chovinista.problem,
       solution: t.projects.chovinista.solution,
       image: '/chovinista.jpeg',
       href: '#',
+      tags: ['React.js', 'Tailwind CSS'],
     },
   ]
+
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  }
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 60 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    },
+  }
+
   return (
-    <div className="min-h-screen relative bg-gray-900 text-gray-200">
+    <div className="min-h-screen relative bg-gray-950 text-gray-200">
       <Particles />
-      <header className="sticky top-0 z-40 bg-gray-900/85 backdrop-blur-sm border-b border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between">
-          <Link to="/" className="text-gray-200 hover:text-emerald-400 transition-colors text-sm sm:text-base">{t.projects.back}</Link>
-          <div className="font-bold text-emerald-400 text-sm sm:text-base md:text-lg">{`{ ${t.projects.projectsTitle} }`}</div>
+
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-gray-950/80 backdrop-blur-md border-b border-gray-800/60">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between">
+          <Link
+            to="/"
+            className="flex items-center gap-2 text-gray-400 hover:text-emerald-400 transition-all duration-300 text-sm sm:text-base group"
+          >
+            <span className="inline-block transition-transform duration-300 group-hover:-translate-x-1">←</span>
+            <span>{t.projects.back}</span>
+          </Link>
+          <div className="font-bold text-emerald-400 text-sm sm:text-base md:text-lg tracking-wider font-mono">
+            {`{ ${t.projects.projectsTitle} }`}
+          </div>
           <button
             onClick={toggleLanguage}
-            className="px-3 py-1.5 text-xs sm:text-sm font-mono text-gray-300 hover:text-emerald-400 border border-gray-700 hover:border-emerald-500 rounded-md transition-colors"
+            className="px-3 py-1.5 text-xs sm:text-sm font-mono text-gray-400 hover:text-emerald-400 border border-gray-700/60 hover:border-emerald-500/60 rounded-lg transition-all duration-300 hover:shadow-[0_0_12px_rgba(16,185,129,0.15)]"
             aria-label="Toggle language"
           >
             {language === 'pt' ? 'EN' : 'PT'}
@@ -51,50 +105,155 @@ function AllProjects() {
         </div>
       </header>
 
-      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-5 py-6 sm:py-8 md:py-10">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-8 sm:mb-10 md:mb-12 tracking-tight text-emerald-400 px-4 sm:px-0">{`{ ${t.projects.allWorks} }`}</h1>
+      {/* Main */}
+      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 md:py-20">
+        {/* Page Title */}
+        <motion.div
+          className="mb-14 sm:mb-20 md:mb-24 text-center"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-4">
+            {t.projects.allWorks}
+          </h1>
+          <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 mx-auto rounded-full" />
+        </motion.div>
 
-        <div className="space-y-16 sm:space-y-20 md:space-y-24">
-          {projects.map((p, idx) => (
-            <section key={p.id} className={`group relative py-12 sm:py-16 md:py-20 lg:py-28 xl:py-36 grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-36 xl:gap-44 items-center px-4 sm:px-0`}>
-              <div className={`order-1 ${idx % 2 === 1 ? 'md:order-last md:flex md:justify-end md:pr-6 lg:pr-10 xl:pr-12' : 'md:order-none md:pl-6 lg:pl-10 xl:pl-12'}`}>
-                <div className="relative [perspective:1400px]">
-                  {/* 3D picture frame - tilt towards text */}
-                  <div className={`relative z-0 inline-block w-full md:w-[140%] max-w-none overflow-visible [transform-style:preserve-3d] transform-gpu ${idx % 2 === 1 ? 'origin-right' : 'origin-left'}`}>
+        {/* Projects Grid */}
+        <motion.div
+          className="space-y-20 sm:space-y-28 md:space-y-36"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {projects.map((p, idx) => {
+            const isEven = idx % 2 === 0
+            return (
+              <motion.section
+                key={p.id}
+                id={`projeto-${p.id}`}
+                variants={cardVariants}
+                className="scroll-mt-24"
+              >
+                <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center ${!isEven ? 'lg:[direction:rtl]' : ''}`}>
+
+                  {/* Image Side */}
+                  <div className={`${!isEven ? 'lg:[direction:ltr]' : ''}`}>
                     <motion.div
-                      className="relative"
-                      initial={{ rotateY: idx % 2 === 1 ? -18 : 18, rotateX: 2, rotateZ: idx % 2 === 1 ? 2 : -2, x: idx % 2 === 1 ? 8 : -8 }}
-                      whileHover={{ rotateY: 0, rotateX: 0, rotateZ: 0, x: 0, scale: 1.05, y: -2, transition: { duration: 0.45, ease: [0.22,1,0.36,1] } }}
+                      className="relative group cursor-pointer"
+                      whileHover={{ y: -8 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     >
-                      <img src={p.image} alt={p.title} className="w-full h-auto rounded-xl shadow-[0_24px_60px_rgba(0,0,0,0.35)]" />
+                      {/* Glow effect behind image */}
+                      <div className="absolute -inset-2 bg-gradient-to-br from-emerald-500/20 via-emerald-400/10 to-transparent rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                      {/* Project number badge */}
+                      <div className="absolute -top-4 -left-4 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-emerald-500 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                        <span className="text-gray-900 font-extrabold text-base sm:text-lg font-mono">
+                          {String(idx + 1).padStart(2, '0')}
+                        </span>
+                      </div>
+
+                      {/* Image */}
+                      <div className="relative overflow-hidden rounded-2xl border border-gray-700/40">
+                        <img
+                          src={p.image}
+                          alt={p.title}
+                          className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      </div>
                     </motion.div>
                   </div>
+
+                  {/* Content Side */}
+                  <div className={`${!isEven ? 'lg:[direction:ltr]' : ''}`}>
+                    <div className="space-y-5 sm:space-y-6">
+                      {/* Title */}
+                      <div>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-3">
+                          {p.title}
+                        </h2>
+                        {/* Tags */}
+                        {p.tags && p.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            {p.tags.map((tag, i) => (
+                              <span
+                                key={i}
+                                className="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-lg text-xs font-mono border border-emerald-500/20"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Problem */}
+                      <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-800/60 rounded-xl p-4 sm:p-5">
+                        <div className="flex items-center gap-2.5 mb-2.5">
+                          <div className="w-2 h-2 rounded-full bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]" />
+                          <span className="text-red-400 font-semibold text-sm sm:text-base font-mono uppercase tracking-wider">
+                            {t.projects.problem}
+                          </span>
+                        </div>
+                        <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                          {p.problem}
+                        </p>
+                      </div>
+
+                      {/* Solution */}
+                      <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-800/60 rounded-xl p-4 sm:p-5">
+                        <div className="flex items-center gap-2.5 mb-2.5">
+                          <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
+                          <span className="text-emerald-400 font-semibold text-sm sm:text-base font-mono uppercase tracking-wider">
+                            {t.projects.solution}
+                          </span>
+                        </div>
+                        <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                          {p.solution}
+                        </p>
+                      </div>
+
+                      {/* CTA Button */}
+                      {p.href && p.href !== '#' && (
+                        <motion.a
+                          href={p.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2.5 bg-emerald-500 text-gray-900 font-bold px-6 sm:px-7 py-2.5 sm:py-3 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all duration-300 text-sm sm:text-base"
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.97 }}
+                        >
+                          {t.projects.accessProject}
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </motion.a>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className={`${idx % 2 === 1
-                ? 'md:pr-8 lg:pr-12 xl:pr-20 md:text-right'
-                : 'md:pl-8 lg:pl-12 xl:pl-20'} relative z-10`}> 
-                <div className="inline-block border-2 border-emerald-500 text-emerald-300 rounded-md px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 mb-4 sm:mb-5 md:mb-6 font-semibold tracking-wide text-base sm:text-lg md:text-xl shadow-[0_0_20px_rgba(16,185,129,0.25)]">
-                  {p.title.toUpperCase()}
-                </div>
-                <div className="max-w-3xl text-sm sm:text-base md:text-[1.08rem] lg:text-[1.2rem] text-gray-300 leading-6 sm:leading-7 md:leading-8 lg:leading-9 tracking-normal">
-                  <div className="mb-2 sm:mb-3"><span className="text-emerald-400 font-semibold">{t.projects.problem}</span> {p.problem}</div>
-                  <div><span className="text-emerald-400 font-semibold">{t.projects.solution}</span> {p.solution}</div>
-                </div>
-                {p.href && p.href !== '#' && (
-                  <div className="mt-6 sm:mt-8">
-                    <a href={p.href} target="_blank" rel="noopener noreferrer" className="inline-block bg-emerald-500 text-gray-900 font-semibold px-5 sm:px-6 md:px-7 py-2 sm:py-2.5 md:py-3 rounded-md shadow hover:brightness-95 transition text-sm sm:text-base md:text-lg blink-attention">{t.projects.accessProject}</a>
+
+                {/* Divider between projects */}
+                {idx < projects.length - 1 && (
+                  <div className="flex items-center justify-center mt-16 sm:mt-20 md:mt-28">
+                    <div className="h-px w-16 bg-gradient-to-r from-transparent to-gray-700" />
+                    <div className="w-2 h-2 rounded-full bg-emerald-500/40 mx-4" />
+                    <div className="h-px w-16 bg-gradient-to-l from-transparent to-gray-700" />
                   </div>
                 )}
-              </div>
-            </section>
-          ))}
-        </div>
+              </motion.section>
+            )
+          })}
+        </motion.div>
+
+        {/* Bottom spacer */}
+        <div className="h-20" />
       </main>
     </div>
   )
 }
 
 export default AllProjects
-
-

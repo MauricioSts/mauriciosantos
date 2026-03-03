@@ -3,11 +3,19 @@ import { motion } from 'framer-motion'
 function Timeline() {
   const experiences = [
     {
+      id: 1,
+      date: '2025 - Atual',
+      title: 'Secretaria de Estado do Trabalho, da Habitação e da Assistência Social',
+      subtitle: 'Estagiário - Desenvolvedor Mobile',
+      description: 'Atuação no desenvolvimento e manutenção do aplicativo Programa Leite Potiguar (Google Play) utilizando React, React Native e Django. Melhorei a eficiência do aplicativo, aumentando significativamente sua velocidade e performance.',
+      tags: ['React Native', 'TypeScript', 'Django']
+    },
+    {
       id: 2,
       date: '2025',
       title: 'IFRN',
       subtitle: 'Flutter Developer',
-      description: 'Fui bolsista voluntário no projeto de desenvolvimento de aplicativos em Flutter para o IFRN, com o objetivo de criar umsoftware com o intuito de apoiar e gerenciar as ações dos agentes de campo. ',
+      description: 'Fui bolsista voluntário no projeto de desenvolvimento de aplicativos em Flutter para o IFRN, com o objetivo de criar um software com o intuito de apoiar e gerenciar as ações dos agentes de campo. ',
       tags: ['Flutter', 'Dart']
     },
     {

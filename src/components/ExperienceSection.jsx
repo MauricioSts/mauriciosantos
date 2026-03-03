@@ -3,8 +3,16 @@ import { useTranslation } from '../hooks/useTranslation'
 
 function ExperienceSection() {
   const t = useTranslation()
-  
+
   const experiences = [
+    {
+      id: 0,
+      company: 'SETHAS',
+      role: t.experience.sethas.role,
+      period: '2025 - Atual',
+      responsibilities: t.experience.sethas.responsibilities,
+      tags: ['React Native', 'TypeScript', 'Django']
+    },
     {
       id: 1,
       company: 'IFRN',
@@ -44,7 +52,7 @@ function ExperienceSection() {
 
   const handleSelectExperience = (experience) => {
     if (experience.id === selectedExperience.id) return
-    
+
     setIsTransitioning(true)
     setTimeout(() => {
       setSelectedExperience(experience)
@@ -68,11 +76,10 @@ function ExperienceSection() {
                   <button
                     key={exp.id}
                     onClick={() => handleSelectExperience(exp)}
-                    className={`text-left px-3 sm:px-4 py-2 sm:py-3 rounded-lg transition-all duration-300 font-mono text-xs sm:text-sm whitespace-nowrap lg:whitespace-normal ${
-                      selectedExperience.id === exp.id
-                        ? 'bg-emerald-500/20 text-emerald-400 border-l-4 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
-                        : 'text-gray-400 hover:text-emerald-400 hover:bg-gray-800/50 border-l-4 border-transparent'
-                    }`}
+                    className={`text-left px-3 sm:px-4 py-2 sm:py-3 rounded-lg transition-all duration-300 font-mono text-xs sm:text-sm whitespace-nowrap lg:whitespace-normal ${selectedExperience.id === exp.id
+                      ? 'bg-emerald-500/20 text-emerald-400 border-l-4 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
+                      : 'text-gray-400 hover:text-emerald-400 hover:bg-gray-800/50 border-l-4 border-transparent'
+                      }`}
                   >
                     {exp.company}
                   </button>
@@ -85,9 +92,8 @@ function ExperienceSection() {
           <div className="flex-1 min-h-[300px] sm:min-h-[400px]">
             <div
               key={selectedExperience.id}
-              className={`transition-opacity duration-300 ${
-                isTransitioning ? 'opacity-0' : 'opacity-100'
-              }`}
+              className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'
+                }`}
             >
               <div className="bg-gray-800/50 rounded-xl p-4 sm:p-6 md:p-8 border border-gray-700/50">
                 {/* Cabeçalho */}

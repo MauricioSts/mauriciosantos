@@ -7,11 +7,11 @@ export const en = {
     devtools: 'DevTools',
     contact: 'Contact'
   },
-  
+
   // Hero
   hero: {
     tagline: 'Front-end Student Entrepreneur',
-    description1: 'I am a Systems for Internet student at IFRN and a Front-end Developer. I like to create practical and efficient interfaces.',
+    description1: 'I am a Systems for Internet student at IFRN and a Bachelor\'s in Software Engineering student at Estácio. Front-end Developer, I like to create practical and efficient interfaces.',
     description2: 'I have participated in volunteer scholarships at IFRN and I am an entrepreneur, owner of the sports jersey store PFCsports.',
     description3: 'Check out my projects or get in touch!',
     dock: {
@@ -41,6 +41,11 @@ export const en = {
       solution: 'I developed this complete management system to meet my own needs as an entrepreneur. The platform offers complete control of orders, customer registration and history, financial management with automatic monthly gross profit calculation. After solving my problems, I made it available for free to other entrepreneurs in the sector.',
       description: 'Management system developed to meet my needs as a sports jersey store owner. Offers order control, customer registration and financial management. Made available for free to other entrepreneurs in the sector.'
     },
+    salvianoBurguer: {
+      problem: 'The Salviano Burguer restaurant needed a digital presence to display their menu and make it easier for customers to place orders quickly and conveniently.',
+      solution: 'I developed a website for the restaurant with an interactive digital menu and WhatsApp API integration, allowing customers to place orders directly from their phones. My first freelance project.',
+      description: 'Website for Salviano Burguer restaurant with a digital menu and WhatsApp API integration for direct orders. My first freelance project.'
+    },
     chovinista: {
       problem: 'My girlfriend needed to manage and track her monthly fixed income in an organized way, recording received values and viewing financial history to have control over income.',
       solution: 'Personal financial management system for controlling and viewing fixed income, allowing notes and monthly income tracking.',
@@ -58,6 +63,15 @@ export const en = {
   experience: {
     title: 'Professional Experience',
     responsibilities: 'Responsibilities',
+    sethas: {
+      role: 'Intern - Mobile Developer',
+      responsibilities: [
+        'Development and maintenance of the Programa Leite Potiguar app using React Native',
+        'Web interface development with React.js',
+        'Improved app efficiency, significantly increasing its speed and performance',
+        'Publishing and maintaining the app on the Google Play Store'
+      ]
+    },
     ifrnFlutter: {
       role: 'Flutter Developer',
       responsibilities: [

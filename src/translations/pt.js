@@ -7,11 +7,11 @@ export const pt = {
     devtools: 'DevTools',
     contact: 'Contato'
   },
-  
+
   // Hero
   hero: {
     tagline: 'Estudante Front-end Empreendedor',
-    description1: 'Sou estudante de Sistemas para Internet no IFRN e Desenvolvedor Front-end. Gosto de criar interfaces práticas e eficientes.',
+    description1: 'Sou estudante de Sistemas para Internet no IFRN e de Bacharelado em Engenharia de Software na Estácio. Desenvolvedor Front-end, gosto de criar interfaces práticas e eficientes.',
     description2: 'Já participei de bolsas voluntárias no IFRN e sou empreendedor, dono da loja de camisas de time PFCsports.',
     description3: 'Confira meus projetos ou entre em contato!',
     dock: {
@@ -41,6 +41,11 @@ export const pt = {
       solution: 'Desenvolvi este sistema completo de gestão para suprir minhas próprias necessidades como empreendedor. A plataforma oferece controle total de pedidos, cadastro e histórico de clientes, gestão financeira com cálculo automático de lucro bruto mensal. Após resolver meus problemas, disponibilizei gratuitamente para outros empreendedores do setor.',
       description: 'Sistema de gestão desenvolvido para suprir minhas necessidades como dono de loja de camisas de time. Oferece controle de pedidos, cadastro de clientes e gestão financeira. Disponibilizado gratuitamente para outros empreendedores do setor.'
     },
+    salvianoBurguer: {
+      problem: 'A hamburgueria Salviano Burguer precisava de uma presença digital para exibir seu cardápio e facilitar os pedidos dos clientes de forma rápida e prática.',
+      solution: 'Desenvolvi um site para a hamburgueria com cardápio digital interativo e integração com a API do WhatsApp, permitindo que os clientes façam pedidos diretamente pelo celular. Meu primeiro trabalho como freelancer.',
+      description: 'Site para a hamburgueria Salviano Burguer com cardápio digital e integração com a API do WhatsApp para pedidos diretos. Meu primeiro freelancer.'
+    },
     chovinista: {
       problem: 'Minha namorada precisava gerenciar e acompanhar o rendimento fixo mensal dela de forma organizada, registrando valores recebidos e visualizando o histórico financeiro para ter controle sobre a renda.',
       solution: 'Sistema de gestão financeira pessoal para controle e visualização de rendimento fixo, permitindo anotações e acompanhamento da renda mensal.',
@@ -58,6 +63,14 @@ export const pt = {
   experience: {
     title: 'Experiências Profissionais',
     responsibilities: 'Responsabilidades',
+    sethas: {
+      role: 'Estagiário - Desenvolvedor Mobile',
+      responsibilities: [
+        'Desenvolvimento e manutenção do aplicativo Programa Leite Potiguar utilizando React Native',
+        'Melhoria da eficiência do aplicativo, aumentando significativamente sua velocidade e performance',
+        'Publicação e manutenção do aplicativo na Google Play Store'
+      ]
+    },
     ifrnFlutter: {
       role: 'Flutter Developer',
       responsibilities: [

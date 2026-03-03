@@ -1,13 +1,13 @@
 import Reveal from './Reveal'
 import Dock from './Dock'
 import GooeyNav from './GooeyNav'
-import { SiReact, SiTypescript, SiTailwindcss, SiNodedotjs, SiVite, SiGithub, SiVercel, SiJavascript, SiHtml5, SiCss3, SiFlutter, SiDart, SiDocker, SiPostgresql, SiFirebase } from 'react-icons/si'
+import { SiReact, SiTypescript, SiTailwindcss, SiNodedotjs, SiVite, SiGithub, SiVercel, SiJavascript, SiHtml5, SiCss3, SiFlutter, SiDart, SiDocker, SiPostgresql, SiFirebase, SiDjango } from 'react-icons/si'
 import { useTranslation } from '../hooks/useTranslation'
 import { useState } from 'react'
 
 function DevTools() {
   const t = useTranslation()
-  
+
   const groups = [
     {
       title: t.devtools.groups.web,
@@ -24,6 +24,7 @@ function DevTools() {
     {
       title: t.devtools.groups.mobile,
       items: [
+        { icon: <SiReact size={22} />, label: 'React Native', onClick: () => window.open('https://reactnative.dev/', '_blank') },
         { icon: <SiFlutter size={22} />, label: 'Flutter', onClick: () => window.open('https://flutter.dev/', '_blank') },
         { icon: <SiDart size={22} />, label: 'Dart', onClick: () => window.open('https://dart.dev/', '_blank') },
       ],
@@ -32,6 +33,7 @@ function DevTools() {
       title: t.devtools.groups.backend,
       items: [
         { icon: <SiNodedotjs size={22} />, label: 'Node.js', onClick: () => window.open('https://nodejs.org/', '_blank') },
+        { icon: <SiDjango size={22} />, label: 'Django', onClick: () => window.open('https://www.djangoproject.com/', '_blank') },
         { icon: <SiDocker size={22} />, label: 'Docker', onClick: () => window.open('https://www.docker.com/', '_blank') },
         { icon: <SiGithub size={22} />, label: 'GitHub', onClick: () => window.open('https://github.com/', '_blank') },
         { icon: <SiVercel size={22} />, label: 'Vercel', onClick: () => window.open('https://vercel.com/', '_blank') },
