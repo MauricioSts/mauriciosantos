@@ -27,7 +27,7 @@ function AllProjects() {
       title: 'BridgeAndBits',
       problem: t.projects.bridgeAndBits.problem,
       solution: t.projects.bridgeAndBits.solution,
-      image: '/provedores.png',
+      image: '/bridge.png',
       href: 'https://bridgeandbits.mauriciosts.com/',
       tags: ['React.js', 'PostgreSQL', 'Tailwind CSS'],
     },
@@ -46,7 +46,7 @@ function AllProjects() {
       problem: t.projects.salvianoBurguer.problem,
       solution: t.projects.salvianoBurguer.solution,
       image: '/salvianoburguer.png',
-      href: '#',
+      href: 'https://salvianoburguer.vercel.app/',
       tags: ['JavaScript', 'Tailwind CSS', 'WhatsApp API'],
     },
     {

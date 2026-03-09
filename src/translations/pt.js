@@ -55,7 +55,7 @@ export const pt = {
     solution: 'Solução:',
     accessProject: 'Acessar projeto →',
     back: 'Voltar',
-    allWorks: 'All Works',
+    allWorks: 'Todos os Projetos',
     projectsTitle: 'Projetos'
   },
 
@@ -106,6 +106,31 @@ export const pt = {
         'Resolução de problemas técnicos',
         'Atendimento presencial e remoto'
       ]
+    }
+  },
+
+  // Timeline
+  timeline: {
+    title: 'Timeline',
+    sethas: {
+      subtitle: 'Estagiário - Desenvolvedor Mobile',
+      description: 'Atuação no desenvolvimento e manutenção do aplicativo Programa Leite Potiguar (Google Play) utilizando React, React Native e Django. Melhorei a eficiência do aplicativo, aumentando significativamente sua velocidade e performance.'
+    },
+    ifrnFlutter: {
+      subtitle: 'Flutter Developer',
+      description: 'Fui bolsista voluntário no projeto de desenvolvimento de aplicativos em Flutter para o IFRN, com o objetivo de criar um software com o intuito de apoiar e gerenciar as ações dos agentes de campo.'
+    },
+    inspireLogic: {
+      subtitle: 'Desenvolvedor Front-end freelancer',
+      description: 'Contribuí para o desenvolvimento do site de gerenciamento de alunos e professores da startup Inspire Logic, aprimorando a segurança escolar por meio da integração de catracas digitais e de um sistema de reconhecimento facial (Face ID) para controle de acesso.'
+    },
+    ifrnAR: {
+      subtitle: 'Desenvolvedor de aplicativos em realidade aumentada',
+      description: 'Fui bolsista voluntário no projeto de desenvolvimento de aplicativos em realidade aumentada para o IFRN, com o objetivo a unir biologia e tecnologia'
+    },
+    secretaria: {
+      subtitle: 'Estagiário',
+      description: 'Suporte de TI e manutenção de redes e computadores'
     }
   },
 

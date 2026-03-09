@@ -47,18 +47,20 @@ function ExperienceSection() {
     }
   ]
 
-  const [selectedExperience, setSelectedExperience] = useState(experiences[0])
+  const [selectedId, setSelectedId] = useState(experiences[0].id)
   const [isTransitioning, setIsTransitioning] = useState(false)
 
   const handleSelectExperience = (experience) => {
-    if (experience.id === selectedExperience.id) return
+    if (experience.id === selectedId) return
 
     setIsTransitioning(true)
     setTimeout(() => {
-      setSelectedExperience(experience)
+      setSelectedId(experience.id)
       setIsTransitioning(false)
     }, 150)
   }
+
+  const selectedExperience = experiences.find(exp => exp.id === selectedId) || experiences[0]
 
   return (
     <section className="py-12 sm:py-16 px-4 sm:px-5 bg-gray-900 text-gray-200" id="experience">
@@ -76,7 +78,7 @@ function ExperienceSection() {
                   <button
                     key={exp.id}
                     onClick={() => handleSelectExperience(exp)}
-                    className={`text-left px-3 sm:px-4 py-2 sm:py-3 rounded-lg transition-all duration-300 font-mono text-xs sm:text-sm whitespace-nowrap lg:whitespace-normal ${selectedExperience.id === exp.id
+                    className={`text-left px-3 sm:px-4 py-2 sm:py-3 rounded-lg transition-all duration-300 font-mono text-xs sm:text-sm whitespace-nowrap lg:whitespace-normal ${selectedId === exp.id
                       ? 'bg-emerald-500/20 text-emerald-400 border-l-4 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
                       : 'text-gray-400 hover:text-emerald-400 hover:bg-gray-800/50 border-l-4 border-transparent'
                       }`}

@@ -1,52 +1,55 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from '../hooks/useTranslation'
 
 function Timeline() {
+  const t = useTranslation()
+
   const experiences = [
     {
       id: 1,
       date: '2025 - Atual',
-      title: 'Secretaria de Estado do Trabalho, da Habitação e da Assistência Social',
-      subtitle: 'Estagiário - Desenvolvedor Mobile',
-      description: 'Atuação no desenvolvimento e manutenção do aplicativo Programa Leite Potiguar (Google Play) utilizando React, React Native e Django. Melhorei a eficiência do aplicativo, aumentando significativamente sua velocidade e performance.',
+      title: 'SETHAS',
+      subtitle: t.timeline.sethas.subtitle,
+      description: t.timeline.sethas.description,
       tags: ['React Native', 'TypeScript', 'Django']
     },
     {
       id: 2,
       date: '2025',
       title: 'IFRN',
-      subtitle: 'Flutter Developer',
-      description: 'Fui bolsista voluntário no projeto de desenvolvimento de aplicativos em Flutter para o IFRN, com o objetivo de criar um software com o intuito de apoiar e gerenciar as ações dos agentes de campo. ',
+      subtitle: t.timeline.ifrnFlutter.subtitle,
+      description: t.timeline.ifrnFlutter.description,
       tags: ['Flutter', 'Dart']
     },
     {
       id: 3,
       date: '2025',
       title: 'Inspire Logic',
-      subtitle: 'Desenvolvedor Front-end freelancer',
-      description: 'Contribuí para o desenvolvimento do site de gerenciamento de alunos e professores da startup Inspire Logic, aprimorando a segurança escolar por meio da integração de catracas digitais e de um sistema de reconhecimento facial (Face ID) para controle de acesso.',
+      subtitle: t.timeline.inspireLogic.subtitle,
+      description: t.timeline.inspireLogic.description,
       tags: ['React.js', 'PostgreSQL']
     },
     {
       id: 4,
       date: '2024',
       title: 'IFRN',
-      subtitle: 'Desenvolvedor de aplicativos em realidade aumentada',
-      description: 'Fui bolsista voluntário no projeto de desenvolvimento de aplicativos em realidade aumentada para o IFRN, com o objetivo a unir biologia e tecnologia',
+      subtitle: t.timeline.ifrnAR.subtitle,
+      description: t.timeline.ifrnAR.description,
       tags: ['Unity', 'C#', 'AR', 'VR']
     },
     {
       id: 5,
       date: '2023',
       title: 'Secretaría de infraestrutura do Rio Grande do Norte',
-      subtitle: 'Estagiario',
-      description: 'Suporte de TI e manutenção de redes e computadores',
+      subtitle: t.timeline.secretaria.subtitle,
+      description: t.timeline.secretaria.description,
       tags: ["Suporte de TI",]
     }
   ]
 
   return (
     <section className="py-16 px-5" id="timeline">
-      <h2 className="text-3xl md:text-4xl mb-16 font-bold text-center tracking-tight text-white">Timeline</h2>
+      <h2 className="text-3xl md:text-4xl mb-16 font-bold text-center tracking-tight text-white">{t.timeline.title}</h2>
 
       {/* eixo central */}
       <div className="relative max-w-5xl mx-auto">
@@ -79,7 +82,7 @@ function Timeline() {
                         <div className="text-sm text-gray-500 mb-1 font-medium">{exp.date}</div>
                         <div className="text-xl md:text-2xl font-semibold mb-1 text-gray-900">{exp.title}</div>
                         <div className="text-lg md:text-xl text-gray-700 mb-2.5 font-medium">{exp.subtitle}</div>
-                        <div className="text-gray-700 leading-relaxed mt-2.5">{exp.description}</div>
+                        <div className="text-gray-700 leading-relaxed mt-2.5 text-justify">{exp.description}</div>
                         {exp.tags && exp.tags.length > 0 && (
                           <div className="flex md:justify-end flex-wrap gap-2 mt-2.5">
                             {exp.tags.map((tag, index) => (
@@ -114,7 +117,7 @@ function Timeline() {
                         <div className="text-sm text-gray-500 mb-1 font-medium">{exp.date}</div>
                         <div className="text-xl md:text-2xl font-semibold mb-1 text-gray-900">{exp.title}</div>
                         <div className="text-lg md:text-xl text-gray-700 mb-2.5 font-medium">{exp.subtitle}</div>
-                        <div className="text-gray-700 leading-relaxed mt-2.5">{exp.description}</div>
+                        <div className="text-gray-700 leading-relaxed mt-2.5 text-justify">{exp.description}</div>
                         {exp.tags && exp.tags.length > 0 && (
                           <div className="flex flex-wrap gap-2 mt-2.5">
                             {exp.tags.map((tag, index) => (
@@ -134,7 +137,7 @@ function Timeline() {
                     <div className="text-sm text-gray-500 mb-1 font-medium">{exp.date}</div>
                     <div className="text-xl font-semibold mb-1 text-gray-900">{exp.title}</div>
                     <div className="text-lg text-gray-700 mb-2.5 font-medium">{exp.subtitle}</div>
-                    <div className="text-gray-700 leading-relaxed mt-2.5">{exp.description}</div>
+                    <div className="text-gray-700 leading-relaxed mt-2.5 text-justify">{exp.description}</div>
                     {exp.tags && exp.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-2.5">
                         {exp.tags.map((tag, index) => (

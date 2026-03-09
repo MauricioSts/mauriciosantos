@@ -110,6 +110,31 @@ export const en = {
     }
   },
 
+  // Timeline
+  timeline: {
+    title: 'Timeline',
+    sethas: {
+      subtitle: 'Intern - Mobile Developer',
+      description: 'Worked on the development and maintenance of the Programa Leite Potiguar app (Google Play) using React, React Native, and Django. Improved app efficiency, significantly increasing its speed and performance.'
+    },
+    ifrnFlutter: {
+      subtitle: 'Flutter Developer',
+      description: 'Volunteer scholarship holder in the Flutter app development project at IFRN, aimed at creating software to support and manage field agent actions.'
+    },
+    inspireLogic: {
+      subtitle: 'Front-end Freelancer Developer',
+      description: 'Contributed to the development of the student and teacher management website for the startup Inspire Logic, improving school security through digital turnstiles and facial recognition system (Face ID) integration for access control.'
+    },
+    ifrnAR: {
+      subtitle: 'Augmented Reality App Developer',
+      description: 'Volunteer scholarship holder in the augmented reality app development project at IFRN, aiming to unite biology and technology.'
+    },
+    secretaria: {
+      subtitle: 'Intern',
+      description: 'IT support and network/computer maintenance.'
+    }
+  },
+
   // DevTools
   devtools: {
     title: 'DevTools',
