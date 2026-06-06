@@ -19,6 +19,11 @@ export const en = {
       github: 'GitHub',
       projects: 'Projects',
       contact: 'Contact'
+    },
+    stats: {
+      projects: 'Projects',
+      years: 'Yrs of exp.',
+      stacks: 'Stacks'
     }
   },
 
@@ -50,6 +55,11 @@ export const en = {
       problem: 'My girlfriend needed to manage and track her monthly fixed income in an organized way, recording received values and viewing financial history to have control over income.',
       solution: 'Personal financial management system for controlling and viewing fixed income, allowing notes and monthly income tracking.',
       description: 'Personal financial management system for controlling and viewing fixed income, allowing notes and monthly income tracking.'
+    },
+    comidasDaCopa: {
+      problem: 'I wanted to create a fun and interactive experience for me and my girlfriend to cook together, but nothing existed that combined the World Cup 2026 atmosphere with a live-synchronized culinary challenge between two phones.',
+      solution: 'I built Comidas da Copa: a couple\'s game where the app draws a World Cup country, each person writes a typical dish in 7 minutes (you can see your partner typing live), then it randomly picks which dish to cook, and you send a photo of the result. Features live-synced duo mode and solo mode.',
+      description: 'Couple\'s game: draws a 2026 World Cup country, each person proposes a typical dish in 7 min, the app picks which one to cook and you record the result with a photo. Live-synced duo mode and solo mode.'
     },
     problem: 'Problem:',
     solution: 'Solution:',

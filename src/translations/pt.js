@@ -19,6 +19,11 @@ export const pt = {
       github: 'GitHub',
       projects: 'Projetos',
       contact: 'Contato'
+    },
+    stats: {
+      projects: 'Projetos',
+      years: 'Anos de exp.',
+      stacks: 'Stacks'
     }
   },
 
@@ -50,6 +55,11 @@ export const pt = {
       problem: 'Minha namorada precisava gerenciar e acompanhar o rendimento fixo mensal dela de forma organizada, registrando valores recebidos e visualizando o histórico financeiro para ter controle sobre a renda.',
       solution: 'Sistema de gestão financeira pessoal para controle e visualização de rendimento fixo, permitindo anotações e acompanhamento da renda mensal.',
       description: 'Sistema de gestão financeira pessoal para controle e visualização de rendimento fixo, permitindo anotações e acompanhamento da renda mensal.'
+    },
+    comidasDaCopa: {
+      problem: 'Queria criar uma experiência divertida e interativa para mim e minha namorada cozinharmos juntos, mas não havia nada que unisse o clima da Copa do Mundo 2026 com um desafio culinário sincronizado ao vivo entre dois celulares.',
+      solution: 'Desenvolvi o Comidas da Copa: um jogo para casal onde o app sorteia um país da Copa, cada um escreve um prato típico em 7 minutos (dá pra ver a dupla digitando ao vivo), depois sorteia qual prato cozinhar e vocês enviam a foto do resultado. Tem modo dupla sincronizado e modo solo.',
+      description: 'Jogo para casal: sorteia um país da Copa 2026, cada um propõe um prato típico em 7 min, o app sorteia qual cozinhar e vocês registram o resultado com foto. Modo dupla com sincronização ao vivo e modo solo.'
     },
     problem: 'Problema:',
     solution: 'Solução:',
