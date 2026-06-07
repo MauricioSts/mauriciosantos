@@ -7,31 +7,15 @@
 
 html { scroll-behavior: smooth; }
 
-/* Text selection color */
-::selection {
-  background: rgba(16, 185, 129, 0.35);
-  color: #ffffff;
+/* ── Scrollbar ── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-}
-::-webkit-scrollbar-track {
-  background: #111827;
-}
-::-webkit-scrollbar-thumb {
-  background: #10b981;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #34d399;
-}
-
-/* Animated infinite gradient border for avatar (rectangular) */
-.infinite-border {
-  position: relative;
-}
+/* ── Animated spinning border (avatar) ── */
+.infinite-border { position: relative; }
 .infinite-border::before {
   content: "";
   position: absolute;
@@ -47,62 +31,71 @@ html { scroll-behavior: smooth; }
   z-index: 1;
   border-radius: 16px;
 }
-
-/* Animated infinite gradient border for avatar (circular) */
-.infinite-border-circle {
-  position: relative;
-  display: inline-block;
-}
-.infinite-border-circle::before {
-  content: "";
-  position: absolute;
-  inset: -5px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, #10b981, #34d399, #6ee7b7, #34d399, #10b981);
-  filter: blur(5px);
-  animation: spin-border 4s linear infinite;
-  z-index: 0;
-}
-.infinite-border-circle > * {
-  position: relative;
-  z-index: 1;
-}
-
 @keyframes spin-border {
   to { transform: rotate(360deg); }
 }
 
-/* Pulsing availability dot */
-@keyframes ping-dot {
-  75%, 100% { transform: scale(2); opacity: 0; }
-}
-.animate-ping-dot {
-  animation: ping-dot 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-/* Call-to-action blinking glow */
+/* ── CTA glow blink ── */
 @keyframes blinkGlow {
-  0%, 100% { box-shadow: 0 0 0 rgba(16,185,129,0.0); transform: translateZ(0) scale(1); }
+  0%, 100% { box-shadow: 0 0 0 rgba(16,185,129,0); transform: translateZ(0) scale(1); }
   50% { box-shadow: 0 0 24px rgba(16,185,129,0.55); transform: translateZ(0) scale(1.04); }
 }
-.blink-attention {
-  animation: blinkGlow 1.2s ease-in-out infinite;
+.blink-attention { animation: blinkGlow 1.2s ease-in-out infinite; }
+
+/* ── Racing stripe pulse ── */
+@keyframes stripe-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+.racing-stripe { animation: stripe-pulse 3s ease-in-out infinite; }
+
+/* ── Stat counter glow ── */
+@keyframes stat-glow {
+  0%, 100% { text-shadow: 0 0 0 transparent; }
+  50% { text-shadow: 0 0 20px rgba(52,211,153,0.4); }
+}
+.stat-value { animation: stat-glow 2.5s ease-in-out infinite; }
+
+/* ── Scanline texture overlay (subtle) ── */
+.scanline-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* Hide scrollbar but keep functionality */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* ── Diagonal clip for section separators ── */
+.clip-diagonal {
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
 }
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+.clip-diagonal-reverse {
+  clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
 }
 
-/* Section label utility */
-.section-label {
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #10b981;
-  font-family: 'JetBrains Mono', monospace;
+/* ── Card hover border animation ── */
+@keyframes border-scan {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.card-border-animated {
+  background: linear-gradient(270deg, #10b981, #34d399, #059669, #10b981);
+  background-size: 300% 300%;
+  animation: border-scan 4s ease infinite;
+}
+
+/* ── Speed line decoration ── */
+.speed-lines {
+  background-image:
+    linear-gradient(90deg, transparent 0%, rgba(16,185,129,0.06) 50%, transparent 100%);
+  background-size: 200px 1px;
+  background-repeat: repeat-y;
 }
