@@ -56,10 +56,13 @@ function DevTools() {
     <section id="devtools" className="py-12 sm:py-16 px-4 sm:px-5">
       <div className="max-w-5xl mx-auto text-center">
         <Reveal>
+          <p className="section-label mb-3">{t.devtools.sectionLabel}</p>
+        </Reveal>
+        <Reveal>
           <h2 className="text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-6 font-bold tracking-tight text-white px-4">{t.devtools.title}</h2>
         </Reveal>
         <Reveal delay={0.05}>
-          <p className="text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base px-4">{t.devtools.subtitle}</p>
+          <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base px-4">{t.devtools.subtitle}</p>
         </Reveal>
 
         {/* Selector as gooey tabs */}

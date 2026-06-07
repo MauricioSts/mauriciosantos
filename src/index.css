@@ -7,7 +7,28 @@
 
 html { scroll-behavior: smooth; }
 
-/* Animated infinite gradient border for avatar */
+/* Text selection color */
+::selection {
+  background: rgba(16, 185, 129, 0.35);
+  color: #ffffff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+::-webkit-scrollbar-thumb {
+  background: #10b981;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #34d399;
+}
+
+/* Animated infinite gradient border for avatar (rectangular) */
 .infinite-border {
   position: relative;
 }
@@ -26,8 +47,37 @@ html { scroll-behavior: smooth; }
   z-index: 1;
   border-radius: 16px;
 }
+
+/* Animated infinite gradient border for avatar (circular) */
+.infinite-border-circle {
+  position: relative;
+  display: inline-block;
+}
+.infinite-border-circle::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #10b981, #34d399, #6ee7b7, #34d399, #10b981);
+  filter: blur(5px);
+  animation: spin-border 4s linear infinite;
+  z-index: 0;
+}
+.infinite-border-circle > * {
+  position: relative;
+  z-index: 1;
+}
+
 @keyframes spin-border {
   to { transform: rotate(360deg); }
+}
+
+/* Pulsing availability dot */
+@keyframes ping-dot {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+.animate-ping-dot {
+  animation: ping-dot 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 /* Call-to-action blinking glow */
@@ -46,4 +96,13 @@ html { scroll-behavior: smooth; }
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Section label utility */
+.section-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #10b981;
+  font-family: 'JetBrains Mono', monospace;
 }

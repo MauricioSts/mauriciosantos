@@ -1,29 +1,98 @@
 import Reveal from './Reveal'
 import { useTranslation } from '../hooks/useTranslation'
+import { SiLinkedin, SiGithub } from 'react-icons/si'
+import { motion } from 'framer-motion'
+
+const EmailIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7" aria-hidden="true">
+    <rect x="2" y="4" width="20" height="16" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </svg>
+)
 
 function Contact() {
   const t = useTranslation()
 
+  const cards = [
+    {
+      icon: <EmailIcon />,
+      label: t.contact.emailLabel,
+      desc: t.contact.emailDesc,
+      value: 'contatomauriciosts@gmail.com',
+      href: 'mailto:contatomauriciosts@gmail.com',
+      colorBg: 'bg-red-50',
+      colorBorder: 'border-red-200 hover:border-red-400',
+      colorIcon: 'text-red-500',
+      colorShadow: 'hover:shadow-red-100',
+    },
+    {
+      icon: <SiLinkedin size={28} />,
+      label: t.contact.linkedinLabel,
+      desc: t.contact.linkedinDesc,
+      value: 'linkedin.com/in/mauriciosts',
+      href: 'https://linkedin.com/in/mauriciosts',
+      colorBg: 'bg-blue-50',
+      colorBorder: 'border-blue-200 hover:border-blue-400',
+      colorIcon: 'text-blue-600',
+      colorShadow: 'hover:shadow-blue-100',
+    },
+    {
+      icon: <SiGithub size={28} />,
+      label: t.contact.githubLabel,
+      desc: t.contact.githubDesc,
+      value: 'github.com/MauricioSts',
+      href: 'https://github.com/MauricioSts',
+      colorBg: 'bg-gray-100',
+      colorBorder: 'border-gray-300 hover:border-gray-500',
+      colorIcon: 'text-gray-700',
+      colorShadow: 'hover:shadow-gray-200',
+    },
+  ]
+
   return (
-    <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen pt-0 pb-16 sm:pb-20 px-4 sm:px-5 bg-white text-gray-900" id="contact">
-      <div className="max-w-5xl mx-auto text-center">
+    <section
+      className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen pt-16 pb-20 sm:pt-20 sm:pb-24 px-4 sm:px-5 bg-white text-gray-900"
+      id="contact"
+    >
+      <div className="max-w-5xl mx-auto">
         <Reveal>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-6 sm:mb-8 md:mb-10 font-bold tracking-tight font-mono px-4">{t.contact.title}</h2>
+          <p className="section-label text-center mb-3">contato</p>
+        </Reveal>
+        <Reveal>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-4 font-bold text-center tracking-tight px-4">
+            {t.contact.title}
+          </h2>
         </Reveal>
         <Reveal delay={0.05}>
-          <a
-            href="mailto:contatomauriciosts@gmail.com"
-            className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-600 transition-colors shadow-lg hover:shadow-xl font-mono text-xs sm:text-sm md:text-lg no-underline break-all max-w-full mx-4 sm:mx-0"
-            aria-label="E-mail"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex-shrink-0" aria-hidden="true">
-              <path fill="#ffffff" d="M44,39c0,1.657-1.343,3-3,3H7c-1.657,0-3-1.343-3-3V9c0-1.657,1.343-3,3-3h34c1.657,0,3,1.343,3,3V39z" />
-              <path fill="#d32f2f" d="M41,6H7C5.343,6,4,7.343,4,9v1l20,13L44,10V9C44,7.343,42.657,6,41,6z" />
-              <path fill="#f5f5f5" d="M44,13L24,26L4,13v26c0,1.657,1.343,3,3,3h34c1.657,0,3-1.343,3-3V13z" opacity=".9" />
-            </svg>
-            <span className="break-all text-center">contatomauriciosts@gmail.com</span>
-          </a>
+          <p className="text-gray-500 text-sm sm:text-base text-center max-w-md mx-auto mb-12 sm:mb-16 px-4 leading-relaxed">
+            {t.contact.subtitle}
+          </p>
         </Reveal>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 px-4 sm:px-0">
+          {cards.map((card, i) => (
+            <Reveal key={card.label} delay={i * 0.1}>
+              <motion.a
+                href={card.href}
+                target={card.href.startsWith('mailto') ? '_self' : '_blank'}
+                rel="noopener noreferrer"
+                className={`flex flex-col items-center gap-4 p-7 sm:p-8 rounded-2xl border-2 ${card.colorBg} ${card.colorBorder} ${card.colorShadow} transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl no-underline group`}
+                whileTap={{ scale: 0.97 }}
+              >
+                <div className={`${card.colorIcon} transition-transform duration-300 group-hover:scale-110`}>
+                  {card.icon}
+                </div>
+                <div className="text-center">
+                  <p className="font-bold text-gray-800 text-base mb-0.5">{card.label}</p>
+                  <p className="text-gray-500 text-xs">{card.desc}</p>
+                </div>
+                <p className="text-gray-500 text-xs font-mono break-all text-center leading-relaxed">
+                  {card.value}
+                </p>
+              </motion.a>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   )

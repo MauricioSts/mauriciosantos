@@ -10,6 +10,8 @@ export const en = {
 
   // Hero
   hero: {
+    greeting: "Hi, I'm",
+    available: 'Available for work',
     tagline: 'Front-end Student Entrepreneur',
     description1: 'I am a Systems for Internet student at IFRN and a Bachelor\'s in Software Engineering student at Estácio. Front-end Developer, I like to create practical and efficient interfaces.',
     description2: 'I have participated in volunteer scholarships at IFRN and I am an entrepreneur, owner of the sports jersey store PFCsports.',
@@ -17,6 +19,7 @@ export const en = {
     dock: {
       home: 'Home',
       github: 'GitHub',
+      linkedin: 'LinkedIn',
       projects: 'Projects',
       contact: 'Contact'
     }
@@ -26,7 +29,8 @@ export const en = {
   portfolio: {
     title: 'Projects',
     subtitle: 'My main projects',
-    seeMore: 'See more'
+    seeMore: 'See more',
+    viewAll: 'View all projects'
   },
 
   // Projects
@@ -62,6 +66,7 @@ export const en = {
   // Experience
   experience: {
     title: 'Professional Experience',
+    sectionLabel: 'career',
     responsibilities: 'Responsibilities',
     sethas: {
       role: 'Intern - Mobile Developer',
@@ -138,6 +143,7 @@ export const en = {
   // DevTools
   devtools: {
     title: 'DevTools',
+    sectionLabel: 'technologies',
     subtitle: 'Stack and tools I use on a daily basis.',
     groups: {
       web: 'Web',
@@ -149,7 +155,14 @@ export const en = {
 
   // Contact
   contact: {
-    title: 'Get in touch'
+    title: 'Get in touch',
+    subtitle: "Let's work together? I'm available for new projects and opportunities.",
+    emailLabel: 'Email',
+    emailDesc: 'Send a message',
+    linkedinLabel: 'LinkedIn',
+    linkedinDesc: "Let's connect",
+    githubLabel: 'GitHub',
+    githubDesc: 'Check my code'
   },
 
   // Footer

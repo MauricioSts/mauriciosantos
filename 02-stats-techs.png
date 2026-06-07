@@ -1,0 +1,451 @@
+const { useState, useEffect, useRef, useLayoutEffect } = React;
+
+/* ---------------- data ---------------- */
+const PROJECTS = [
+  { id:"bridgeandbits", num:"01", name:"BridgeAndBits",
+    desc:"Dashboard para gerenciamento de múltiplos provedores de internet com KPIs e relatórios automatizados.",
+    tags:["React.js","PostgreSQL","Tailwind"], accent:["#1b2c5a","#0b1430"], link:"#",
+    problema:"A consultoria do meu amigo tinha dificuldade em gerenciar múltiplos provedores de internet e gerar relatórios mensais para eles de forma eficiente.",
+    solucao:"Dashboard completo para gerenciamento de múltiplos provedores de internet, com cadastro, consulta, acompanhamento de status de conformidade, KPIs e geração automatizada de relatórios mensais." },
+  { id:"jerseyandbits", num:"02", name:"JerseyAndBits",
+    desc:"Sistema de gestão criado para a minha loja de camisas de time: estoque, pedidos e finanças.",
+    tags:["React","Firebase","Tailwind"], accent:["#0e5b54","#06241f"], link:"#",
+    problema:"Como dono da PFCsports eu controlava estoque, pedidos e finanças em planilhas soltas, o que gerava erros e perda de tempo.",
+    solucao:"Sistema de gestão sob medida com painel de vendas, controle de estoque em tempo real, gestão de pedidos e visão financeira consolidada da loja." },
+  { id:"salviano-burguer", num:"03", name:"Salviano Burguer",
+    desc:"Site com cardápio digital e integração com a API do WhatsApp para a hamburgueria.",
+    tags:["React","WhatsApp API"], accent:["#7a1f12","#250906"], link:"#",
+    problema:"A hamburgueria recebia pedidos de forma desorganizada e sem um cardápio digital, dificultando o atendimento.",
+    solucao:"Site com cardápio digital responsivo e integração direta com a API do WhatsApp, montando o pedido do cliente automaticamente para o atendimento." },
+  { id:"finanbits", num:"04", name:"FinanBits",
+    desc:"App de controle financeiro pessoal com visão de saldo, receitas e despesas.",
+    tags:["React","Firebase"], accent:["#5a1840","#240a1b"], link:"#",
+    problema:"Faltava uma forma simples e visual de acompanhar receitas, despesas e saldo do dia a dia.",
+    solucao:"Aplicativo de controle financeiro com lançamento rápido de entradas e saídas, categorias e um painel claro de saldo e evolução." },
+  { id:"lembrancas-da-copa", num:"05", name:"Lembranças da Copa",
+    desc:"Jogo / quiz interativo de futebol com fases e ranking.",
+    tags:["React","Game"], accent:["#7a5a18","#2a1f08"], link:"#",
+    problema:"Quis criar um projeto divertido para praticar lógica e animações em um jogo de verdade.",
+    solucao:"Jogo de adivinhação no estilo Termo, temático de Copa do Mundo, com fases, dicas e feedback visual a cada tentativa." },
+];
+
+const EXPERIENCES = [
+  { when:"2024 — Atual", role:"Fundador & Desenvolvedor", org:"PFCsports — loja de camisas de time",
+    text:"Empreendedor dono da loja PFCsports. Cuido da operação e construí o sistema de gestão (JerseyAndBits) para estoque, pedidos e finanças." },
+  { when:"2023 — 2024", role:"Bolsista Voluntário", org:"IFRN",
+    text:"Participei de bolsas voluntárias no IFRN, colaborando em projetos e desenvolvendo a base técnica em desenvolvimento web." },
+  { when:"2023 — Atual", role:"Estudante", org:"IFRN · Estácio",
+    text:"Sistemas para Internet no IFRN e Bacharelado em Engenharia de Software na Estácio." },
+];
+
+const STACKS = {
+  "Web":[["React","⚛"],["TypeScript","TS"],["JavaScript","JS"],["HTML","<>"],["CSS","#"],["Tailwind","~"],["Vite","⚡"]],
+  "Mobile":[["React Native","⚛"],["Expo","◐"]],
+  "Back-end & DevOps":[["Node.js","⬡"],["Express","ex"],["Git","⎇"],["Vercel","▲"]],
+  "Banco de Dados":[["PostgreSQL","◗"],["Firebase","🔥"],["MongoDB","🍃"]],
+};
+
+const NAV = ["Home","Projetos","Experiências","DevTools","Contato"];
+const SECTION_IDS = ["home","projetos","experiencias","devtools","contato"];
+
+/* ---------------- reveal ----------------
+   Visibility is driven by INLINE styles (reliable in this renderer), not by a
+   toggled CSS class. Elements are visible by default; only those below the fold
+   at mount are hidden then revealed on scroll, with a safety timeout. */
+const REVEAL_TRANS = "opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1)";
+function Reveal({as="div", className="", style, children, ...rest}){
+  const ref=useRef(null);
+  const [state,setState]=useState("show"); // 'show' | 'pre' | 'in'
+  useLayoutEffect(()=>{
+    const el=ref.current; if(!el) return;
+    if(el.getBoundingClientRect().top > innerHeight*0.9) setState("pre");
+  },[]);
+  useEffect(()=>{
+    if(state!=="pre") return;
+    const check=()=>{ const el=ref.current; if(!el) return;
+      const r=el.getBoundingClientRect();
+      if(r.top < innerHeight*0.9 && r.bottom > -40){ setState("in"); cleanup(); } };
+    const cleanup=()=>{ removeEventListener("scroll",check); removeEventListener("resize",check); clearTimeout(t); };
+    addEventListener("scroll",check,{passive:true}); addEventListener("resize",check);
+    const t=setTimeout(()=>{ setState("in"); cleanup(); }, 2200);
+    check();
+    return cleanup;
+  },[state]);
+  const hidden = state==="pre";
+  const Tag=as;
+  const st = { ...style, opacity: hidden?0:1, transform: hidden?"translateY(28px)":"none", transition: REVEAL_TRANS };
+  return <Tag ref={ref} className={"rv "+className} style={st} {...rest}>{children}</Tag>;
+}
+
+function Counter({to, suffix=""}){
+  const [v,setV]=useState(0); const ref=useRef(null); const done=useRef(false);
+  useEffect(()=>{
+    const run=()=>{ done.current=true; const dur=1100, t0=performance.now();
+      const tick=(t)=>{ const p=Math.min(1,(t-t0)/dur); setV(Math.round((1-Math.pow(1-p,3))*to));
+        if(p<1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick); };
+    const check=()=>{ if(done.current||!ref.current) return;
+      const r=ref.current.getBoundingClientRect();
+      if(r.top < innerHeight*0.9 && r.bottom > 0){ run(); removeEventListener("scroll",check); } };
+    check(); addEventListener("scroll",check,{passive:true});
+    const t=setTimeout(check,300);
+    return ()=>{ removeEventListener("scroll",check); clearTimeout(t); };
+  },[to]);
+  return <span ref={ref}>{v}{suffix}</span>;
+}
+
+/* ---------------- cursor ---------------- */
+function Cursor(){
+  const dot=useRef(null), ring=useRef(null);
+  useEffect(()=>{
+    if(window.matchMedia("(pointer:coarse)").matches) return;
+    let mx=innerWidth/2,my=innerHeight/2, rx=mx,ry=my, raf;
+    const move=(e)=>{ mx=e.clientX; my=e.clientY;
+      if(dot.current) dot.current.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`; };
+    const loop=()=>{ rx+=(mx-rx)*.18; ry+=(my-ry)*.18;
+      if(ring.current) ring.current.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      raf=requestAnimationFrame(loop); };
+    const over=(e)=>{ if(e.target.closest("a,button,.card,.lang,.social a")) ring.current?.classList.add("hot"); };
+    const out=(e)=>{ if(e.target.closest("a,button,.card,.lang,.social a")) ring.current?.classList.remove("hot"); };
+    addEventListener("mousemove",move,{passive:true});
+    addEventListener("mouseover",over,{passive:true}); addEventListener("mouseout",out,{passive:true});
+    raf=requestAnimationFrame(loop);
+    return ()=>{ removeEventListener("mousemove",move);removeEventListener("mouseover",over);removeEventListener("mouseout",out);cancelAnimationFrame(raf); };
+  },[]);
+  return <React.Fragment>
+    <div className="cur" ref={dot}></div>
+    <div className="cur-ring" ref={ring}></div>
+  </React.Fragment>;
+}
+
+/* ---------------- preloader ---------------- */
+function Preloader(){
+  const [n,setN]=useState(0); const [done,setDone]=useState(()=>!!sessionStorage.getItem("ms_seen"));
+  useEffect(()=>{
+    if(done) return;
+    let cur=0; const id=setInterval(()=>{
+      cur+=Math.max(1,Math.round((100-cur)*0.14)); if(cur>=100){cur=100;}
+      setN(cur);
+      if(cur>=100){ clearInterval(id); setTimeout(()=>{ setDone(true); sessionStorage.setItem("ms_seen","1"); },420); }
+    },60);
+    return ()=>clearInterval(id);
+  },[]);
+  if(done && n===0) return null;
+  return <div className={"pre"+(done?" done":"")}>
+    <div>
+      <div className="cnt">{String(n).padStart(2,"0")}<b>.</b></div>
+      <div className="lbl">Mauricio Santos · Portfólio</div>
+    </div>
+  </div>;
+}
+
+/* ---------------- mini mockup ---------------- */
+function Mock({accent}){
+  return <div className="mock" style={{background:`radial-gradient(120% 90% at 25% 0%, ${accent[0]}, ${accent[1]})`}}>
+    <div className="dots"><i></i><i></i><i></i></div>
+    <div className="bar" style={{width:"55%"}}></div>
+    <div style={{display:"flex",gap:7,flex:1}}>
+      <div className="blk" style={{flex:2}}></div>
+      <div className="blk" style={{flex:1}}></div>
+    </div>
+    <div style={{display:"flex",gap:7,height:"22%"}}>
+      <div className="blk"></div><div className="blk"></div><div className="blk"></div>
+    </div>
+  </div>;
+}
+
+/* ---------------- header ---------------- */
+function Header({active, onNav}){
+  const [scrolled,setScrolled]=useState(false);
+  const navRef=useRef(null), pillRef=useRef(null);
+  useEffect(()=>{ const s=()=>setScrolled(scrollY>30); addEventListener("scroll",s,{passive:true}); s(); return ()=>removeEventListener("scroll",s); },[]);
+  const measure=()=>{ const btns=navRef.current?.querySelectorAll("button"); if(!btns) return;
+    const el=btns[active]; if(el&&pillRef.current&&el.offsetWidth){ pillRef.current.style.left=el.offsetLeft+"px"; pillRef.current.style.width=el.offsetWidth+"px"; } };
+  useLayoutEffect(()=>{ measure(); },[active,scrolled]);
+  useEffect(()=>{
+    const r=()=>requestAnimationFrame(measure);
+    r(); document.fonts?.ready.then(r);
+    addEventListener("resize",r);
+    const ro=new ResizeObserver(r); if(navRef.current) ro.observe(navRef.current);
+    return ()=>{ removeEventListener("resize",r); ro.disconnect(); };
+  },[active]);
+  return <header className={"hd"+(scrolled?" scrolled":"")}>
+    <div className="hd-in">
+      <div className="logo" onClick={()=>onNav(0)}><span className="badge">MS</span> Mauricio Santos</div>
+      <nav className="nav" ref={navRef}>
+        <span className="pill" ref={pillRef}></span>
+        {NAV.map((n,i)=><button key={n} className={i===active?"on":""} onClick={()=>onNav(i)}>{n}</button>)}
+      </nav>
+      <button className="lang">EN</button>
+    </div>
+  </header>;
+}
+
+/* ---------------- typewriter (leaf so Hero stays static) ---------------- */
+function RoleTyper(){
+  const ROLES=["Front-end","Estudante","Empreendedor"];
+  const [ri,setRi]=useState(0),[txt,setTxt]=useState(""),[del,setDel]=useState(false);
+  useEffect(()=>{
+    const full=ROLES[ri]; let t;
+    if(!del && txt.length<full.length){ t=setTimeout(()=>setTxt(full.slice(0,txt.length+1)),75); }
+    else if(!del && txt.length===full.length){ t=setTimeout(()=>setDel(true),1500); }
+    else if(del && txt.length>0){ t=setTimeout(()=>setTxt(full.slice(0,txt.length-1)),40); }
+    else { setDel(false); setRi((ri+1)%ROLES.length); }
+    return ()=>clearTimeout(t);
+  },[txt,del,ri]);
+  return <span className="rolebox">{txt}</span>;
+}
+
+/* ---------------- hero (static) ---------------- */
+function Hero(){
+  const ph=useRef(null);
+  const onMove=(e)=>{ const r=ph.current.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+    ph.current.style.transform=`perspective(900px) rotateY(${x*7}deg) rotateX(${-y*7}deg)`; };
+  const onLeave=()=>{ ph.current.style.transform="perspective(900px) rotateY(0) rotateX(0)"; };
+
+  return <section id="home" className="hero wrap">
+    <div>
+      <Reveal className="eyebrow">Portfolio</Reveal>
+      <Reveal as="h1">Mauricio<span className="l2">Santos</span></Reveal>
+      <Reveal className="roleline d1"><RoleTyper/></Reveal>
+      <Reveal as="p" className="bio d2">Sou estudante de <b>Sistemas para Internet</b> no IFRN e de <b>Engenharia de Software</b> na Estácio. Desenvolvedor Front-end, gosto de criar interfaces práticas e eficientes.</Reveal>
+      <Reveal as="p" className="bio d3">Já participei de bolsas voluntárias no IFRN e sou <b>empreendedor</b>, dono da loja de camisas de time <b>PFCsports</b>.</Reveal>
+      <Reveal className="social d4">
+        <a href="#" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2z"/></svg></a>
+        <a href="#" aria-label="Loja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l1-5h16l1 5M4 9v11h16V9M9 13h6"/></svg></a>
+        <a href="#" aria-label="Perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg></a>
+      </Reveal>
+    </div>
+    <Reveal className="photo d2">
+      <div ref={ph} onMouseMove={onMove} onMouseLeave={onLeave} style={{transformStyle:"preserve-3d"}}>
+        <div className="chip">MS</div>
+        <div className="frame">
+          <div className="scan"></div>
+          <image-slot id="hero-photo" shape="rounded" radius="14" placeholder="Arraste sua foto aqui" style={{position:"absolute",inset:0,width:"100%",height:"100%"}}></image-slot>
+        </div>
+      </div>
+    </Reveal>
+  </section>;
+}
+
+function Stats(){
+  return <div className="wrap"><div className="stats">
+    <Reveal className="stat"><div className="n"><Counter to={5} suffix="+"/></div><div className="k">Projetos</div></Reveal>
+    <Reveal className="stat d1"><div className="n"><Counter to={2} suffix="+"/></div><div className="k">Anos de exp.</div></Reveal>
+    <Reveal className="stat d2"><div className="n"><Counter to={3}/></div><div className="k">Stacks</div></Reveal>
+  </div></div>;
+}
+
+function Marquee(){
+  const items=["React","TypeScript","Tailwind","Firebase","PostgreSQL","Node.js","Vite","Front-end","UI/UX"];
+  const row=[...items,...items];
+  return <div className="marq"><div className="row">{row.map((t,i)=><span key={i}>{t}</span>)}</div></div>;
+}
+
+function Projects({onOpen}){
+  return <section id="projetos">
+    <div className="wrap">
+      <Reveal className="shead"><h2><span className="idx">02</span> Projetos</h2><div className="sub">Meus principais projetos pessoais — clique para ver o case completo.</div></Reveal>
+      <div className="projs">
+        {PROJECTS.map((p,i)=>(
+          <Reveal as="article" key={p.id} className={"card d"+((i%3)+1)} onClick={()=>onOpen(i)}>
+            <div className="thumb">
+              <Mock accent={p.accent}/>
+              <div className="gloss"></div>
+              <span className="num">{p.num}</span>
+              <span className="open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+            <div className="body">
+              <h3>{p.name}</h3>
+              <p className="desc">{p.desc}</p>
+              <div className="tags">{p.tags.map(t=><span className="tag" key={t}>{t}</span>)}</div>
+              <span className="more">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>;
+}
+
+function Timeline(){
+  const ref=useRef(null), fill=useRef(null);
+  useEffect(()=>{
+    const onScroll=()=>{ if(!ref.current||!fill.current) return;
+      const r=ref.current.getBoundingClientRect();
+      const passed=Math.max(0, innerHeight*0.55 - r.top);
+      fill.current.style.height=Math.min(r.height,passed)+"px"; };
+    addEventListener("scroll",onScroll,{passive:true}); onScroll();
+    return ()=>removeEventListener("scroll",onScroll);
+  },[]);
+  return <section id="experiencias">
+    <div className="wrap">
+      <Reveal className="shead"><h2><span className="idx">03</span> Experiências</h2><div className="sub">Trajetória profissional e acadêmica.</div></Reveal>
+      <div className="tl" ref={ref}>
+        <div className="fill" ref={fill}></div>
+        {EXPERIENCES.map((e,i)=>(
+          <Reveal className={"tlitem d"+(i+1)} key={i}>
+            <div className="dot"></div>
+            <div className="when">{e.when}</div>
+            <h3>{e.role}</h3>
+            <div className="org">{e.org}</div>
+            <p>{e.text}</p>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>;
+}
+
+/* leaf so DevTools section header keeps reveal across tab clicks */
+function StackTabs(){
+  const keys=Object.keys(STACKS); const [tab,setTab]=useState(0);
+  const tref=useRef(null), tp=useRef(null);
+  const measure=()=>{ const b=tref.current?.querySelectorAll("button"); if(!b) return;
+    const el=b[tab]; if(el&&tp.current&&el.offsetWidth){ tp.current.style.left=el.offsetLeft+"px"; tp.current.style.width=el.offsetWidth+"px"; } };
+  useLayoutEffect(()=>{ measure(); },[tab]);
+  useEffect(()=>{ const r=()=>requestAnimationFrame(measure); document.fonts?.ready.then(r); addEventListener("resize",r);
+    return ()=>removeEventListener("resize",r); },[]);
+  return <React.Fragment>
+    <div className="tabs" ref={tref}>
+      <span className="tpill" ref={tp}></span>
+      {keys.map((k,i)=><button key={k} className={i===tab?"on":""} onClick={()=>setTab(i)}>{k}</button>)}
+    </div>
+    <div className="stackgrid">
+      {STACKS[keys[tab]].map(([nm,ic],i)=>(
+        <div className="stk" key={nm}>
+          <div className="ic">{ic}</div><div className="nm">{nm}</div>
+        </div>
+      ))}
+    </div>
+  </React.Fragment>;
+}
+
+function DevTools(){
+  return <section id="devtools">
+    <div className="wrap">
+      <Reveal className="shead"><h2><span className="idx">04</span> DevTools</h2><div className="sub">Stack e ferramentas que uso no dia a dia.</div></Reveal>
+      <Reveal><StackTabs/></Reveal>
+    </div>
+  </section>;
+}
+
+function Contact(){
+  return <section id="contato">
+    <div className="wrap contact">
+      <Reveal className="eyebrow" style={{justifyContent:"center"}}>Contato</Reveal>
+      <Reveal as="h2" className="d1">Vamos construir algo juntos?</Reveal>
+      <Reveal as="p" className="d2">Tô aberto a oportunidades, projetos e parcerias. Bora trocar uma ideia.</Reveal>
+      <Reveal className="d3"><MailButton/></Reveal>
+    </div>
+  </section>;
+}
+
+function MailButton(){
+  const [copied,setCopied]=useState(false);
+  const mail="contatomauriciosts@gmail.com";
+  return <a className="mailbtn" href={"mailto:"+mail}
+     onClick={()=>{navigator.clipboard?.writeText(mail); setCopied(true); setTimeout(()=>setCopied(false),1600);}}>
+    <span className="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16"><path d="M3 6h18v12H3zM3 7l9 6 9-6"/></svg></span>
+    {copied?"copiado ✓":mail}
+  </a>;
+}
+
+/* ---------------- project detail (segunda aba) ---------------- */
+function Detail({index, onClose, onGoto}){
+  const open=index!=null; const p=open?PROJECTS[index]:null;
+  useEffect(()=>{ document.body.style.overflow=open?"hidden":""; return ()=>{document.body.style.overflow="";}; },[open]);
+  useEffect(()=>{ const k=(e)=>{ if(e.key==="Escape") onClose(); }; addEventListener("keydown",k); return ()=>removeEventListener("keydown",k); },[onClose]);
+  const prev = open ? (index-1+PROJECTS.length)%PROJECTS.length : 0;
+  const next = open ? (index+1)%PROJECTS.length : 0;
+  if(!open) return null;
+  return <div className="detail">
+    <React.Fragment>
+      <div className="dbar"><div className="dbar-in">
+        <button className="back" onClick={onClose}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="17"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Voltar</button>
+        <div className="dtitlebar">{"{ Projetos }"}</div>
+        <button className="lang">EN</button>
+      </div></div>
+      <div className="dwrap">
+        <div className="dgrid">
+          <div className="dshot">
+            <div className="thumb" style={{position:"relative"}}><Mock accent={p.accent}/></div>
+          </div>
+          <div>
+            <span className="dnum">{p.num}</span>
+            <h1>{p.name}</h1>
+            <div className="dtags">{p.tags.map(t=><span className="dtag" key={t}>{t}</span>)}</div>
+            <div className="block prob"><div className="lbl"><span className="led"></span> Problema</div><p>{p.problema}</p></div>
+            <div className="block sol"><div className="lbl"><span className="led"></span> Solução</div><p>{p.solucao}</p></div>
+            <a className="access" href={p.link}>Acessar projeto <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="17"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+            <div className="dnavpair">
+              <button onClick={()=>onGoto(prev)}><div>← Anterior</div><h4>{PROJECTS[prev].name}</h4></button>
+              <button className="nx" onClick={()=>onGoto(next)}><div>Próximo →</div><h4>{PROJECTS[next].name}</h4></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
+  </div>;
+}
+
+/* ---------------- stars ---------------- */
+function Stars(){
+  const ref=useRef(null);
+  useEffect(()=>{ const n=window.innerWidth<700?45:80; let h="";
+    for(let i=0;i<n;i++){ const s=Math.random()<.15?2.4:1.4;
+      h+=`<i style="left:${(Math.random()*100).toFixed(2)}%;top:${(Math.random()*100).toFixed(2)}%;width:${s}px;height:${s}px;animation-delay:${(Math.random()*4).toFixed(2)}s"></i>`; }
+    ref.current.innerHTML=h;
+  },[]);
+  return <div className="stars" ref={ref}></div>;
+}
+
+/* ---------------- app ---------------- */
+function App(){
+  const [active,setActive]=useState(0);
+  const [detail,setDetail]=useState(null);
+
+  useEffect(()=>{
+    const bar=document.getElementById("prog");
+    let raf=null;
+    const onScroll=()=>{ if(raf) return; raf=requestAnimationFrame(()=>{ raf=null;
+      const sc=scrollY, h=document.documentElement.scrollHeight-innerHeight;
+      if(bar) bar.style.width=(h>0?(sc/h*100):0)+"%";
+      let cur=0; SECTION_IDS.forEach((id,i)=>{ const el=document.getElementById(id);
+        if(el && el.getBoundingClientRect().top<=innerHeight*0.4) cur=i; });
+      setActive(cur);
+    }); };
+    addEventListener("scroll",onScroll,{passive:true}); onScroll();
+    return ()=>removeEventListener("scroll",onScroll);
+  },[]);
+
+  const goNav=(i)=>{ const el=document.getElementById(SECTION_IDS[i]); el?.scrollIntoView({behavior:"smooth",block:"start"}); };
+
+  return <React.Fragment>
+    <Preloader/>
+    <Cursor/>
+    <Stars/>
+    <div className="progress" id="prog"></div>
+    <Header active={active} onNav={goNav}/>
+    <div className="shell">
+      <Hero/>
+      <Stats/>
+      <Marquee/>
+      <Projects onOpen={(i)=>setDetail(i)}/>
+      <Timeline/>
+      <DevTools/>
+      <Contact/>
+      <footer>
+        <div className="wrap">
+          Site desenvolvido com React.js e Tailwind CSS.<br/>
+          <b>© 2026 Mauricio Santos.</b> Todos os direitos reservados.
+        </div>
+      </footer>
+    </div>
+    <Detail index={detail} onClose={()=>setDetail(null)} onGoto={(i)=>setDetail(i)}/>
+  </React.Fragment>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);

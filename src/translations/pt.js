@@ -10,6 +10,8 @@ export const pt = {
 
   // Hero
   hero: {
+    greeting: 'Olá, eu sou',
+    available: 'Disponível para trabalhar',
     tagline: 'Estudante Front-end Empreendedor',
     description1: 'Sou estudante de Sistemas para Internet no IFRN e de Bacharelado em Engenharia de Software na Estácio. Desenvolvedor Front-end, gosto de criar interfaces práticas e eficientes.',
     description2: 'Já participei de bolsas voluntárias no IFRN e sou empreendedor, dono da loja de camisas de time PFCsports.',
@@ -17,6 +19,7 @@ export const pt = {
     dock: {
       home: 'Home',
       github: 'GitHub',
+      linkedin: 'LinkedIn',
       projects: 'Projetos',
       contact: 'Contato'
     }
@@ -26,7 +29,8 @@ export const pt = {
   portfolio: {
     title: 'Projetos',
     subtitle: 'Meus principais projetos',
-    seeMore: 'Ver mais'
+    seeMore: 'Ver mais',
+    viewAll: 'Ver todos os projetos'
   },
 
   // Projects
@@ -62,6 +66,7 @@ export const pt = {
   // Experience
   experience: {
     title: 'Experiências Profissionais',
+    sectionLabel: 'carreira',
     responsibilities: 'Responsabilidades',
     sethas: {
       role: 'Estagiário - Desenvolvedor Mobile',
@@ -137,6 +142,7 @@ export const pt = {
   // DevTools
   devtools: {
     title: 'DevTools',
+    sectionLabel: 'tecnologias',
     subtitle: 'Stack e ferramentas que uso no dia a dia.',
     groups: {
       web: 'Web',
@@ -148,7 +154,14 @@ export const pt = {
 
   // Contact
   contact: {
-    title: 'Entre em contato'
+    title: 'Entre em contato',
+    subtitle: 'Vamos trabalhar juntos? Estou disponível para novos projetos e oportunidades.',
+    emailLabel: 'E-mail',
+    emailDesc: 'Envie uma mensagem',
+    linkedinLabel: 'LinkedIn',
+    linkedinDesc: 'Vamos nos conectar',
+    githubLabel: 'GitHub',
+    githubDesc: 'Veja meu código'
   },
 
   // Footer

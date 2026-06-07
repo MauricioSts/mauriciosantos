@@ -64,6 +64,7 @@ function ExperienceSection() {
 
   return (
     <section className="py-12 sm:py-16 px-4 sm:px-5 bg-gray-900 text-gray-200" id="experience">
+      <p className="section-label text-center mb-3">{t.experience.sectionLabel}</p>
       <h2 className="text-2xl sm:text-3xl md:text-4xl mb-8 sm:mb-10 md:mb-12 font-bold text-center tracking-tight text-white font-mono px-4">
         {t.experience.title}
       </h2>

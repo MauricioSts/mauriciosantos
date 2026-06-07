@@ -46,21 +46,19 @@ function Portfolio() {
   ]
 
   return (
-    <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen pt-0 pb-16 sm:pb-20 px-4 sm:px-5 bg-white text-gray-900" id="portfolio">
+    <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen pt-16 pb-16 sm:pt-20 sm:pb-20 px-4 sm:px-5 bg-white text-gray-900" id="portfolio">
       <div className="max-w-6xl mx-auto">
         <Reveal>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-6 sm:mb-8 md:mb-10 font-bold text-center tracking-tight px-4">{t.portfolio.title}</h2>
+          <p className="section-label text-center mb-3">{t.portfolio.subtitle}</p>
         </Reveal>
-        <Reveal delay={0.05}>
-          <h3 className="text-lg sm:text-xl md:text-2xl text-center mb-8 sm:mb-10 md:mb-12 font-semibold text-emerald-600 px-4">
-            {t.portfolio.subtitle}
-          </h3>
+        <Reveal>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-10 sm:mb-12 font-bold text-center tracking-tight px-4">{t.portfolio.title}</h2>
         </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16 px-4 sm:px-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-10 sm:mb-12 px-4 sm:px-0">
           {projects.map((project, index) => (
             <Reveal key={project.id} delay={index * 0.1} y={20}>
-              <Link to={project.link} className="no-underline group block">
+              <Link to={project.link} className="no-underline group block h-full">
                 <SpotlightCard
                   className="h-full overflow-hidden hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl"
                   spotlightColor="rgba(16, 185, 129, 0.2)"
@@ -72,6 +70,11 @@ function Portfolio() {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="px-2.5 py-1 bg-emerald-500 text-white text-xs font-mono rounded-md shadow">
+                        {project.linkText} →
+                      </span>
+                    </div>
                   </div>
 
                   <div className="space-y-3">
@@ -83,7 +86,7 @@ function Portfolio() {
                       {project.description}
                     </p>
 
-                    <div className="flex flex-wrap gap-2 pt-2">
+                    <div className="flex flex-wrap gap-2 pt-1">
                       {project.tags.map((tag, idx) => (
                         <span
                           key={idx}
@@ -94,7 +97,7 @@ function Portfolio() {
                       ))}
                     </div>
 
-                    <div className="flex items-center text-emerald-600 font-semibold pt-2 group-hover:translate-x-2 transition-transform">
+                    <div className="flex items-center text-emerald-600 font-semibold pt-1 group-hover:translate-x-2 transition-transform duration-200">
                       {project.linkText}
                       <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -106,6 +109,20 @@ function Portfolio() {
             </Reveal>
           ))}
         </div>
+
+        <Reveal delay={0.3}>
+          <div className="flex justify-center px-4 sm:px-0">
+            <Link
+              to="/projetos"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-white text-gray-800 font-semibold rounded-xl border-2 border-gray-200 hover:border-emerald-500 hover:text-emerald-600 hover:shadow-lg transition-all duration-300 group no-underline font-mono text-sm"
+            >
+              {t.portfolio.viewAll}
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
