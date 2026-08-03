@@ -1,85 +1,120 @@
 export const en = {
-  // Header
+  // Header / navigation
   nav: {
-    home: 'Home',
+    overview: 'Overview',
     projects: 'Projects',
+    stack: 'Stack',
     experience: 'Experience',
-    devtools: 'DevTools',
-    contact: 'Contact'
+    contact: 'Contact',
+    menu: 'Menu',
+    close: 'Close'
   },
 
-  // Hero
+  // Hero + MacBook screen
   hero: {
-    greeting: "Hi, I'm",
-    available: 'Available for work',
-    tagline: 'Front-end Student Entrepreneur',
-    description1: 'I am a Systems for Internet student at IFRN and a Bachelor\'s in Software Engineering student at Estácio. Front-end Developer, I like to create practical and efficient interfaces.',
-    description2: 'I have participated in volunteer scholarships at IFRN and I am an entrepreneur, owner of the sports jersey store PFCsports.',
-    description3: 'Check out my projects or get in touch!',
-    dock: {
-      home: 'Home',
-      github: 'GitHub',
-      linkedin: 'LinkedIn',
-      projects: 'Projects',
-      contact: 'Contact'
-    },
+    kick: 'Portfolio',
+    role: 'Full-stack Developer.',
+    ctaProjects: 'See projects',
+    ctaTalk: 'Get in touch',
+    scrollHint: 'Scroll to open',
+    url: 'mauriciosts.com/about',
+    aboutNav: 'About me',
+    aboutTitle: 'I study, I run a business and I write code every day.',
+    aboutP1: 'Student of <b>Systems for Internet</b> at IFRN and <b>Software Engineering</b> at Estácio. <b>Full-stack</b> developer: I solve the problem from the interface to the database.',
+    aboutP2: 'Entrepreneur: I run the <b>PFCsports</b> store and I built the system it uses every day.',
+    footNote: 'Systems for Internet at IFRN · Software Engineering at Estácio · Owner of PFCsports',
     stats: {
-      projects: 'Projects',
-      years: 'Yrs of exp.',
-      stacks: 'Stacks'
+      projects: 'projects live',
+      years: 'years coding',
+      degrees: 'degrees'
     }
   },
 
-  // Portfolio
+  // Projects
   portfolio: {
-    title: 'Projects',
-    subtitle: 'My main projects',
-    seeMore: 'See more',
-    viewAll: 'View all projects'
+    title: 'Start with the highlights.',
+    prev: 'Previous',
+    next: 'Next'
   },
 
-  // Projects
   projects: {
     bridgeAndBits: {
-      problem: 'My friend\'s consultancy had difficulty managing multiple internet providers and generating monthly reports for them efficiently.',
+      type: 'Dashboard',
+      role: 'Full-stack',
+      head: 'One panel to manage every provider.',
+      problem: "My friend's consultancy had difficulty managing multiple internet providers and generating monthly reports for them efficiently.",
       solution: 'Complete dashboard for managing multiple internet providers, with registration, consultation, compliance status tracking, KPIs and automated monthly report generation.',
-      description: 'Complete dashboard for managing multiple internet providers, with registration, consultation, compliance status tracking, KPIs and automated monthly report generation.'
+      description: 'Registration, compliance status, KPIs and monthly reports that write themselves.'
     },
     jerseyAndBits: {
+      type: 'Management system',
+      role: 'Own product',
+      head: 'The system I built for my own store.',
       problem: 'As the owner of a sports jersey store, I faced challenges managing multiple orders and customers through WhatsApp, in addition to not having clear visibility on monthly gross profit and sales history.',
       solution: 'I developed this complete management system to meet my own needs as an entrepreneur. The platform offers complete control of orders, customer registration and history, financial management with automatic monthly gross profit calculation. After solving my problems, I made it available for free to other entrepreneurs in the sector.',
-      description: 'Management system developed to meet my needs as a sports jersey store owner. Offers order control, customer registration and financial management. Made available for free to other entrepreneurs in the sector.'
+      description: "Orders, customers and PFCsports' monthly gross profit in one place, now open to other store owners."
     },
     salvianoBurguer: {
+      type: 'Website + integration',
+      role: 'Front-end',
+      head: 'From the menu to WhatsApp, without typing a word.',
       problem: 'The Salviano Burguer restaurant needed a digital presence to display their menu and make it easier for customers to place orders quickly and conveniently.',
       solution: 'I developed a website for the restaurant with an interactive digital menu and WhatsApp API integration, allowing customers to place orders directly from their phones. My first freelance project.',
-      description: 'Website for Salviano Burguer restaurant with a digital menu and WhatsApp API integration for direct orders. My first freelance project.'
+      description: 'Responsive digital menu that builds the order and sends it straight through the WhatsApp API.'
     },
     chovinista: {
+      type: 'Finance app',
+      role: 'Front-end',
+      head: 'Fixed income tracked without a spreadsheet.',
       problem: 'My girlfriend needed to manage and track her monthly fixed income in an organized way, recording received values and viewing financial history to have control over income.',
       solution: 'Personal financial management system for controlling and viewing fixed income, allowing notes and monthly income tracking.',
-      description: 'Personal financial management system for controlling and viewing fixed income, allowing notes and monthly income tracking.'
+      description: 'Received amounts, notes and the fixed income history month by month.'
     },
     comidasDaCopa: {
+      type: 'Game',
+      role: 'Personal project',
+      head: 'A live cooking game for two.',
       problem: 'I wanted to create a fun and interactive experience for me and my girlfriend to cook together, but nothing existed that combined the World Cup 2026 atmosphere with a live-synchronized culinary challenge between two phones.',
-      solution: 'I built Comidas da Copa: a couple\'s game where the app draws a World Cup country, each person writes a typical dish in 7 minutes (you can see your partner typing live), then it randomly picks which dish to cook, and you send a photo of the result. Features live-synced duo mode and solo mode.',
-      description: 'Couple\'s game: draws a 2026 World Cup country, each person proposes a typical dish in 7 min, the app picks which one to cook and you record the result with a photo. Live-synced duo mode and solo mode.'
-    },
-    problem: 'Problem:',
-    solution: 'Solution:',
-    accessProject: 'Access project →',
-    back: 'Back',
-    allWorks: 'All Works',
-    projectsTitle: 'Projects'
+      solution: "I built Comidas da Copa: a couple's game where the app draws a World Cup country, each person writes a typical dish in 7 minutes (you can see your partner typing live), then it randomly picks which dish to cook, and you send a photo of the result. Features live-synced duo mode and solo mode.",
+      description: 'It draws a World Cup country, each player proposes a dish in 7 min and the app picks which one goes in the pan.'
+    }
+  },
+
+  // Stack
+  stack: {
+    chapter: 'Stack',
+    title: 'React. TypeScript. React Native.',
+    dim: 'A tool is a means, not an identity.',
+    lede: 'Everything here got in for a concrete reason: it solved a problem in a real project, and stayed because it kept solving it.',
+    usageTitle: 'Where I use it most',
+    usageNote: 'Counted across the five projects published in this portfolio.',
+    projectOne: 'project',
+    projectMany: 'projects',
+    groups: {
+      web: 'Web',
+      mobile: 'Mobile',
+      backend: 'Back-end & DevOps',
+      database: 'Database'
+    }
   },
 
   // Experience
   experience: {
-    title: 'Professional Experience',
-    sectionLabel: 'career',
-    responsibilities: 'Responsibilities',
+    chapter: 'Experience',
+    title: 'Scholarships, internships',
+    dim: 'and code in production.',
+    lede: 'Tap each one to see what I actually did there.',
+    mainStack: 'main stack',
+    eduTitle: 'Education',
+    kinds: {
+      internship: 'Internship',
+      scholarship: 'Volunteer scholarship',
+      freelance: 'Freelance'
+    },
     sethas: {
-      role: 'Intern - Mobile Developer',
+      role: 'Full-stack Mobile Developer',
+      place: 'Natal, RN',
+      sum: 'I develop and maintain the Programa Leite Potiguar app, published on the Google Play Store.',
       responsibilities: [
         'Development and maintenance of the Programa Leite Potiguar app using React Native',
         'Web interface development with React.js',
@@ -89,6 +124,8 @@ export const en = {
     },
     ifrnFlutter: {
       role: 'Flutter Developer',
+      place: 'Natal, RN',
+      sum: "Scholarship holder on IFRN's Flutter project: software to support and manage field agent actions.",
       responsibilities: [
         'Volunteer scholarship holder in the Flutter app development project',
         'Creating software to support and manage field agent actions',
@@ -97,7 +134,9 @@ export const en = {
       ]
     },
     inspireLogic: {
-      role: 'Front-end Developer Freelancer',
+      role: 'Freelancer',
+      place: '',
+      sum: 'Student and teacher management website, with digital turnstiles and facial recognition.',
       responsibilities: [
         'Development of the student and teacher management website',
         'Improving school security',
@@ -107,6 +146,8 @@ export const en = {
     },
     ifrnAR: {
       role: 'Augmented Reality App Developer',
+      place: 'Natal, RN',
+      sum: "Scholarship holder on IFRN's augmented reality project, uniting biology and technology.",
       responsibilities: [
         'Volunteer scholarship holder in the AR app development project',
         'Uniting biology and technology through augmented reality',
@@ -116,6 +157,8 @@ export const en = {
     },
     secretaria: {
       role: 'Intern',
+      place: 'Natal, RN',
+      sum: 'IT support and network/computer maintenance inside the department.',
       responsibilities: [
         'IT support for employees',
         'Network and computer maintenance',
@@ -125,60 +168,43 @@ export const en = {
     }
   },
 
-  // Timeline
-  timeline: {
-    title: 'Timeline',
-    sethas: {
-      subtitle: 'Intern - Mobile Developer',
-      description: 'Worked on the development and maintenance of the Programa Leite Potiguar app (Google Play) using React, React Native, and Django. Improved app efficiency, significantly increasing its speed and performance.'
-    },
-    ifrnFlutter: {
-      subtitle: 'Flutter Developer',
-      description: 'Volunteer scholarship holder in the Flutter app development project at IFRN, aimed at creating software to support and manage field agent actions.'
-    },
-    inspireLogic: {
-      subtitle: 'Front-end Freelancer Developer',
-      description: 'Contributed to the development of the student and teacher management website for the startup Inspire Logic, improving school security through digital turnstiles and facial recognition system (Face ID) integration for access control.'
-    },
-    ifrnAR: {
-      subtitle: 'Augmented Reality App Developer',
-      description: 'Volunteer scholarship holder in the augmented reality app development project at IFRN, aiming to unite biology and technology.'
-    },
-    secretaria: {
-      subtitle: 'Intern',
-      description: 'IT support and network/computer maintenance.'
-    }
-  },
-
-  // DevTools
-  devtools: {
-    title: 'DevTools',
-    sectionLabel: 'technologies',
-    subtitle: 'Stack and tools I use on a daily basis.',
-    groups: {
-      web: 'Web',
-      mobile: 'Mobile',
-      backend: 'Back-end & DevOps',
-      database: 'Database'
-    }
+  education: {
+    ifrn: { course: 'Technology in Systems for Internet', school: 'IFRN', when: '2023 to present', status: 'IN PROGRESS' },
+    estacio: { course: "Bachelor's in Software Engineering", school: 'Estácio', when: 'Ongoing', status: 'IN PROGRESS' }
   },
 
   // Contact
   contact: {
-    title: 'Get in touch',
-    subtitle: "Let's work together? I'm available for new projects and opportunities.",
-    emailLabel: 'Email',
-    emailDesc: 'Send a message',
-    linkedinLabel: 'LinkedIn',
-    linkedinDesc: "Let's connect",
-    githubLabel: 'GitHub',
-    githubDesc: 'Check my code'
+    chapter: 'Contact',
+    title: 'The best time to talk',
+    dim: 'is now.',
+    lede: "I'm open to opportunities, freelance work and partnerships. Send me a message and I'll reply.",
+    send: 'Send e-mail',
+    copy: 'Copy e-mail',
+    copied: 'E-mail copied ✓',
+    labels: { github: 'GitHub', linkedin: 'LinkedIn', store: 'Store', email: 'E-mail' }
+  },
+
+  // Project detail
+  detail: {
+    project: 'Project',
+    problem: 'The problem',
+    solution: 'The solution',
+    year: 'Year',
+    role: 'Role',
+    stack: 'Stack',
+    access: 'Access project',
+    others: 'See other projects',
+    soon: 'Private project',
+    prev: '← Previous',
+    next: 'Next →',
+    back: 'Projects'
   },
 
   // Footer
   footer: {
-    developed: 'Site developed with React.js and Tailwind CSS',
-    rights: 'All rights reserved.'
+    note: 'Personal portfolio built with React. The projects shown were built by me, individually or on client demand.',
+    rights: 'All rights reserved.',
+    place: 'Natal, RN · Brazil'
   }
 }
-

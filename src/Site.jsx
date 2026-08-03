@@ -1,531 +1,660 @@
-import { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect, useMemo, useCallback } from 'react'
 import { useLanguage } from './contexts/LanguageContext'
 import { useTranslation } from './hooks/useTranslation'
 
-/* ---------------- data builders (bilingual) ---------------- */
+const MAIL = 'contatomauriciosts@gmail.com'
+const LINKS = {
+  github: 'https://github.com/MauricioSts',
+  linkedin: 'https://linkedin.com/in/mauriciosts',
+  store: 'https://jerseyandbits.vercel.app/',
+}
+
+/* No celular a barra de URL some/aparece durante o scroll e muda innerHeight a cada
+   frame, o que fazia o notebook "pular". Congelamos a altura em telas de toque e só
+   remedimos quando a largura muda (rotação / redimensionamento real). */
+const COARSE = typeof window !== 'undefined' && window.matchMedia('(pointer:coarse)').matches
+let vpW = typeof window !== 'undefined' ? window.innerWidth : 1280
+let vpH = typeof window !== 'undefined' ? window.innerHeight : 800
+function viewport() {
+  if (window.innerWidth !== vpW || !COARSE) { vpW = window.innerWidth; vpH = window.innerHeight }
+  return { w: vpW, h: vpH }
+}
+const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion:reduce)').matches
+
+/* ---------------- dados (conteúdo real do repo) ---------------- */
 function useProjects() {
   const t = useTranslation()
-  return [
+  const p = t.projects
+  return useMemo(() => [
     {
-      id: 'bridgeandbits', num: '01', name: 'BridgeAndBits',
-      desc: t.projects.bridgeAndBits.description,
-      images: ['/bridge.png'],
-      tags: ['React.js', 'PostgreSQL', 'Tailwind CSS'],
+      id: 'bridgeandbits', num: '01', name: 'BridgeAndBits', year: '2025',
+      images: ['/bridge.png'], tags: ['React.js', 'PostgreSQL', 'Tailwind CSS'],
       href: 'https://bridgeandbits.mauriciosts.com/',
-      problema: t.projects.bridgeAndBits.problem,
-      solucao: t.projects.bridgeAndBits.solution,
+      accent: 'linear-gradient(150deg,#0b2545,#1c5b9c)', ...p.bridgeAndBits,
     },
     {
-      id: 'jerseyandbits', num: '02', name: 'JerseyAndBits',
-      desc: t.projects.jerseyAndBits.description,
-      images: ['/jersey.jpeg'],
-      tags: ['React.js', 'Firebase', 'Tailwind CSS'],
+      id: 'jerseyandbits', num: '02', name: 'JerseyAndBits', year: '2025',
+      images: ['/jersey.jpeg'], tags: ['React.js', 'Firebase', 'Tailwind CSS'],
       href: 'https://jerseyandbits.vercel.app/',
-      problema: t.projects.jerseyAndBits.problem,
-      solucao: t.projects.jerseyAndBits.solution,
+      accent: 'linear-gradient(150deg,#06312a,#0f7a63)', ...p.jerseyAndBits,
     },
     {
-      id: 'salviano-burguer', num: '03', name: 'Salviano Burguer',
-      desc: t.projects.salvianoBurguer.description,
-      images: ['/salvianoburguer.png'],
-      tags: ['JavaScript', 'Tailwind CSS', 'WhatsApp API'],
+      id: 'salviano-burguer', num: '03', name: 'Salviano Burguer', year: '2024',
+      images: ['/salvianoburguer.png'], tags: ['JavaScript', 'Tailwind CSS', 'WhatsApp API'],
       href: 'https://salvianoburguer.vercel.app/',
-      problema: t.projects.salvianoBurguer.problem,
-      solucao: t.projects.salvianoBurguer.solution,
+      accent: 'linear-gradient(150deg,#3d1410,#8a3a2c)', ...p.salvianoBurguer,
     },
     {
-      id: 'chovinista', num: '04', name: 'Chovinista',
-      desc: t.projects.chovinista.description,
-      images: ['/chovinista.jpeg'],
-      tags: ['React.js', 'Tailwind CSS'],
+      id: 'chovinista', num: '04', name: 'Chovinista', year: '2024',
+      images: ['/chovinista.jpeg'], tags: ['React.js', 'Tailwind CSS'],
       href: null,
-      problema: t.projects.chovinista.problem,
-      solucao: t.projects.chovinista.solution,
+      accent: 'linear-gradient(150deg,#241a3d,#5b3f8f)', ...p.chovinista,
     },
     {
-      id: 'comidas-da-copa', num: '05', name: 'Comidas da Copa',
-      desc: t.projects.comidasDaCopa.description,
-      // capa = tela de entrada do app (sala de jogo); extras na galeria
+      id: 'comidas-da-copa', num: '05', name: 'Comidas da Copa', year: '2026',
       images: ['/comidas-da-copa-2.png', '/comidas-da-copa-3.png'],
       tags: ['Next.js 16', 'Supabase', 'Realtime', 'TypeScript'],
       href: 'http://147.15.7.227:3000',
-      problema: t.projects.comidasDaCopa.problem,
-      solucao: t.projects.comidasDaCopa.solution,
+      accent: 'linear-gradient(150deg,#3b2c0c,#9a7724)', ...p.comidasDaCopa,
     },
-  ]
+  ], [p])
 }
 
 function useExperiences() {
   const t = useTranslation()
   const { language } = useLanguage()
-  const atual = language === 'pt' ? '2025 — Atual' : '2025 — Present'
-  return [
-    { when: atual, role: t.experience.sethas.role, org: 'SETHAS',
-      resp: t.experience.sethas.responsibilities, tags: ['React Native', 'TypeScript', 'Django'] },
-    { when: '2025', role: t.experience.ifrnFlutter.role, org: 'IFRN',
-      resp: t.experience.ifrnFlutter.responsibilities, tags: ['Flutter', 'Dart'] },
-    { when: '2025', role: t.experience.inspireLogic.role, org: 'Inspire Logic',
-      resp: t.experience.inspireLogic.responsibilities, tags: ['React.js', 'PostgreSQL'] },
-    { when: '2024', role: t.experience.ifrnAR.role, org: 'IFRN',
-      resp: t.experience.ifrnAR.responsibilities, tags: ['Unity', 'C#', 'AR', 'VR'] },
-    { when: '2023', role: t.experience.secretaria.role,
-      org: 'Secretaría de Infraestrutura do Rio Grande do Norte',
-      resp: t.experience.secretaria.responsibilities, tags: [language === 'pt' ? 'Suporte de TI' : 'IT Support'] },
-  ]
+  const e = t.experience, k = e.kinds
+  const now = language === 'pt' ? '2025 até hoje' : '2025 to present'
+  return useMemo(() => [
+    { when: now, kind: k.internship, org: 'SETHAS', tags: ['React Native', 'TypeScript', 'Django'], ...e.sethas },
+    { when: '2025', kind: k.scholarship, org: 'IFRN', tags: ['Flutter', 'Dart'], ...e.ifrnFlutter },
+    { when: '2025', kind: k.freelance, org: 'Inspire Logic', tags: ['React.js', 'PostgreSQL'], ...e.inspireLogic },
+    { when: '2024', kind: k.scholarship, org: 'IFRN', tags: ['Unity', 'C#', 'AR', 'VR'], ...e.ifrnAR },
+    {
+      when: '2023', kind: k.internship,
+      org: language === 'pt' ? 'Secretaria de Infraestrutura do RN' : 'Infrastructure Department of RN',
+      tags: [language === 'pt' ? 'Suporte de TI' : 'IT Support'], ...e.secretaria,
+    },
+  ], [e, k, now, language])
 }
 
 function useStacks() {
-  const t = useTranslation()
-  const g = t.devtools.groups
-  return {
-    [g.web]: [['React', '⚛'], ['TypeScript', 'TS'], ['JavaScript', 'JS'], ['HTML', '<>'], ['CSS', '#'], ['Tailwind', '~'], ['Vite', '⚡']],
-    [g.mobile]: [['React Native', '⚛'], ['Flutter', '◇'], ['Dart', '◑']],
-    [g.backend]: [['Node.js', '⬡'], ['Django', 'dj'], ['Docker', '⛴'], ['GitHub', '⎇'], ['Vercel', '▲']],
-    [g.database]: [['PostgreSQL', '◗'], ['Firebase', '🔥']],
-  }
-}
-
-const SOCIAL_LINKS = {
-  github: 'https://github.com/MauricioSts',
-  linkedin: 'https://linkedin.com/in/mauriciosts',
-  email: 'contatomauriciosts@gmail.com',
+  const g = useTranslation().stack.groups
+  return useMemo(() => ({
+    [g.web]: [['React', '⚛'], ['TypeScript', 'TS'], ['JavaScript', 'JS'], ['HTML', '<>'], ['CSS', '#'], ['Tailwind', '~'], ['Vite', 'V']],
+    [g.mobile]: [['React Native', '⚛'], ['Flutter', '◇'], ['Dart', '◑'], ['Expo', 'E']],
+    [g.backend]: [['Node.js', '⬡'], ['Django', 'dj'], ['Docker', '⛴'], ['Git', 'G'], ['GitHub', '◐'], ['Vercel', '▲']],
+    [g.database]: [['PostgreSQL', 'P'], ['Firebase', 'F'], ['Supabase', 'S']],
+  }), [g])
 }
 
 /* ---------------- reveal ---------------- */
-const REVEAL_TRANS = 'opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1)'
-function Reveal({ as = 'div', className = '', style, children, ...rest }) {
+const EASE = 'cubic-bezier(.22,.61,.36,1)'
+const TRANS = `opacity .9s ${EASE}, transform .9s ${EASE}`
+function Reveal({ as = 'div', className = '', style, delay = 0, y = 26, children, ...rest }) {
   const ref = useRef(null)
-  const [state, setState] = useState('show')
+  const [st, setSt] = useState('show')
+  // nasce visível: só esconde o que entrou abaixo da dobra
   useLayoutEffect(() => {
-    const el = ref.current; if (!el) return
-    if (el.getBoundingClientRect().top > innerHeight * 0.9) setState('pre')
+    const el = ref.current
+    if (el && el.getBoundingClientRect().top > viewport().h * 0.9) setSt('pre')
   }, [])
   useEffect(() => {
-    if (state !== 'pre') return
+    if (st !== 'pre') return
     const check = () => {
       const el = ref.current; if (!el) return
       const r = el.getBoundingClientRect()
-      if (r.top < innerHeight * 0.9 && r.bottom > -40) { setState('in'); cleanup() }
+      if (r.top < viewport().h * 0.9 && r.bottom > -40) { setSt('in'); off() }
     }
-    const cleanup = () => { removeEventListener('scroll', check); removeEventListener('resize', check); clearTimeout(tm) }
+    const off = () => { removeEventListener('scroll', check); removeEventListener('resize', check); clearTimeout(tm) }
     addEventListener('scroll', check, { passive: true }); addEventListener('resize', check)
-    const tm = setTimeout(() => { setState('in'); cleanup() }, 2200)
+    const tm = setTimeout(() => { setSt('in'); off() }, 2600) // rede de segurança: nada fica em branco
     check()
-    return cleanup
-  }, [state])
-  const hidden = state === 'pre'
+    return off
+  }, [st])
+  const hidden = st === 'pre'
   const Tag = as
-  const st = { ...style, opacity: hidden ? 0 : 1, transform: hidden ? 'translateY(28px)' : 'none', transition: REVEAL_TRANS }
-  return <Tag ref={ref} className={'rv ' + className} style={st} {...rest}>{children}</Tag>
+  return <Tag ref={ref} className={className} {...rest}
+    style={{ ...style, opacity: hidden ? 0 : 1, transform: hidden ? `translateY(${y}px)` : 'none', transition: TRANS, transitionDelay: (hidden ? 0 : delay) + 'ms' }}>
+    {children}
+  </Tag>
 }
 
-function Counter({ to, suffix = '' }) {
-  const [v, setV] = useState(0); const ref = useRef(null); const done = useRef(false)
+function useInView(threshold = 0.85) {
+  const ref = useRef(null); const [seen, setSeen] = useState(false)
   useEffect(() => {
-    const run = () => {
-      done.current = true; const dur = 1100, t0 = performance.now()
-      const tick = (t) => { const p = Math.min(1, (t - t0) / dur); setV(Math.round((1 - Math.pow(1 - p, 3)) * to)); if (p < 1) requestAnimationFrame(tick) }
-      requestAnimationFrame(tick)
-    }
+    if (seen) return
     const check = () => {
-      if (done.current || !ref.current) return
-      const r = ref.current.getBoundingClientRect()
-      if (r.top < innerHeight * 0.9 && r.bottom > 0) { run(); removeEventListener('scroll', check) }
+      const el = ref.current; if (!el) return
+      const r = el.getBoundingClientRect()
+      if (r.top < viewport().h * threshold && r.bottom > 0) { setSeen(true); removeEventListener('scroll', check) }
     }
-    check(); addEventListener('scroll', check, { passive: true })
-    const tm = setTimeout(check, 300)
+    addEventListener('scroll', check, { passive: true }); check()
+    const tm = setTimeout(check, 400)
     return () => { removeEventListener('scroll', check); clearTimeout(tm) }
-  }, [to])
-  return <span ref={ref}>{v}{suffix}</span>
+  }, [seen, threshold])
+  return [ref, seen]
 }
 
-/* ---------------- cursor ---------------- */
-function Cursor() {
-  const dot = useRef(null), ring = useRef(null)
-  useEffect(() => {
-    if (window.matchMedia('(pointer:coarse)').matches) return
-    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, raf
-    const move = (e) => { mx = e.clientX; my = e.clientY; if (dot.current) dot.current.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)` }
-    const loop = () => { rx += (mx - rx) * .18; ry += (my - ry) * .18; if (ring.current) ring.current.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; raf = requestAnimationFrame(loop) }
-    const over = (e) => { if (e.target.closest('a,button,.card,.lang,.social a,.logo')) ring.current?.classList.add('hot') }
-    const out = (e) => { if (e.target.closest('a,button,.card,.lang,.social a,.logo')) ring.current?.classList.remove('hot') }
-    addEventListener('mousemove', move, { passive: true })
-    addEventListener('mouseover', over, { passive: true }); addEventListener('mouseout', out, { passive: true })
-    raf = requestAnimationFrame(loop)
-    return () => { removeEventListener('mousemove', move); removeEventListener('mouseover', over); removeEventListener('mouseout', out); cancelAnimationFrame(raf) }
-  }, [])
-  return <>
-    <div className="cur" ref={dot}></div>
-    <div className="cur-ring" ref={ring}></div>
-  </>
+/* ---------------- mockup com screenshot real ---------------- */
+function Shot({ src, alt, eager = false }) {
+  return <div className="mini">
+    <div className="dts"><i></i><i></i><i></i></div>
+    <div className="shot"><img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" /></div>
+  </div>
 }
 
-/* ---------------- preloader ---------------- */
-function Preloader() {
-  const [n, setN] = useState(0)
-  const [done, setDone] = useState(() => !!sessionStorage.getItem('ms_seen'))
-  useEffect(() => {
-    if (done) return
-    let cur = 0
-    const id = setInterval(() => {
-      cur += Math.max(1, Math.round((100 - cur) * 0.14)); if (cur >= 100) cur = 100
-      setN(cur)
-      if (cur >= 100) { clearInterval(id); setTimeout(() => { setDone(true); sessionStorage.setItem('ms_seen', '1') }, 420) }
-    }, 60)
-    return () => clearInterval(id)
-  }, [done])
-  if (done && n === 0) return null
-  return <div className={'pre' + (done ? ' done' : '')}>
-    <div>
-      <div className="cnt">{String(n).padStart(2, '0')}<b>.</b></div>
-      <div className="lbl">Mauricio Santos · Portfólio</div>
+/* ---------------- tela do MacBook ---------------- */
+function MacScreen() {
+  const t = useTranslation()
+  return <div className="osx">
+    <div className="tb"><i></i><i></i><i></i><span className="url">{t.hero.url}</span></div>
+    <div className="cols">
+      <div className="side">
+        <div className="av"><b>MS</b> Mauricio</div>
+        <div className="nv">{t.nav.projects}</div>
+        <div className="nv on">{t.hero.aboutNav}</div>
+        <div className="nv">{t.nav.stack}</div>
+        <div className="nv">{t.nav.experience}</div>
+        <div className="nv">{t.nav.contact}</div>
+      </div>
+      <div className="body">
+        <div className="prof">
+          <div className="ph"><img src="/profile.jpeg" alt="Mauricio Santos" /></div>
+          <div className="bio">
+            <div className="h">{t.hero.aboutTitle}</div>
+            <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP1 }} />
+            <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP2 }} />
+          </div>
+        </div>
+        <div className="sts">
+          <div className="st"><b>5</b>{t.hero.stats.projects}</div>
+          <div className="st"><b>2+</b>{t.hero.stats.years}</div>
+          <div className="st"><b>2</b>{t.hero.stats.degrees}</div>
+        </div>
+      </div>
     </div>
   </div>
 }
 
-/* ---------------- stars ---------------- */
-function Stars() {
-  const ref = useRef(null)
-  useEffect(() => {
-    const n = window.innerWidth < 700 ? 45 : 80; let h = ''
-    for (let i = 0; i < n; i++) {
-      const s = Math.random() < .15 ? 2.4 : 1.4
-      h += `<i style="left:${(Math.random() * 100).toFixed(2)}%;top:${(Math.random() * 100).toFixed(2)}%;width:${s}px;height:${s}px;animation-delay:${(Math.random() * 4).toFixed(2)}s"></i>`
-    }
-    if (ref.current) ref.current.innerHTML = h
-  }, [])
-  return <div className="stars" ref={ref}></div>
-}
-
 /* ---------------- header ---------------- */
-function Header({ active, onNav }) {
+function Nav({ active, go }) {
   const t = useTranslation()
   const { language, toggleLanguage } = useLanguage()
-  const NAV = [t.nav.home, t.nav.projects, t.nav.experience, t.nav.devtools, t.nav.contact]
-  const [scrolled, setScrolled] = useState(false)
-  const navRef = useRef(null), pillRef = useRef(null)
-  useEffect(() => { const s = () => setScrolled(scrollY > 30); addEventListener('scroll', s, { passive: true }); s(); return () => removeEventListener('scroll', s) }, [])
-  const measure = () => {
-    const btns = navRef.current?.querySelectorAll('button'); if (!btns) return
-    const el = btns[active]
-    if (el && pillRef.current && el.offsetWidth) { pillRef.current.style.left = el.offsetLeft + 'px'; pillRef.current.style.width = el.offsetWidth + 'px' }
-  }
-  useLayoutEffect(() => { measure() }, [active, scrolled, language])
+  const [open, setOpen] = useState(false)
+  const items = [[t.nav.overview, 'home'], [t.nav.projects, 'projetos'], [t.nav.stack, 'stack'], [t.nav.experience, 'experiencia']]
   useEffect(() => {
-    const r = () => requestAnimationFrame(measure)
-    r(); document.fonts?.ready.then(r)
-    addEventListener('resize', r)
-    const ro = new ResizeObserver(r); if (navRef.current) ro.observe(navRef.current)
-    return () => { removeEventListener('resize', r); ro.disconnect() }
-  }, [active, language])
-  return <header className={'hd' + (scrolled ? ' scrolled' : '')}>
-    <div className="hd-in">
-      <div className="logo" onClick={() => onNav(0)}><span className="badge">MS</span> Mauricio Santos</div>
-      <nav className="nav" ref={navRef}>
-        <span className="pill" ref={pillRef}></span>
-        {NAV.map((n, i) => <button key={n} className={i === active ? 'on' : ''} onClick={() => onNav(i)}>{n}</button>)}
-      </nav>
-      <button className="lang" onClick={toggleLanguage}>{language === 'pt' ? 'EN' : 'PT'}</button>
-    </div>
-  </header>
-}
-
-/* ---------------- typewriter ---------------- */
-function RoleTyper() {
-  const { language } = useLanguage()
-  const ROLES = language === 'pt' ? ['Front-end', 'Estudante', 'Empreendedor'] : ['Front-end', 'Student', 'Entrepreneur']
-  const [ri, setRi] = useState(0), [txt, setTxt] = useState(''), [del, setDel] = useState(false)
-  useEffect(() => {
-    const full = ROLES[ri % ROLES.length]; let tm
-    if (!del && txt.length < full.length) { tm = setTimeout(() => setTxt(full.slice(0, txt.length + 1)), 75) }
-    else if (!del && txt.length === full.length) { tm = setTimeout(() => setDel(true), 1500) }
-    else if (del && txt.length > 0) { tm = setTimeout(() => setTxt(full.slice(0, txt.length - 1)), 40) }
-    else { setDel(false); setRi((ri + 1) % ROLES.length) }
-    return () => clearTimeout(tm)
-  }, [txt, del, ri, language])
-  return <span className="rolebox">{txt}</span>
-}
-
-/* ---------------- hero ---------------- */
-function Hero() {
-  const t = useTranslation()
-  const ph = useRef(null)
-  const onMove = (e) => {
-    const r = ph.current.getBoundingClientRect()
-    const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5
-    ph.current.style.transform = `perspective(900px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg)`
-  }
-  const onLeave = () => { ph.current.style.transform = 'perspective(900px) rotateY(0) rotateX(0)' }
-  return <section id="home" className="hero wrap">
-    <div>
-      <Reveal className="eyebrow">Portfolio</Reveal>
-      <Reveal as="h1">Mauricio<span className="l2">Santos</span></Reveal>
-      <Reveal className="roleline"><RoleTyper /></Reveal>
-      <Reveal as="p" className="bio" dangerouslySetInnerHTML={{ __html: bold(t.hero.description1) }} />
-      <Reveal as="p" className="bio" dangerouslySetInnerHTML={{ __html: bold(t.hero.description2) }} />
-      <Reveal className="social">
-        <a href="#home" aria-label="Home" onClick={(e) => { e.preventDefault(); document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' }) }}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 11l9-8 9 8M5 10v10h14V10" /></svg></a>
-        <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2z" /></svg></a>
-        <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6a2.5 2.5 0 002.48 2.5A2.5 2.5 0 007.5 6 2.5 2.5 0 004.98 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3 0-3-1.85-3s-2.13 1.44-2.13 2.9V21h-4z" /></svg></a>
-        <a href={'mailto:' + SOCIAL_LINKS.email} aria-label="E-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 6h18v12H3zM3 7l9 6 9-6" /></svg></a>
-      </Reveal>
-    </div>
-    <Reveal className="photo">
-      <div ref={ph} onMouseMove={onMove} onMouseLeave={onLeave} style={{ transformStyle: 'preserve-3d' }}>
-        <div className="chip">MS</div>
-        <div className="frame">
-          <div className="scan"></div>
-          <img src="/profile.jpeg" alt="Mauricio Santos" />
+    if (!open) return
+    const k = (ev) => { if (ev.key === 'Escape') setOpen(false) }
+    addEventListener('keydown', k)
+    return () => removeEventListener('keydown', k)
+  }, [open])
+  const jump = (id) => { setOpen(false); go(id) }
+  return <>
+    <div className="lnav">
+      <div className="lnav-in">
+        <button className="name" onClick={() => jump('home')}>Mauricio Santos</button>
+        <div className="right">
+          {items.map(([lbl, id]) => (
+            <button key={id} className={'lk' + (active === id ? ' on' : '')} onClick={() => jump(id)}>{lbl}</button>
+          ))}
+          <button className="lang" onClick={toggleLanguage} aria-label="Trocar idioma">{language === 'pt' ? 'EN' : 'PT'}</button>
+          <button className="pill" onClick={() => jump('contato')}>{t.nav.contact}</button>
+          <button className={'burger' + (open ? ' x' : '')} onClick={() => setOpen(o => !o)}
+            aria-expanded={open} aria-label={open ? t.nav.close : t.nav.menu}><i></i><i></i></button>
         </div>
       </div>
-    </Reveal>
-  </section>
-}
-
-// emphasize key terms (mirrors the <b> highlights of the original bio)
-function bold(text) {
-  const terms = ['Sistemas para Internet', 'Engenharia de Software', 'empreendedor', 'PFCsports',
-    'Systems for Internet', 'Software Engineering', 'entrepreneur']
-  let out = text
-  for (const term of terms) out = out.replace(term, `<b>${term}</b>`)
-  return out
-}
-
-function Stats() {
-  const t = useTranslation()
-  return <div className="wrap"><div className="stats">
-    <Reveal className="stat"><div className="n"><Counter to={5} suffix="+" /></div><div className="k">{t.hero.stats.projects}</div></Reveal>
-    <Reveal className="stat"><div className="n"><Counter to={2} suffix="+" /></div><div className="k">{t.hero.stats.years}</div></Reveal>
-    <Reveal className="stat"><div className="n"><Counter to={3} /></div><div className="k">{t.hero.stats.stacks}</div></Reveal>
-  </div></div>
-}
-
-function Marquee() {
-  const items = ['React', 'TypeScript', 'Tailwind', 'Firebase', 'PostgreSQL', 'Node.js', 'Vite', 'Front-end', 'UI/UX']
-  const row = [...items, ...items]
-  return <div className="marq"><div className="row">{row.map((t, i) => <span key={i}>{t}</span>)}</div></div>
-}
-
-function Projects({ onOpen }) {
-  const t = useTranslation()
-  const projects = useProjects()
-  return <section id="projetos">
-    <div className="wrap">
-      <Reveal className="shead"><h2><span className="idx">02</span> {t.nav.projects}</h2><div className="sub">{t.portfolio.subtitle}</div></Reveal>
-      <div className="projs">
-        {projects.map((p, i) => (
-          <Reveal as="article" key={p.id} className="card" onClick={() => onOpen(i)}>
-            <div className="thumb">
-              <img src={p.images[0]} alt={p.name} loading="lazy" />
-              <div className="gloss"></div>
-              <span className="num">{p.num}</span>
-              <span className="open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16"><path d="M7 17L17 7M9 7h8v8" /></svg></span>
-            </div>
-            <div className="body">
-              <h3>{p.name}</h3>
-              <p className="desc">{p.desc}</p>
-              <div className="tags">{p.tags.map(tg => <span className="tag" key={tg}>{tg}</span>)}</div>
-              <span className="more">{t.portfolio.seeMore} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
-            </div>
-          </Reveal>
+    </div>
+    <div className={'sheet' + (open ? ' on' : '')} onClick={() => setOpen(false)}>
+      <nav onClick={(e) => e.stopPropagation()}>
+        {items.map(([lbl, id]) => (
+          <button key={id} className={active === id ? 'on' : ''} onClick={() => jump(id)}>{lbl}</button>
         ))}
-      </div>
-    </div>
-  </section>
-}
-
-function Timeline() {
-  const t = useTranslation()
-  const experiences = useExperiences()
-  const ref = useRef(null), fill = useRef(null)
-  useEffect(() => {
-    const onScroll = () => {
-      if (!ref.current || !fill.current) return
-      const r = ref.current.getBoundingClientRect()
-      const passed = Math.max(0, innerHeight * 0.55 - r.top)
-      fill.current.style.height = Math.min(r.height, passed) + 'px'
-    }
-    addEventListener('scroll', onScroll, { passive: true }); onScroll()
-    return () => removeEventListener('scroll', onScroll)
-  }, [])
-  return <section id="experiencias">
-    <div className="wrap">
-      <Reveal className="shead"><h2><span className="idx">03</span> {t.nav.experience}</h2><div className="sub">{t.experience.title}</div></Reveal>
-      <div className="tl" ref={ref}>
-        <div className="fill" ref={fill}></div>
-        {experiences.map((e, i) => (
-          <Reveal className="tlitem" key={i}>
-            <div className="dot"></div>
-            <div className="when">{e.when}</div>
-            <h3>{e.role}</h3>
-            <div className="org">{e.org}</div>
-            <ul className="resp">{e.resp.map((r, j) => <li key={j}>{r}</li>)}</ul>
-            <div className="etags">{e.tags.map(tg => <span className="tag" key={tg}>{tg}</span>)}</div>
-          </Reveal>
-        ))}
-      </div>
-    </div>
-  </section>
-}
-
-function StackTabs() {
-  const STACKS = useStacks()
-  const keys = Object.keys(STACKS)
-  const [tab, setTab] = useState(0)
-  const tref = useRef(null), tp = useRef(null)
-  const measure = () => {
-    const b = tref.current?.querySelectorAll('button'); if (!b) return
-    const el = b[tab]
-    if (el && tp.current && el.offsetWidth) { tp.current.style.left = el.offsetLeft + 'px'; tp.current.style.width = el.offsetWidth + 'px' }
-  }
-  useLayoutEffect(() => { measure() }, [tab])
-  useEffect(() => { const r = () => requestAnimationFrame(measure); document.fonts?.ready.then(r); addEventListener('resize', r); return () => removeEventListener('resize', r) }, [])
-  return <>
-    <div className="tabs" ref={tref}>
-      <span className="tpill" ref={tp}></span>
-      {keys.map((k, i) => <button key={k} className={i === tab ? 'on' : ''} onClick={() => setTab(i)}>{k}</button>)}
-    </div>
-    <div className="stackgrid">
-      {STACKS[keys[tab]].map(([nm, ic]) => (
-        <div className="stk" key={nm}><div className="ic">{ic}</div><div className="nm">{nm}</div></div>
-      ))}
+        <button onClick={() => jump('contato')}>{t.nav.contact}</button>
+      </nav>
     </div>
   </>
 }
 
-function DevTools() {
+/* ---------------- hero + notebook ---------------- */
+function Hero({ go }) {
   const t = useTranslation()
-  return <section id="devtools">
-    <div className="wrap">
-      <Reveal className="shead"><h2><span className="idx">04</span> {t.devtools.title}</h2><div className="sub">{t.devtools.subtitle}</div></Reveal>
-      <Reveal><StackTabs /></Reveal>
+  const rig = useRef(null), stage = useRef(null), persp = useRef(null)
+  const mbp = useRef(null), lid = useRef(null), deck = useRef(null), scr = useRef(null), hint = useRef(null)
+
+  useEffect(() => {
+    const soft = reduced()
+    let raf = null
+    const frame = () => {
+      raf = null
+      const r = rig.current, pe = persp.current, sg = stage.current
+      if (!r || !pe || !sg) return
+      const { w: vw, h: vh } = viewport()
+
+      // progresso único 0→1 ao longo do trilho de scroll
+      const total = Math.max(1, r.offsetHeight - vh)
+      const p = soft ? 1 : Math.min(1, Math.max(0, -r.getBoundingClientRect().top / total))
+      const sm = (x) => { const s = Math.min(1, Math.max(0, x)); return s * s * (3 - 2 * s) }
+      const e = soft ? 1 : sm(p / 0.46)           // fases 1+2: abertura da tampa
+      const q = soft ? 0 : sm((p - 0.56) / 0.34)  // fase 3: câmera entra na tela
+      const tilt = (1 - e) * 16 + 3 * (1 - q)
+
+      if (mbp.current) mbp.current.style.transform = `rotateX(${tilt.toFixed(2)}deg) scale(${(0.88 + e * 0.12).toFixed(3)})`
+      if (lid.current) lid.current.style.transform = `rotateX(${(-90 + 90 * e).toFixed(2)}deg)`
+      if (deck.current) deck.current.style.transform = `rotateX(${(90 - tilt).toFixed(2)}deg)` // mantém a base plana
+      if (scr.current) scr.current.style.opacity = Math.max(0, Math.min(1, (e - 0.5) / 0.28))
+
+      // zoom: o fator é limitado pela ALTURA e pela LARGURA da viewport. Sem o limite
+      // de largura a tela escalada estourava a lateral no celular (bug do notebook).
+      const pw = pe.offsetWidth || 1, ph = pe.offsetHeight || 1, sh = ph - 18
+      const zx = Math.max(0, Math.min(1.6, Math.min((vh * 0.86) / sh - 1, (vw * 0.94) / pw - 1)))
+      const k = 1 + q * zx
+      const u = pe.offsetParent === sg ? pe.offsetTop : pe.offsetTop - sg.offsetTop
+      const oc = u + ph / 2, cy = oc + ((u + 9 + sh / 2) - oc) * k
+      pe.style.transform = `translateY(${(vh / 2 - cy).toFixed(1)}px) scale(${k.toFixed(3)})`
+
+      if (hint.current) hint.current.style.opacity = Math.max(0, 1 - p * 5)
+    }
+    const on = () => { if (raf == null) raf = requestAnimationFrame(frame) }
+    addEventListener('scroll', on, { passive: true })
+    addEventListener('resize', on)
+    addEventListener('orientationchange', on)
+    on()
+    const tm = setTimeout(on, 220)
+    return () => {
+      removeEventListener('scroll', on); removeEventListener('resize', on); removeEventListener('orientationchange', on)
+      clearTimeout(tm); if (raf != null) cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  return <section id="home" className="hero">
+    <div className="wrap hero-in">
+      <Reveal className="kick" y={14}>{t.hero.kick}</Reveal>
+      <Reveal as="h1" delay={60} y={18}>Mauricio Santos</Reveal>
+      <Reveal className="sub" delay={130} y={18}><b>{t.hero.role}</b></Reveal>
+      <Reveal className="cta" delay={200} y={14}>
+        <button className="btn" onClick={() => go('projetos')}>{t.hero.ctaProjects}</button>
+        <a className="alink" href="#contato" onClick={(ev) => { ev.preventDefault(); go('contato') }}>
+          {t.hero.ctaTalk}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M9 6l6 6-6 6" /></svg>
+        </a>
+      </Reveal>
+    </div>
+
+    <div className="scrollrig" ref={rig}>
+      <div className="stage" ref={stage}>
+        <div className="persp" ref={persp}>
+          <div className="mbp" ref={mbp}>
+            <div className="lid" ref={lid}>
+              <div className="scr">
+                <div className="notch"></div>
+                <div className="scrui" ref={scr}><MacScreen /></div>
+              </div>
+              <div className="lidback"><span>MS</span></div>
+            </div>
+            <div className="deck" ref={deck}><div className="hinge"></div><div className="kb"></div><div className="tp"></div></div>
+          </div>
+        </div>
+        <div className="hint" ref={hint}>
+          <span>{t.hero.scrollHint}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M6 13l6 6 6-6" /></svg>
+        </div>
+      </div>
+    </div>
+
+    {/* fallback do "sobre" no celular, onde a tela do notebook fica pequena demais */}
+    <div className="mbio">
+      <div className="mphoto"><img src="/profile.jpeg" alt="Mauricio Santos" /></div>
+      <h3>{t.hero.aboutTitle}</h3>
+      <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP1 }} />
+      <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP2 }} />
+      <div className="sb2">
+        <div><b>5</b><span>{t.hero.stats.projects}</span></div>
+        <div><b>2+</b><span>{t.hero.stats.years}</span></div>
+        <div><b>2</b><span>{t.hero.stats.degrees}</span></div>
+      </div>
+    </div>
+
+    <div className="wrap hero-foot"><p className="foot">{t.hero.footNote}</p></div>
+  </section>
+}
+
+/* ---------------- projetos ---------------- */
+function Highlights({ open }) {
+  const t = useTranslation()
+  const projects = useProjects()
+  const rail = useRef(null)
+  const [pos, setPos] = useState({ s: false, e: true })
+  const upd = useCallback(() => {
+    const el = rail.current; if (!el) return
+    setPos({ s: el.scrollLeft > 8, e: el.scrollLeft < el.scrollWidth - el.clientWidth - 8 })
+  }, [])
+  useEffect(() => {
+    const el = rail.current; if (!el) return
+    el.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd)
+    const tm = setTimeout(upd, 300)
+    return () => { el.removeEventListener('scroll', upd); removeEventListener('resize', upd); clearTimeout(tm) }
+  }, [upd])
+  const nudge = (d) => {
+    const el = rail.current; if (!el) return
+    const card = el.querySelector('.hcard')
+    el.scrollBy({ left: d * ((card?.offsetWidth || 320) + 20), behavior: 'smooth' })
+  }
+  return <section id="projetos" className="projsec">
+    <div className="gal-head">
+      <Reveal as="h2" y={18}>{t.portfolio.title}</Reveal>
+      <Reveal className="arrows" delay={80} y={0}>
+        <button onClick={() => nudge(-1)} disabled={!pos.s} aria-label={t.portfolio.prev}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M15 6l-6 6 6 6" /></svg>
+        </button>
+        <button onClick={() => nudge(1)} disabled={!pos.e} aria-label={t.portfolio.next}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M9 6l6 6-6 6" /></svg>
+        </button>
+      </Reveal>
+    </div>
+    <div className="rail" ref={rail}>
+      {projects.map((p, i) => (
+        <Reveal as="article" key={p.id} className="hcard" delay={Math.min(i, 3) * 70}>
+          <button className="hopen" onClick={() => open(i)} aria-label={p.name}>
+            <div className="top">
+              <div className="n">{p.num} · {p.type.toUpperCase()}</div>
+              <h3>{p.head}</h3>
+              <p className="d">{p.description}</p>
+            </div>
+            <div className="art" style={{ background: p.accent }}>
+              <Shot src={p.images[0]} alt={p.name} eager={i < 2} />
+              <span className="plus">+</span>
+            </div>
+          </button>
+        </Reveal>
+      ))}
     </div>
   </section>
 }
 
-function MailButton() {
-  const [copied, setCopied] = useState(false)
-  const mail = SOCIAL_LINKS.email
-  return <a className="mailbtn" href={'mailto:' + mail}
-    onClick={() => { navigator.clipboard?.writeText(mail); setCopied(true); setTimeout(() => setCopied(false), 1600) }}>
-    <span className="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16"><path d="M3 6h18v12H3zM3 7l9 6 9-6" /></svg></span>
-    {copied ? 'copiado ✓' : mail}
-  </a>
+/* ---------------- stack ---------------- */
+function Bars() {
+  const t = useTranslation()
+  const projects = useProjects()
+  // uso real: contado a partir das tags dos projetos publicados
+  const usage = useMemo(() => {
+    const count = new Map()
+    projects.forEach(p => p.tags.forEach(tag => count.set(tag, (count.get(tag) || 0) + 1)))
+    return [...count.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => ({ k, n }))
+  }, [projects])
+  const [ref, seen] = useInView(0.88)
+  const max = Math.max(...usage.map(u => u.n))
+  return <div className="bars" ref={ref}>
+    {usage.map(u => (
+      <div className="bar" key={u.k}>
+        <div className="bl"><span>{u.k}</span><span>{u.n} {u.n === 1 ? t.stack.projectOne : t.stack.projectMany}</span></div>
+        <div className="track"><div className="fill" style={{ width: seen ? (u.n / max * 100) + '%' : 0 }}></div></div>
+      </div>
+    ))}
+  </div>
 }
 
-function Contact() {
+function Stack() {
   const t = useTranslation()
-  return <section id="contato">
-    <div className="wrap contact">
-      <Reveal className="eyebrow" style={{ justifyContent: 'center' }}>{t.nav.contact}</Reveal>
-      <Reveal as="h2">{t.contact.title}</Reveal>
-      <Reveal as="p">{t.contact.subtitle}</Reveal>
-      <Reveal><MailButton /></Reveal>
-      <Reveal className="csocial">
-        <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2z" /></svg> GitHub</a>
-        <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6a2.5 2.5 0 002.48 2.5A2.5 2.5 0 007.5 6 2.5 2.5 0 004.98 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3 0-3-1.85-3s-2.13 1.44-2.13 2.9V21h-4z" /></svg> LinkedIn</a>
+  const stacks = useStacks()
+  const keys = Object.keys(stacks)
+  const [tab, setTab] = useState(0)
+  const firstKey = keys[0]
+  useEffect(() => { setTab(0) }, [firstKey]) // troca de idioma reordena as abas
+  return <section id="stack">
+    <div className="wrap">
+      <Reveal className="chapter" y={14}>{t.stack.chapter}</Reveal>
+      <Reveal as="h2" className="big" delay={50}>{t.stack.title}<span className="dim">{t.stack.dim}</span></Reveal>
+      <Reveal className="lede" delay={110}>{t.stack.lede}</Reveal>
+      <Reveal delay={80} style={{ marginTop: 56 }}>
+        <div className="segwrap">
+          <div className="seg" role="tablist">
+            {keys.map((k, i) => (
+              <button key={k} role="tab" aria-selected={i === tab} className={i === tab ? 'on' : ''} onClick={() => setTab(i)}>{k}</button>
+            ))}
+          </div>
+        </div>
+        <div className="chips">
+          {(stacks[keys[tab]] || []).map(([nm, ic]) => <div className="chip" key={nm}><i>{ic}</i> {nm}</div>)}
+        </div>
+      </Reveal>
+      <Reveal delay={60}>
+        <div className="subhead" style={{ marginTop: 96 }}>{t.stack.usageTitle}</div>
+        <Bars />
+        <p className="foot">{t.stack.usageNote}</p>
       </Reveal>
     </div>
   </section>
 }
 
-/* ---------------- project detail ---------------- */
-function Detail({ index, onClose, onGoto }) {
+/* ---------------- experiência ---------------- */
+function Experience() {
   const t = useTranslation()
-  const { language } = useLanguage()
+  const experiences = useExperiences()
+  const edu = [t.education.ifrn, t.education.estacio]
+  const [open, setOpen] = useState(0)
+  const [seen, setSeen] = useState(-1)
+  const wrapRef = useRef(null), fillRef = useRef(null), itemRefs = useRef([])
+  useEffect(() => {
+    let raf = null
+    const frame = () => {
+      raf = null
+      const w = wrapRef.current; if (!w) return
+      const vh = viewport().h
+      const r = w.getBoundingClientRect()
+      if (fillRef.current) fillRef.current.style.height = Math.max(0, Math.min(r.height, vh * 0.6 - r.top)) + 'px'
+      let last = -1
+      itemRefs.current.forEach((el, i) => { if (el && el.getBoundingClientRect().top < vh * 0.72) last = i })
+      setSeen(s => (last > s ? last : s)) // os pontos acendem e não apagam mais
+    }
+    const on = () => { if (raf == null) raf = requestAnimationFrame(frame) }
+    addEventListener('scroll', on, { passive: true }); addEventListener('resize', on); on()
+    return () => { removeEventListener('scroll', on); removeEventListener('resize', on); if (raf != null) cancelAnimationFrame(raf) }
+  }, [])
+  return <section id="experiencia">
+    <div className="wrap">
+      <Reveal className="chapter" y={14}>{t.experience.chapter}</Reveal>
+      <Reveal as="h2" className="big" delay={50}>{t.experience.title}<span className="dim">{t.experience.dim}</span></Reveal>
+      <Reveal className="lede" delay={110}>{t.experience.lede}</Reveal>
+      <div className="exp" ref={wrapRef}>
+        <div className="vrail"><i ref={fillRef}></i></div>
+        {experiences.map((e, i) => (
+          <div className={'xit' + (open === i ? ' open' : '') + (seen >= i ? ' seen' : '')} key={e.org + i}
+            ref={(el) => { itemRefs.current[i] = el }}>
+            <div className="xdot"></div>
+            <button className="xhead" onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i}>
+              <div className="xwhen">{e.when}</div>
+              <div className="xmid">
+                <div className="xrole">{e.role}</div>
+                <div className="xorg">{e.org}</div>
+                {e.place && <div className="xplace">{e.place}</div>}
+              </div>
+              <div className="xright">
+                <span className="kindpill">{e.kind}</span>
+                <span className="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M6 9l6 6 6-6" /></svg></span>
+              </div>
+            </button>
+            <div className="xdrop">
+              <div className="xinner">
+                <div className="xin">
+                  <div>
+                    <p className="xsum">{e.sum}</p>
+                    <ul className="xb">{e.responsibilities.map(b => <li key={b}>{b}</li>)}</ul>
+                    <div className="xtags">{e.tags.map(tg => <span className="xtag" key={tg}>{tg}</span>)}</div>
+                  </div>
+                  <div className="xmetric"><b>{e.tags[0]}</b><span>{t.experience.mainStack}</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <Reveal className="subhead">{t.experience.eduTitle}</Reveal>
+      <div className="edu">
+        {edu.map((d, i) => (
+          <Reveal className="educard" key={d.course} delay={i * 70}>
+            <div className="st">{d.status}</div>
+            <div className="c">{d.course}</div>
+            <div className="s">{d.school}</div>
+            <div className="w">{d.when}</div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>
+}
+
+/* ---------------- contato ---------------- */
+const ICONS = {
+  github: <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2z" /></svg>,
+  linkedin: <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76V21h-4v-5.6c0-1.34-.03-3.07-1.9-3.07-1.9 0-2.2 1.46-2.2 2.97V21h-4z" /></svg>,
+  store: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 9l1-5h16l1 5M4 9v11h16V9M9 13h6" /></svg>,
+  email: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 6h18v12H3zM3 7l9 6 9-6" /></svg>,
+}
+
+function Contact() {
+  const t = useTranslation()
+  const [copied, setCopied] = useState(false)
+  useEffect(() => { if (!copied) return; const tm = setTimeout(() => setCopied(false), 1800); return () => clearTimeout(tm) }, [copied])
+  const copy = async () => {
+    try { await navigator.clipboard?.writeText(MAIL); setCopied(true) } catch { location.href = 'mailto:' + MAIL }
+  }
+  return <section id="contato" className="cta-sec">
+    <div className="wrap">
+      <Reveal className="chapter" y={14}>{t.contact.chapter}</Reveal>
+      <Reveal as="h2" className="big" delay={50}>{t.contact.title}<span className="dim">{t.contact.dim}</span></Reveal>
+      <Reveal className="lede" delay={110}>{t.contact.lede}</Reveal>
+      <Reveal className="crow" delay={170}>
+        <a className="btn" href={'mailto:' + MAIL}>{t.contact.send}</a>
+        <button className="btn ghost" onClick={copy}>{copied ? t.contact.copied : t.contact.copy}</button>
+      </Reveal>
+      <Reveal className="foot" delay={220} style={{ textAlign: 'center' }}>{MAIL}</Reveal>
+      <Reveal className="social" delay={260}>
+        <a href={LINKS.github} target="_blank" rel="noopener noreferrer" aria-label={t.contact.labels.github}>{ICONS.github}</a>
+        <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer" aria-label={t.contact.labels.linkedin}>{ICONS.linkedin}</a>
+        <a href={LINKS.store} target="_blank" rel="noopener noreferrer" aria-label={t.contact.labels.store}>{ICONS.store}</a>
+        <a href={'mailto:' + MAIL} aria-label={t.contact.labels.email}>{ICONS.email}</a>
+      </Reveal>
+    </div>
+  </section>
+}
+
+/* ---------------- detalhe do projeto ---------------- */
+function Detail({ index, close, goto }) {
+  const t = useTranslation()
   const projects = useProjects()
   const open = index != null
   const p = open ? projects[index] : null
-  useEffect(() => { document.body.style.overflow = open ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [open])
-  useEffect(() => { const k = (e) => { if (e.key === 'Escape') onClose() }; addEventListener('keydown', k); return () => removeEventListener('keydown', k) }, [onClose])
+  const topRef = useRef(null)
+  useEffect(() => {
+    if (!open) return
+    const y = window.scrollY
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = ''; window.scrollTo(0, y) }
+  }, [open])
+  useEffect(() => {
+    const k = (ev) => { if (ev.key === 'Escape') close() }
+    addEventListener('keydown', k)
+    return () => removeEventListener('keydown', k)
+  }, [close])
+  useEffect(() => { topRef.current?.scrollTo({ top: 0 }) }, [index])
   if (!open) return null
   const prev = (index - 1 + projects.length) % projects.length
   const next = (index + 1) % projects.length
-  const L = language === 'pt'
-    ? { prob: 'Problema', sol: 'Solução', access: 'Acessar projeto', prev: '← Anterior', next: 'Próximo →' }
-    : { prob: 'Problem', sol: 'Solution', access: 'Access project', prev: '← Previous', next: 'Next →' }
-  return <div className="detail">
+  return <div className="detail" ref={topRef}>
     <div className="dbar"><div className="dbar-in">
-      <button className="back" onClick={onClose}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="17"><path d="M19 12H5M11 6l-6 6 6 6" /></svg> {t.projects.back}</button>
-      <div className="dtitlebar">{`{ ${t.nav.projects} }`}</div>
-      <span style={{ width: 60 }}></span>
+      <button className="back" onClick={close}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M15 6l-6 6 6 6" /></svg> {t.detail.back}
+      </button>
+      <div className="nm">{p.name}</div>
+      {p.href
+        ? <a className="pill" href={p.href} target="_blank" rel="noopener noreferrer">{t.detail.access}</a>
+        : <span className="pill off">{t.detail.soon}</span>}
     </div></div>
-    <div className="dwrap">
-      <div className="dgrid">
-        <div className="dshot">
-          <div className="pic"><img src={p.images[0]} alt={p.name} /></div>
-          {p.images.length > 1 && (
-            <div className="gal">
-              {p.images.slice(1).map((img, i) => <div className="pic" key={i}><img src={img} alt={`${p.name} ${i + 2}`} /></div>)}
-            </div>
-          )}
-        </div>
-        <div>
-          <span className="dnum">{p.num}</span>
-          <h1>{p.name}</h1>
-          <div className="dtags">{p.tags.map(tg => <span className="dtag" key={tg}>{tg}</span>)}</div>
-          <div className="block prob"><div className="lbl"><span className="led"></span> {L.prob}</div><p>{p.problema}</p></div>
-          <div className="block sol"><div className="lbl"><span className="led"></span> {L.sol}</div><p>{p.solucao}</p></div>
-          {p.href && <a className="access" href={p.href} target="_blank" rel="noopener noreferrer">{L.access} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="17"><path d="M7 17L17 7M9 7h8v8" /></svg></a>}
-          <div className="dnavpair">
-            <button onClick={() => onGoto(prev)}><div>{L.prev}</div><h4>{projects[prev].name}</h4></button>
-            <button className="nx" onClick={() => onGoto(next)}><div>{L.next}</div><h4>{projects[next].name}</h4></button>
-          </div>
-        </div>
+
+    <div className="dhero">
+      <div className="n">{t.detail.project.toUpperCase()} {p.num} · {p.type.toUpperCase()}</div>
+      <h1>{p.name}</h1>
+      <p className="t">{p.head}</p>
+      <div className="dpanel" style={{ background: p.accent }}>
+        <Shot src={p.images[0]} alt={p.name} eager />
       </div>
+      {p.images.length > 1 && (
+        <div className="dgal">
+          {p.images.slice(1).map((img, i) => (
+            <div className="gpic" key={img}><img src={img} alt={`${p.name} ${i + 2}`} loading="lazy" /></div>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <div className="dbody">
+      <div className="dgrid">
+        <div><div className="lbl">{t.detail.problem}</div><p>{p.problem}</p></div>
+        <div><div className="lbl">{t.detail.solution}</div><p>{p.solution}</p></div>
+      </div>
+      <div className="specs">
+        <div><div className="k">{t.detail.year}</div><div className="v">{p.year}</div></div>
+        <div><div className="k">{t.detail.role}</div><div className="v">{p.role}</div></div>
+        <div><div className="k">{t.detail.stack}</div><div className="v">{p.tags.join(' · ')}</div></div>
+      </div>
+      <div className="dcta">
+        {p.href && <a className="btn" href={p.href} target="_blank" rel="noopener noreferrer">{t.detail.access}</a>}
+        <button className="btn ghost" onClick={close}>{t.detail.others}</button>
+      </div>
+    </div>
+
+    <div className="dpair">
+      <button onClick={() => goto(prev)}><small>{t.detail.prev}</small><h4>{projects[prev].name}</h4></button>
+      <button className="nx" onClick={() => goto(next)}><small>{t.detail.next}</small><h4>{projects[next].name}</h4></button>
     </div>
   </div>
 }
 
 /* ---------------- app ---------------- */
-const SECTION_IDS = ['home', 'projetos', 'experiencias', 'devtools', 'contato']
+const IDS = ['home', 'projetos', 'stack', 'experiencia', 'contato']
 
 export default function Site() {
   const t = useTranslation()
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState('home')
   const [detail, setDetail] = useState(null)
 
   useEffect(() => {
-    const bar = document.getElementById('prog')
     let raf = null
-    const onScroll = () => {
-      if (raf) return
-      raf = requestAnimationFrame(() => {
-        raf = null
-        const sc = scrollY, h = document.documentElement.scrollHeight - innerHeight
-        if (bar) bar.style.width = (h > 0 ? (sc / h * 100) : 0) + '%'
-        let cur = 0
-        SECTION_IDS.forEach((id, i) => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top <= innerHeight * 0.4) cur = i })
-        setActive(cur)
+    const frame = () => {
+      raf = null
+      const vh = viewport().h
+      let cur = IDS[0]
+      IDS.forEach(id => {
+        const el = document.getElementById(id)
+        if (el && el.getBoundingClientRect().top <= vh * 0.35) cur = id
       })
+      setActive(cur)
     }
-    addEventListener('scroll', onScroll, { passive: true }); onScroll()
-    return () => removeEventListener('scroll', onScroll)
+    const on = () => { if (raf == null) raf = requestAnimationFrame(frame) }
+    addEventListener('scroll', on, { passive: true }); on()
+    return () => { removeEventListener('scroll', on); if (raf != null) cancelAnimationFrame(raf) }
   }, [])
 
-  const goNav = (i) => { const el = document.getElementById(SECTION_IDS[i]); el?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
+  const go = (id) => {
+    const el = document.getElementById(id)
+    if (el) scrollTo({ top: el.getBoundingClientRect().top + scrollY - 52, behavior: 'smooth' })
+  }
 
   return <>
-    <Preloader />
-    <Cursor />
-    <Stars />
-    <div className="progress" id="prog"></div>
-    <Header active={active} onNav={goNav} />
-    <div className="shell">
-      <Hero />
-      <Stats />
-      <Marquee />
-      <Projects onOpen={(i) => setDetail(i)} />
-      <Timeline />
-      <DevTools />
-      <Contact />
-      <footer>
-        <div className="wrap">
-          {t.footer.developed}.<br />
-          <b>© 2026 Mauricio Santos.</b> {t.footer.rights}
-        </div>
-      </footer>
-    </div>
-    <Detail index={detail} onClose={() => setDetail(null)} onGoto={(i) => setDetail(i)} />
+    <Nav active={active} go={go} />
+    <Hero go={go} />
+    <Highlights open={setDetail} />
+    <Stack />
+    <Experience />
+    <Contact />
+    <footer><div className="wrap">
+      <div className="fn">{t.footer.note}</div>
+      <div className="fr">
+        <span><b>© 2026 Mauricio Santos.</b> {t.footer.rights}</span>
+        <span>{t.footer.place}</span>
+      </div>
+    </div></footer>
+    <Detail index={detail} close={() => setDetail(null)} goto={setDetail} />
   </>
 }

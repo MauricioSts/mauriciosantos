@@ -1,85 +1,120 @@
 export const pt = {
-  // Header
+  // Header / navegação
   nav: {
-    home: 'Home',
+    overview: 'Visão geral',
     projects: 'Projetos',
-    experience: 'Experiências',
-    devtools: 'DevTools',
-    contact: 'Contato'
+    stack: 'Stack',
+    experience: 'Experiência',
+    contact: 'Contato',
+    menu: 'Menu',
+    close: 'Fechar'
   },
 
-  // Hero
+  // Hero + tela do MacBook
   hero: {
-    greeting: 'Olá, eu sou',
-    available: 'Disponível para trabalhar',
-    tagline: 'Estudante Front-end Empreendedor',
-    description1: 'Sou estudante de Sistemas para Internet no IFRN e de Bacharelado em Engenharia de Software na Estácio. Desenvolvedor Front-end, gosto de criar interfaces práticas e eficientes.',
-    description2: 'Já participei de bolsas voluntárias no IFRN e sou empreendedor, dono da loja de camisas de time PFCsports.',
-    description3: 'Confira meus projetos ou entre em contato!',
-    dock: {
-      home: 'Home',
-      github: 'GitHub',
-      linkedin: 'LinkedIn',
-      projects: 'Projetos',
-      contact: 'Contato'
-    },
+    kick: 'Portfólio',
+    role: 'Desenvolvedor Full-stack.',
+    ctaProjects: 'Ver projetos',
+    ctaTalk: 'Falar comigo',
+    scrollHint: 'Role para abrir',
+    url: 'mauriciosts.com/sobre',
+    aboutNav: 'Sobre mim',
+    aboutTitle: 'Estudo, empreendo e escrevo código todo dia.',
+    aboutP1: 'Estudante de <b>Sistemas para Internet</b> no IFRN e de <b>Engenharia de Software</b> na Estácio. Desenvolvedor <b>Full-stack</b>: resolvo o problema da interface ao banco.',
+    aboutP2: 'Empreendedor: toco a loja <b>PFCsports</b> e programei o sistema que ela usa todo dia.',
+    footNote: 'Sistemas para Internet no IFRN · Engenharia de Software na Estácio · Dono da PFCsports',
     stats: {
-      projects: 'Projetos',
-      years: 'Anos de exp.',
-      stacks: 'Stacks'
+      projects: 'projetos no ar',
+      years: 'anos codando',
+      degrees: 'graduações'
     }
   },
 
-  // Portfolio
+  // Projetos
   portfolio: {
-    title: 'Projetos',
-    subtitle: 'Meus principais projetos',
-    seeMore: 'Ver mais',
-    viewAll: 'Ver todos os projetos'
+    title: 'Comece pelos destaques.',
+    prev: 'Anterior',
+    next: 'Próximo'
   },
 
-  // Projects
   projects: {
     bridgeAndBits: {
+      type: 'Dashboard',
+      role: 'Full-stack',
+      head: 'Um painel só para gerenciar todos os provedores.',
       problem: 'A consultoria do meu amigo tinha dificuldade em gerenciar múltiplos provedores de internet e gerar relatórios mensais para eles de forma eficiente.',
       solution: 'Dashboard completo para gerenciamento de múltiplos provedores de internet, com cadastro, consulta, acompanhamento de status de conformidade, KPIs e geração automatizada de relatórios mensais.',
-      description: 'Dashboard completo para gerenciamento de múltiplos provedores de internet, com cadastro, consulta, acompanhamento de status de conformidade, KPIs e geração automatizada de relatórios mensais.'
+      description: 'Cadastro, status de conformidade, KPIs e relatórios mensais gerados sozinhos.'
     },
     jerseyAndBits: {
+      type: 'Sistema de gestão',
+      role: 'Produto próprio',
+      head: 'O sistema que eu criei para a minha própria loja.',
       problem: 'Como dono de uma loja de camisas de time, eu enfrentava desafios para gerenciar múltiplos pedidos e clientes através do WhatsApp, além de não ter visibilidade clara sobre o lucro bruto mensal e o histórico de vendas.',
       solution: 'Desenvolvi este sistema completo de gestão para suprir minhas próprias necessidades como empreendedor. A plataforma oferece controle total de pedidos, cadastro e histórico de clientes, gestão financeira com cálculo automático de lucro bruto mensal. Após resolver meus problemas, disponibilizei gratuitamente para outros empreendedores do setor.',
-      description: 'Sistema de gestão desenvolvido para suprir minhas necessidades como dono de loja de camisas de time. Oferece controle de pedidos, cadastro de clientes e gestão financeira. Disponibilizado gratuitamente para outros empreendedores do setor.'
+      description: 'Pedidos, clientes e lucro bruto mensal da PFCsports em um lugar só, hoje aberto para outros lojistas.'
     },
     salvianoBurguer: {
+      type: 'Site + integração',
+      role: 'Front-end',
+      head: 'Do cardápio ao WhatsApp, sem digitar nada.',
       problem: 'A hamburgueria Salviano Burguer precisava de uma presença digital para exibir seu cardápio e facilitar os pedidos dos clientes de forma rápida e prática.',
       solution: 'Desenvolvi um site para a hamburgueria com cardápio digital interativo e integração com a API do WhatsApp, permitindo que os clientes façam pedidos diretamente pelo celular. Meu primeiro trabalho como freelancer.',
-      description: 'Site para a hamburgueria Salviano Burguer com cardápio digital e integração com a API do WhatsApp para pedidos diretos. Meu primeiro freelancer.'
+      description: 'Cardápio digital responsivo que monta o pedido e envia direto pela API do WhatsApp.'
     },
     chovinista: {
+      type: 'App financeiro',
+      role: 'Front-end',
+      head: 'Renda fixa acompanhada sem planilha.',
       problem: 'Minha namorada precisava gerenciar e acompanhar o rendimento fixo mensal dela de forma organizada, registrando valores recebidos e visualizando o histórico financeiro para ter controle sobre a renda.',
       solution: 'Sistema de gestão financeira pessoal para controle e visualização de rendimento fixo, permitindo anotações e acompanhamento da renda mensal.',
-      description: 'Sistema de gestão financeira pessoal para controle e visualização de rendimento fixo, permitindo anotações e acompanhamento da renda mensal.'
+      description: 'Registro de valores recebidos, anotações e histórico do rendimento fixo mês a mês.'
     },
     comidasDaCopa: {
+      type: 'Jogo',
+      role: 'Projeto pessoal',
+      head: 'Um jogo de cozinha para dois, ao vivo.',
       problem: 'Queria criar uma experiência divertida e interativa para mim e minha namorada cozinharmos juntos, mas não havia nada que unisse o clima da Copa do Mundo 2026 com um desafio culinário sincronizado ao vivo entre dois celulares.',
       solution: 'Desenvolvi o Comidas da Copa: um jogo para casal onde o app sorteia um país da Copa, cada um escreve um prato típico em 7 minutos (dá pra ver a dupla digitando ao vivo), depois sorteia qual prato cozinhar e vocês enviam a foto do resultado. Tem modo dupla sincronizado e modo solo.',
-      description: 'Jogo para casal: sorteia um país da Copa 2026, cada um propõe um prato típico em 7 min, o app sorteia qual cozinhar e vocês registram o resultado com foto. Modo dupla com sincronização ao vivo e modo solo.'
-    },
-    problem: 'Problema:',
-    solution: 'Solução:',
-    accessProject: 'Acessar projeto →',
-    back: 'Voltar',
-    allWorks: 'Todos os Projetos',
-    projectsTitle: 'Projetos'
+      description: 'Sorteia um país da Copa, cada um propõe um prato em 7 min e o app escolhe qual vai para a panela.'
+    }
   },
 
-  // Experience
+  // Stack
+  stack: {
+    chapter: 'Stack',
+    title: 'React. TypeScript. React Native.',
+    dim: 'Ferramenta é meio, não identidade.',
+    lede: 'Cada item aqui entrou por um motivo concreto: resolveu um problema em um projeto de verdade, e ficou porque continuou resolvendo.',
+    usageTitle: 'Onde eu mais uso',
+    usageNote: 'Contagem sobre os cinco projetos publicados neste portfólio.',
+    projectOne: 'projeto',
+    projectMany: 'projetos',
+    groups: {
+      web: 'Web',
+      mobile: 'Mobile',
+      backend: 'Back-end & DevOps',
+      database: 'Banco de dados'
+    }
+  },
+
+  // Experiência
   experience: {
-    title: 'Experiências Profissionais',
-    sectionLabel: 'carreira',
-    responsibilities: 'Responsabilidades',
+    chapter: 'Experiência',
+    title: 'Bolsas, estágios',
+    dim: 'e código em produção.',
+    lede: 'Toque em cada uma para ver o que eu realmente fiz ali.',
+    mainStack: 'stack principal',
+    eduTitle: 'Formação',
+    kinds: {
+      internship: 'Estágio',
+      scholarship: 'Bolsa voluntária',
+      freelance: 'Freelance'
+    },
     sethas: {
-      role: 'Estagiário - Desenvolvedor Mobile',
+      role: 'Desenvolvedor Mobile Full-stack',
+      place: 'Natal, RN',
+      sum: 'Desenvolvo e mantenho o app Programa Leite Potiguar, publicado na Google Play Store.',
       responsibilities: [
         'Desenvolvimento e manutenção do aplicativo Programa Leite Potiguar utilizando React Native',
         'Melhoria da eficiência do aplicativo, aumentando significativamente sua velocidade e performance',
@@ -88,6 +123,8 @@ export const pt = {
     },
     ifrnFlutter: {
       role: 'Flutter Developer',
+      place: 'Natal, RN',
+      sum: 'Bolsista no projeto Flutter do IFRN: software para apoiar e gerenciar as ações dos agentes de campo.',
       responsibilities: [
         'Bolsista voluntário no projeto de desenvolvimento de aplicativos em Flutter',
         'Criação de software para apoiar e gerenciar as ações dos agentes de campo',
@@ -96,7 +133,9 @@ export const pt = {
       ]
     },
     inspireLogic: {
-      role: 'Desenvolvedor Front-end Freelancer',
+      role: 'Freelancer',
+      place: '',
+      sum: 'Site de gestão de alunos e professores, com catracas digitais e reconhecimento facial.',
       responsibilities: [
         'Desenvolvimento do site de gerenciamento de alunos e professores',
         'Aprimoramento da segurança escolar',
@@ -106,6 +145,8 @@ export const pt = {
     },
     ifrnAR: {
       role: 'Desenvolvedor de Aplicativos em Realidade Aumentada',
+      place: 'Natal, RN',
+      sum: 'Bolsista no projeto de realidade aumentada do IFRN, unindo biologia e tecnologia.',
       responsibilities: [
         'Bolsista voluntário no projeto de desenvolvimento de aplicativos em AR',
         'União de biologia e tecnologia através de realidade aumentada',
@@ -115,6 +156,8 @@ export const pt = {
     },
     secretaria: {
       role: 'Estagiário',
+      place: 'Natal, RN',
+      sum: 'Suporte de TI e manutenção de redes e computadores dentro da secretaria.',
       responsibilities: [
         'Suporte de TI para funcionários',
         'Manutenção de redes e computadores',
@@ -124,60 +167,43 @@ export const pt = {
     }
   },
 
-  // Timeline
-  timeline: {
-    title: 'Timeline',
-    sethas: {
-      subtitle: 'Estagiário - Desenvolvedor Mobile',
-      description: 'Atuação no desenvolvimento e manutenção do aplicativo Programa Leite Potiguar (Google Play) utilizando React, React Native e Django. Melhorei a eficiência do aplicativo, aumentando significativamente sua velocidade e performance.'
-    },
-    ifrnFlutter: {
-      subtitle: 'Flutter Developer',
-      description: 'Fui bolsista voluntário no projeto de desenvolvimento de aplicativos em Flutter para o IFRN, com o objetivo de criar um software com o intuito de apoiar e gerenciar as ações dos agentes de campo.'
-    },
-    inspireLogic: {
-      subtitle: 'Desenvolvedor Front-end freelancer',
-      description: 'Contribuí para o desenvolvimento do site de gerenciamento de alunos e professores da startup Inspire Logic, aprimorando a segurança escolar por meio da integração de catracas digitais e de um sistema de reconhecimento facial (Face ID) para controle de acesso.'
-    },
-    ifrnAR: {
-      subtitle: 'Desenvolvedor de aplicativos em realidade aumentada',
-      description: 'Fui bolsista voluntário no projeto de desenvolvimento de aplicativos em realidade aumentada para o IFRN, com o objetivo a unir biologia e tecnologia'
-    },
-    secretaria: {
-      subtitle: 'Estagiário',
-      description: 'Suporte de TI e manutenção de redes e computadores'
-    }
+  education: {
+    ifrn: { course: 'Tecnologia em Sistemas para Internet', school: 'IFRN', when: '2023 até hoje', status: 'EM ANDAMENTO' },
+    estacio: { course: 'Bacharelado em Engenharia de Software', school: 'Estácio', when: 'Cursando', status: 'EM ANDAMENTO' }
   },
 
-  // DevTools
-  devtools: {
-    title: 'DevTools',
-    sectionLabel: 'tecnologias',
-    subtitle: 'Stack e ferramentas que uso no dia a dia.',
-    groups: {
-      web: 'Web',
-      mobile: 'Mobile',
-      backend: 'Back-end & DevOps',
-      database: 'Banco de Dados'
-    }
-  },
-
-  // Contact
+  // Contato
   contact: {
-    title: 'Entre em contato',
-    subtitle: 'Vamos trabalhar juntos? Estou disponível para novos projetos e oportunidades.',
-    emailLabel: 'E-mail',
-    emailDesc: 'Envie uma mensagem',
-    linkedinLabel: 'LinkedIn',
-    linkedinDesc: 'Vamos nos conectar',
-    githubLabel: 'GitHub',
-    githubDesc: 'Veja meu código'
+    chapter: 'Contato',
+    title: 'A melhor hora de conversar',
+    dim: 'é agora.',
+    lede: 'Estou aberto a oportunidades, freelas e parcerias. Me manda uma mensagem que eu respondo.',
+    send: 'Enviar e-mail',
+    copy: 'Copiar e-mail',
+    copied: 'E-mail copiado ✓',
+    labels: { github: 'GitHub', linkedin: 'LinkedIn', store: 'Loja', email: 'E-mail' }
   },
 
-  // Footer
+  // Detalhe do projeto
+  detail: {
+    project: 'Projeto',
+    problem: 'O problema',
+    solution: 'A solução',
+    year: 'Ano',
+    role: 'Papel',
+    stack: 'Stack',
+    access: 'Acessar projeto',
+    others: 'Ver outros projetos',
+    soon: 'Projeto privado',
+    prev: '← Anterior',
+    next: 'Próximo →',
+    back: 'Projetos'
+  },
+
+  // Rodapé
   footer: {
-    developed: 'Site desenvolvido com React.js e Tailwind CSS',
-    rights: 'Todos os direitos reservados.'
+    note: 'Portfólio pessoal desenvolvido com React. Os projetos apresentados foram construídos por mim, individualmente ou sob demanda de clientes.',
+    rights: 'Todos os direitos reservados.',
+    place: 'Natal, RN · Brasil'
   }
 }
-
