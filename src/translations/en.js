@@ -38,6 +38,14 @@ export const en = {
   },
 
   projects: {
+    patchMap: {
+      type: 'Mobile app',
+      role: 'Full-stack',
+      head: 'The patch panel spreadsheet, now in your pocket.',
+      problem: 'At SETHAS, tracing a cable meant opening an outdated spreadsheet and checking the rack port by port, by eye. When a point went down, nobody could say right away which patch panel, switch and VLAN it belonged to.',
+      solution: 'I built PatchMap, an Android app for the infrastructure team to map the network in the field. It shows the whole rack on screen, each port colored by sector and status, and keeps the full path of every connection, from the wall socket to the VLAN. It works offline with a sync queue, and the Django back-end serves the data to every device on the team, authenticated with JWT.',
+      description: 'Maps the path from wall socket to VLAN, works offline and syncs with the rest of the team.'
+    },
     bridgeAndBits: {
       type: 'Dashboard',
       role: 'Full-stack',
@@ -87,7 +95,7 @@ export const en = {
     dim: 'A tool is a means, not an identity.',
     lede: 'Everything here got in for a concrete reason: it solved a problem in a real project, and stayed because it kept solving it.',
     usageTitle: 'Where I use it most',
-    usageNote: 'Counted across the five projects published in this portfolio.',
+    usageNote: 'Counted across the six projects published in this portfolio.',
     projectOne: 'project',
     projectMany: 'projects',
     groups: {

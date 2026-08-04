@@ -38,6 +38,14 @@ export const pt = {
   },
 
   projects: {
+    patchMap: {
+      type: 'App mobile',
+      role: 'Full-stack',
+      head: 'A planilha do patch panel, agora no bolso.',
+      problem: 'Na SETHAS, rastrear um cabo significava abrir uma planilha desatualizada e conferir o rack porta por porta, no olho. Quando um ponto caía, ninguém sabia dizer de imediato em qual patch panel, switch e VLAN ele estava.',
+      solution: 'Desenvolvi o PatchMap, app Android para a equipe de infraestrutura mapear a rede em campo. Ele mostra o rack inteiro na tela, com cada porta colorida por setor e por status, e guarda o caminho completo de cada conexão, da tomada na parede até a VLAN. Funciona offline com fila de sincronização, e o back-end em Django serve os dados autenticados por JWT para todos os aparelhos da equipe.',
+      description: 'Mapeia o caminho da tomada até a VLAN, funciona offline e sincroniza com o resto da equipe.'
+    },
     bridgeAndBits: {
       type: 'Dashboard',
       role: 'Full-stack',
@@ -87,7 +95,7 @@ export const pt = {
     dim: 'Ferramenta é meio, não identidade.',
     lede: 'Cada item aqui entrou por um motivo concreto: resolveu um problema em um projeto de verdade, e ficou porque continuou resolvendo.',
     usageTitle: 'Onde eu mais uso',
-    usageNote: 'Contagem sobre os cinco projetos publicados neste portfólio.',
+    usageNote: 'Contagem sobre os seis projetos publicados neste portfólio.',
     projectOne: 'projeto',
     projectMany: 'projetos',
     groups: {
