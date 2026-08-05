@@ -28,7 +28,7 @@ function useProjects() {
   return useMemo(() => [
     {
       id: 'patchmap', num: '01', name: 'PatchMap', year: '2026',
-      images: ['/patchmap-1.png', '/patchmap-2.png'],
+      images: ['/patchmap-site.png'],
       tags: ['React Native', 'Expo', 'TypeScript', 'Django', 'PostgreSQL'],
       href: 'https://patchmap.mauriciosts.com/',
       accent: 'linear-gradient(150deg,#04201f,#0f6f6a)', ...p.patchMap,
@@ -323,6 +323,49 @@ function Hero({ go }) {
     </div>
 
     <div className="wrap hero-foot"><p className="foot">{t.hero.footNote}</p></div>
+  </section>
+}
+
+/* ---------------- último lançamento ---------------- */
+function Latest({ open }) {
+  const t = useTranslation()
+  const projects = useProjects()
+  const i = projects.findIndex(p => p.id === 'patchmap')
+  const p = projects[i]
+  const [ref, seen] = useInView(0.95) // só baixa o vídeo de quem chegou perto dele
+  const vid = useRef(null)
+
+  useEffect(() => {
+    if (!seen || reduced()) return
+    const v = vid.current; if (!v) return
+    v.muted = true // o Safari só aceita autoplay com a propriedade setada, não só o atributo
+    v.play().catch(() => { }) // se o navegador recusar, fica o poster
+  }, [seen])
+
+  if (!p) return null
+  return <section id="ultimo" className="latest" ref={ref}>
+    <div className="wrap">
+      <Reveal className="chapter" y={14}>{t.latest.chapter}</Reveal>
+      <Reveal as="h2" className="big" delay={50}>{t.latest.title}<span className="dim">{t.latest.dim}</span></Reveal>
+      <Reveal className="lede" delay={110}>{p.head}</Reveal>
+    </div>
+    <Reveal className="lvwrap" delay={80}>
+      <button className="lvideo" style={{ background: p.accent }} onClick={() => open(i)}
+        aria-label={`${t.latest.cta}: ${p.name}`}>
+        <span className="lframe">
+          {seen
+            ? <video ref={vid} src="/patchmap-demo.mp4" poster="/patchmap-demo-poster.jpg"
+              muted loop playsInline preload="metadata" tabIndex={-1} aria-hidden="true" />
+            : <img src="/patchmap-demo-poster.jpg" alt="" />}
+        </span>
+        <span className="lbar">
+          <span className="lmeta"><b>{p.name}</b><i>{p.num} · {p.type} · {p.year}</i></span>
+          <span className="lcta">{t.latest.cta}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M9 6l6 6-6 6" /></svg>
+          </span>
+        </span>
+      </button>
+    </Reveal>
   </section>
 }
 
@@ -651,6 +694,7 @@ export default function Site() {
   return <>
     <Nav active={active} go={go} />
     <Hero go={go} />
+    <Latest open={setDetail} />
     <Highlights open={setDetail} />
     <Stack />
     <Experience />

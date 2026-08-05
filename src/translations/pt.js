@@ -30,6 +30,14 @@ export const pt = {
     }
   },
 
+  // Último lançamento
+  latest: {
+    chapter: 'Último lançamento',
+    title: 'PatchMap está no ar',
+    dim: 'e rodando em campo.',
+    cta: 'Ver o projeto'
+  },
+
   // Projetos
   portfolio: {
     title: 'Comece pelos destaques.',

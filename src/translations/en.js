@@ -30,6 +30,14 @@ export const en = {
     }
   },
 
+  // Latest release
+  latest: {
+    chapter: 'Latest release',
+    title: 'PatchMap is live',
+    dim: 'and running in the field.',
+    cta: 'See the project'
+  },
+
   // Projects
   portfolio: {
     title: 'Start with the highlights.',
