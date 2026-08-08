@@ -1,16 +1,68 @@
-# React + Vite
+# mauriciosts.com
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portfólio pessoal de Mauricio Santos — desenvolvedor front-end em Natal/RN.
 
-Currently, two official plugins are available:
+Single-page application em React, com navegação por seções (`home`, `projetos`,
+`stack`, `experiencia`, `contato`), páginas de detalhe por projeto e alternância
+de idioma entre português e inglês.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack
 
-## React Compiler
+- **React 19** + **Vite 7**
+- **Tailwind CSS 4** (via `@tailwindcss/postcss`)
+- **React Router** para as rotas de detalhe
+- **Framer Motion** e **GSAP** para animação
+- **OGL** para o plano de fundo em WebGL
+- Deploy na **Vercel** (`vercel.json` faz o rewrite de SPA)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Rodando localmente
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev      # servidor de desenvolvimento
+npm run build    # build de produção em dist/
+npm run preview  # serve o build
+npm run lint     # ESLint
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Estrutura
+
+```
+public/               imagens dos projetos, servidas na raiz (/cadsol.png, ...)
+src/
+  main.jsx            entrada
+  App.jsx             monta o LanguageProvider em volta do Site
+  Site.jsx            a página inteira: dados, seções e o modal de detalhe
+  index.css           estilos globais e utilitários
+  contexts/
+    LanguageContext.js    contexto + hook useLanguage
+    LanguageProvider.jsx  o provider (separado para não quebrar o Fast Refresh)
+  hooks/
+    useTranslation.js     devolve o dicionário do idioma ativo
+  translations/
+    pt.js  en.js          todo o texto do site
+```
+
+### Como o conteúdo é organizado
+
+`Site.jsx` não guarda texto. Os hooks de dados no topo do arquivo — `useProjects`,
+`useExperiences`, `useStacks`, `useCoreStack` — juntam o que é estrutural
+(id, numeração, ano, imagens, tags, link, cor de destaque) com o que é texto,
+espalhado a partir de `src/translations/`.
+
+Para adicionar um projeto:
+
+1. Coloque a imagem em `public/`.
+2. Acrescente a entrada em `useProjects()` (`src/Site.jsx`), mantendo `num` em ordem.
+3. Adicione o bloco correspondente em `projects` nos **dois** arquivos de tradução,
+   com a mesma chave usada no spread `...p.<chave>`.
+4. Atualize o contador de projetos no hero, que é literal em dois pontos de `Site.jsx`.
+
+Cada projeto usa `type`, `role`, `head`, `problem`, `solution` e `description`;
+faltar um deles deixa buraco na página de detalhe.
+
+## Arquivos fora do app
+
+`Portfolio.html`, `portfolio.jsx`, `portfolio.css`, `prompt-para-IA.md` e os PNGs
+numerados na raiz são de uma versão standalone anterior, carregada no navegador via
+`<script type="text/babel">`. Não entram no build do Vite nem no deploy.
