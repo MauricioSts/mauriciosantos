@@ -1,6 +1,6 @@
 # mauriciosts.com
 
-Portfólio pessoal de Mauricio Santos — desenvolvedor front-end em Natal/RN.
+Portfólio pessoal de Mauricio Santos, desenvolvedor front-end em Natal/RN.
 
 Single-page application em React, com navegação por seções (`home`, `projetos`,
 `stack`, `experiencia`, `contato`), páginas de detalhe por projeto e alternância
@@ -45,8 +45,8 @@ src/
 
 ### Como o conteúdo é organizado
 
-`Site.jsx` não guarda texto. Os hooks de dados no topo do arquivo — `useProjects`,
-`useExperiences`, `useStacks`, `useCoreStack` — juntam o que é estrutural
+`Site.jsx` não guarda texto. Os hooks de dados no topo do arquivo (`useProjects`,
+`useExperiences`, `useStacks`, `useCoreStack`) juntam o que é estrutural
 (id, numeração, ano, imagens, tags, link, cor de destaque) com o que é texto,
 espalhado a partir de `src/translations/`.
 
