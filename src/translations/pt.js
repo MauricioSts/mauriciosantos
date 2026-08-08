@@ -55,6 +55,14 @@ export const pt = {
       solution: 'Desenvolvi o PatchMap, app Android para a equipe de infraestrutura mapear a rede em campo. Ele mostra o rack inteiro na tela, com cada porta colorida por setor e por status, e guarda o caminho completo de cada conexão, da tomada na parede até a VLAN. Funciona offline com fila de sincronização, e o back-end em Django serve os dados autenticados por JWT para todos os aparelhos da equipe.',
       description: 'Mapeia o caminho da tomada até a VLAN, funciona offline e sincroniza com o resto da equipe.'
     },
+    cadsol: {
+      type: 'Plataforma de governo',
+      role: 'Front-end',
+      head: 'A economia solidária do RN em um cadastro público.',
+      problem: 'O cadastro estadual de empreendimentos de economia solidária corria dentro da SETHAS em formulário e planilha. O empreendimento não acompanhava o andamento do próprio pedido, a equipe analisava documento por documento na mão, e quem quisesse comprar de um empreendimento solidário não tinha onde consultar quem estava cadastrado.',
+      solution: 'Construí o front-end do CADSOL-RN, plataforma do Governo do Rio Grande do Norte já em produção. A vitrine pública abre sem login e busca por nome, razão social ou CNAE, mostrando município, natureza jurídica e a situação do cadastro de cada empreendimento; a área autenticada é onde a equipe da secretaria analisa os pedidos e emite as declarações em PDF, cada uma com link próprio de validação. Estruturei o código em Clean Architecture com MVVM — domínio, infraestrutura e apresentação separados, com casos de uso, view models e injeção de dependência — em React e TypeScript sobre a API em Django, com build e deploy em pipeline do GitHub Actions, containerizado em Docker e servido por nginx.',
+      description: 'Vitrine pública dos empreendimentos solidários do RN e a área onde a SETHAS analisa os pedidos e emite as declarações.'
+    },
     bridgeAndBits: {
       type: 'Dashboard',
       role: 'Full-stack',

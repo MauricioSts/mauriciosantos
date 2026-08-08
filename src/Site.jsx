@@ -34,34 +34,41 @@ function useProjects() {
       accent: 'linear-gradient(150deg,#04201f,#0f6f6a)', ...p.patchMap,
     },
     {
-      id: 'bridgeandbits', num: '02', name: 'BridgeAndBits', year: '2025',
+      id: 'cadsol', num: '02', name: 'CADSOL-RN', year: '2026',
+      images: ['/cadsol.png'],
+      tags: ['React.js', 'TypeScript', 'Clean Architecture', 'GitHub Actions'],
+      href: 'https://cadsol.sethas.rn.gov.br/',
+      accent: 'linear-gradient(150deg,#04222c,#0891b2)', ...p.cadsol,
+    },
+    {
+      id: 'bridgeandbits', num: '03', name: 'BridgeAndBits', year: '2025',
       images: ['/bridge.png'], tags: ['React.js', 'PostgreSQL', 'Tailwind CSS'],
       href: 'https://bridgeandbits.mauriciosts.com/',
       accent: 'linear-gradient(150deg,#0b2545,#1c5b9c)', ...p.bridgeAndBits,
     },
     {
-      id: 'jerseyandbits', num: '03', name: 'JerseyAndBits', year: '2025',
+      id: 'jerseyandbits', num: '04', name: 'JerseyAndBits', year: '2025',
       images: ['/jersey.jpeg'], tags: ['React.js', 'Firebase', 'Tailwind CSS'],
       href: 'https://jerseyandbits.vercel.app/',
       accent: 'linear-gradient(150deg,#06312a,#0f7a63)', ...p.jerseyAndBits,
     },
     {
-      id: 'salviano-burguer', num: '04', name: 'Salviano Burguer', year: '2024',
+      id: 'salviano-burguer', num: '05', name: 'Salviano Burguer', year: '2024',
       images: ['/salvianoburguer.png'], tags: ['JavaScript', 'Tailwind CSS', 'WhatsApp API'],
       href: 'https://salvianoburguer.vercel.app/',
       accent: 'linear-gradient(150deg,#3d1410,#8a3a2c)', ...p.salvianoBurguer,
     },
     {
-      id: 'chovinista', num: '05', name: 'Chovinista', year: '2024',
+      id: 'chovinista', num: '06', name: 'Chovinista', year: '2024',
       images: ['/chovinista.jpeg'], tags: ['React.js', 'Tailwind CSS'],
       href: null,
       accent: 'linear-gradient(150deg,#241a3d,#5b3f8f)', ...p.chovinista,
     },
     {
-      id: 'comidas-da-copa', num: '06', name: 'Comidas da Copa', year: '2026',
+      id: 'comidas-da-copa', num: '07', name: 'Comidas da Copa', year: '2026',
       images: ['/comidas-da-copa-2.png', '/comidas-da-copa-3.png'],
       tags: ['Next.js 16', 'Supabase', 'Realtime', 'TypeScript'],
-      href: 'http://147.15.7.227:3000',
+      href: 'https://cupfoods.mauriciosts.com/',
       accent: 'linear-gradient(150deg,#3b2c0c,#9a7724)', ...p.comidasDaCopa,
     },
   ], [p])
@@ -193,7 +200,7 @@ function MacScreen() {
           </div>
         </div>
         <div className="sts">
-          <div className="st"><b>6</b>{t.hero.stats.projects}</div>
+          <div className="st"><b>7</b>{t.hero.stats.projects}</div>
           <div className="st"><b>2+</b>{t.hero.stats.years}</div>
           <div className="st"><b>2</b>{t.hero.stats.degrees}</div>
         </div>
@@ -362,7 +369,7 @@ function Hero({ go }) {
       <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP1 }} />
       <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP2 }} />
       <div className="sb2">
-        <div><b>6</b><span>{t.hero.stats.projects}</span></div>
+        <div><b>7</b><span>{t.hero.stats.projects}</span></div>
         <div><b>2+</b><span>{t.hero.stats.years}</span></div>
         <div><b>2</b><span>{t.hero.stats.degrees}</span></div>
       </div>

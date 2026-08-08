@@ -55,6 +55,14 @@ export const en = {
       solution: 'I built PatchMap, an Android app for the infrastructure team to map the network in the field. It shows the whole rack on screen, each port colored by sector and status, and keeps the full path of every connection, from the wall socket to the VLAN. It works offline with a sync queue, and the Django back-end serves the data to every device on the team, authenticated with JWT.',
       description: 'Maps the path from wall socket to VLAN, works offline and syncs with the rest of the team.'
     },
+    cadsol: {
+      type: 'Government platform',
+      role: 'Front-end',
+      head: "Rio Grande do Norte's solidarity economy in a public registry.",
+      problem: "The state registry of solidarity-economy enterprises ran on paper forms and spreadsheets inside SETHAS. Enterprises could not follow their own application, the team reviewed every document by hand, and anyone wanting to buy from a solidarity enterprise had nowhere to check who was registered.",
+      solution: "I built the front-end of CADSOL-RN, a Rio Grande do Norte state government platform already in production. The public directory opens without a login and searches by name, legal name or CNAE, showing each enterprise's municipality, legal nature and registration status; the authenticated area is where the department reviews applications and issues PDF certificates, each with its own validation link. I structured the code in Clean Architecture with MVVM — domain, infrastructure and presentation kept separate, with use cases, view models and dependency injection — in React and TypeScript against the Django API, with build and deploy running on a GitHub Actions pipeline, containerized in Docker and served by nginx.",
+      description: 'A public directory of the state solidarity enterprises, plus the back office where SETHAS reviews applications and issues certificates.'
+    },
     bridgeAndBits: {
       type: 'Dashboard',
       role: 'Full-stack',
