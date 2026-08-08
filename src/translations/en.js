@@ -16,6 +16,7 @@ export const en = {
     role: 'Full-stack Developer.',
     ctaProjects: 'See projects',
     ctaTalk: 'Get in touch',
+    scrollCue: 'Scroll down',
     scrollHint: 'Scroll to open',
     url: 'mauriciosts.com/about',
     aboutNav: 'About me',
@@ -103,9 +104,14 @@ export const en = {
     dim: 'A tool is a means, not an identity.',
     lede: 'Everything here got in for a concrete reason: it solved a problem in a real project, and stayed because it kept solving it.',
     usageTitle: 'Where I use it most',
-    usageNote: 'Counted across the six projects published in this portfolio.',
-    projectOne: 'project',
-    projectMany: 'projects',
+    usageNote: 'Weighted by real use: what carries my work today, not a raw repository count.',
+    core: {
+      react: '3 projects · freelance',
+      reactNative: '2 apps on Google Play',
+      django: 'PatchMap · SETHAS internship',
+      typescript: '2 projects · internship',
+      postgres: '2 projects · freelance'
+    },
     groups: {
       web: 'Web',
       mobile: 'Mobile',

@@ -16,6 +16,7 @@ export const pt = {
     role: 'Desenvolvedor Full-stack.',
     ctaProjects: 'Ver projetos',
     ctaTalk: 'Falar comigo',
+    scrollCue: 'Role para baixo',
     scrollHint: 'Role para abrir',
     url: 'mauriciosts.com/sobre',
     aboutNav: 'Sobre mim',
@@ -103,9 +104,14 @@ export const pt = {
     dim: 'Ferramenta é meio, não identidade.',
     lede: 'Cada item aqui entrou por um motivo concreto: resolveu um problema em um projeto de verdade, e ficou porque continuou resolvendo.',
     usageTitle: 'Onde eu mais uso',
-    usageNote: 'Contagem sobre os seis projetos publicados neste portfólio.',
-    projectOne: 'projeto',
-    projectMany: 'projetos',
+    usageNote: 'Peso pelo uso real: o que sustenta o meu trabalho hoje, e não a contagem bruta de repositórios.',
+    core: {
+      react: '3 projetos · freelance',
+      reactNative: '2 apps na Google Play',
+      django: 'PatchMap · estágio SETHAS',
+      typescript: '2 projetos · estágio',
+      postgres: '2 projetos · freelance'
+    },
     groups: {
       web: 'Web',
       mobile: 'Mobile',

@@ -83,7 +83,7 @@ section{display:block;padding:140px 0;position:relative}
 
 /* ---- hero ---- */
 .hero{padding:0;text-align:center}
-.hero-in{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:var(--bar);padding-bottom:24px}
+.hero-in{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:var(--bar);padding-bottom:24px}
 .hero .kick{font-size:clamp(21px,2.6vw,28px);font-weight:600;color:var(--g);letter-spacing:-.015em}
 .hero h1{font-size:clamp(52px,11vw,132px);font-weight:600;letter-spacing:-.04em;line-height:.98;margin-top:4px;
   /* Texto quase branco não tem como ficar mais claro, então a luz é lida pelo
@@ -106,38 +106,70 @@ section{display:block;padding:140px 0;position:relative}
 .hero .cta{display:flex;gap:26px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:30px}
 .hero-foot{text-align:center;padding-top:72px}
 
+/* Convite discreto para rolar: um fio vertical por onde "escorre" uma gota de luz.
+   O JS apaga o bloco assim que a rolagem começa, para não competir com o notebook.
+   A entrada fica nos filhos (e não no bloco) porque o opacity do pai é do JS. */
+.scrollcue{position:absolute;left:0;right:0;bottom:22px;display:flex;flex-direction:column;align-items:center;gap:12px;
+  pointer-events:none;will-change:opacity}
+.scrollcue span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--g2)}
+.scrollcue i{position:relative;display:block;width:1px;height:46px;overflow:hidden;
+  background:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,0))}
+.scrollcue i:after{content:'';position:absolute;left:0;top:-18px;width:1px;height:18px;
+  background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.92));animation:drip 2.6s var(--ease) infinite}
+.scrollcue span,.scrollcue i{animation:cuein .9s var(--ease) both}
+.scrollcue span{animation-delay:.9s}
+.scrollcue i{animation-delay:1.05s}
+@keyframes cuein{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@keyframes drip{0%{transform:translateY(0);opacity:0}18%{opacity:1}72%{opacity:1}100%{transform:translateY(64px);opacity:0}}
+
 /* ---- notebook ---- */
 .scrollrig{position:relative;height:330vh}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
   display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--bar) + 10px) var(--pad) 40px}
-.persp{perspective:1700px;perspective-origin:50% 42%;width:min(880px,100%,84vh);transform-origin:50% 50%;will-change:transform}
+/* O zoom NÃO é transform:scale() — é a LARGURA real do elemento, escrita pelo JS.
+   Com scale() o navegador rasteriza o notebook no tamanho de layout e amplia o
+   bitmap (era daí o borrão ao aproximar); mudando a largura, texto, bordas e raios
+   são re-renderizados no tamanho final e ficam nítidos em qualquer aproximação.
+   Para isso nada aqui dentro pode ter medida fixa em px: --u vale 1% da largura do
+   notebook e é a unidade de todo o desenho. O valor abaixo é só o do primeiro
+   quadro — o JS o reescreve junto com a largura. */
+.persp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  perspective:1700px;perspective-origin:50% 42%;
+  width:min(880px,calc(100% - var(--pad) * 2),84vh);--u:8.8px;will-change:width}
 .mbp{position:relative;transform-style:preserve-3d;transform:rotateX(18deg) scale(.92)}
 .lid{position:relative;transform-style:preserve-3d;transform-origin:50% 100%;transform:rotateX(-90deg);
-  background:linear-gradient(#3b3b3f,#202024);border-radius:15px 15px 5px 5px;padding:9px;backface-visibility:hidden;
-  box-shadow:0 34px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.09) inset}
-.scr{position:relative;background:#000;border-radius:9px;aspect-ratio:16/10;overflow:hidden;backface-visibility:hidden}
+  background:linear-gradient(#3b3b3f,#202024);padding:calc(var(--u) * 1.023);backface-visibility:hidden;
+  border-radius:calc(var(--u) * 1.7) calc(var(--u) * 1.7) calc(var(--u) * .57) calc(var(--u) * .57);
+  box-shadow:0 calc(var(--u) * 3.9) calc(var(--u) * 9.1) rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.09) inset}
+.scr{position:relative;background:#000;border-radius:calc(var(--u) * 1.02);aspect-ratio:16/10;overflow:hidden;backface-visibility:hidden}
 .scrui{position:absolute;inset:0;opacity:0}
-.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:15%;height:3.4%;background:#0a0a0b;border-radius:0 0 7px 7px;z-index:3}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:15%;height:3.4%;background:#0a0a0b;
+  border-radius:0 0 calc(var(--u) * .8) calc(var(--u) * .8);z-index:3}
 .lidback{position:absolute;inset:0;transform:rotateY(180deg);backface-visibility:hidden;
-  background:linear-gradient(158deg,#5a5b60,#2c2d31 52%,#43444a);border-radius:15px;display:grid;place-items:center;
+  background:linear-gradient(158deg,#5a5b60,#2c2d31 52%,#43444a);border-radius:calc(var(--u) * 1.7);display:grid;place-items:center;
   box-shadow:0 0 0 1px rgba(255,255,255,.12) inset}
-.lidback span{font-size:clamp(18px,2.6vw,32px);font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.24);transform:scaleX(-1)}
+.lidback span{font-size:calc(var(--u) * 3.6);font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.24);transform:scaleX(-1)}
 .deck{position:absolute;top:100%;left:-1.6%;width:103.2%;aspect-ratio:16/10.6;transform-origin:50% 0;transform:rotateX(90deg);
-  background:linear-gradient(#cfd0d4,#a3a4a9 58%,#7e7f85);border-radius:0 0 16px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
-.deck .hinge{position:absolute;top:0;left:15%;right:15%;height:2.4%;background:#6f7075;border-radius:0 0 6px 6px}
-.deck .kb{position:absolute;left:7%;right:7%;top:9%;height:44%;border-radius:6px;background-color:#8f9095;
+  background:linear-gradient(#cfd0d4,#a3a4a9 58%,#7e7f85);border-radius:0 0 calc(var(--u) * 1.82) calc(var(--u) * 1.82);
+  box-shadow:0 0 0 1px rgba(0,0,0,.3)}
+.deck .hinge{position:absolute;top:0;left:15%;right:15%;height:2.4%;background:#6f7075;border-radius:0 0 calc(var(--u) * .68) calc(var(--u) * .68)}
+.deck .kb{position:absolute;left:7%;right:7%;top:9%;height:44%;border-radius:calc(var(--u) * .68);background-color:#8f9095;
   background-image:repeating-linear-gradient(90deg,#303134 0 5.2%,transparent 5.2% 6.25%),repeating-linear-gradient(0deg,#303134 0 16%,transparent 16% 20%);
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
-.deck .tp{position:absolute;left:32%;right:32%;bottom:10%;height:28%;border-radius:7px;
+.deck .tp{position:absolute;left:32%;right:32%;bottom:10%;height:28%;border-radius:calc(var(--u) * .8);
   background:linear-gradient(#b8b9bd,#9d9ea3);box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)}
 .hint{position:absolute;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;
   align-items:center;gap:8px;font-size:13px;color:var(--g);letter-spacing:-.01em;will-change:opacity;pointer-events:none}
 .hint svg{width:16px;height:16px;animation:bob 1.9s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 
-/* UI dentro da tela: renderizada em dobro e reduzida à metade para não borrar no zoom */
-.osx{position:absolute;top:0;left:0;width:200%;height:200%;transform:scale(.5);transform-origin:0 0;
-  display:flex;flex-direction:column;background:#0d0d0f;text-align:left;font-size:clamp(12px,2.04vw,24px);line-height:1.35}
+/* UI dentro da tela: ocupa a tela 1:1 e é dimensionada por --u, então acompanha o
+   zoom sem borrar. (Antes era desenhada em 200% e reduzida com scale(.5) para
+   ganhar nitidez; esse scale aninhado dentro do preserve-3d/backface-visibility da
+   tampa é o que deixava a tela em branco no celular — e mesmo assim só dava conta
+   de 2x de aproximação.) */
+.osx{position:absolute;inset:0;display:flex;flex-direction:column;background:#0d0d0f;text-align:left;
+  font-size:calc(var(--u) * 1.36);line-height:1.35}
 .osx .tb{height:9.5%;display:flex;align-items:center;gap:.42em;padding:0 1em;background:#161618;border-bottom:1px solid #232326;flex:none}
 .osx .tb i{width:.62em;height:.62em;border-radius:50%;background:#3a3a3d;flex:none}
 .osx .tb .url{margin-left:.9em;font-size:.85em;color:#8a8a8f;background:#232326;border-radius:.45em;padding:.2em 1.6em}
@@ -349,8 +381,9 @@ footer b{font-weight:400;color:var(--ink)}
      (o zoom é limitado pela largura no JS, então aqui ele só abre) */
   .scrollrig{height:240svh}
   .stage{padding:calc(var(--bar) + 6px) 18px 30px}
-  .persp{width:min(880px,100%,70vh)}
-  .osx{font-size:clamp(15px,4.4vw,24px)}
+  .persp{width:min(880px,calc(100% - 36px),70vh);--u:3.5px}
+  /* a tela mostra menos coisa no celular, então a UI cabe maior em relação a ela */
+  .osx{font-size:calc(var(--u) * 2.5)}
   .osx .bio{display:none}
   .osx .prof{grid-template-columns:1fr}
   .osx .side{width:30%}
@@ -430,9 +463,10 @@ footer b{font-weight:400;color:var(--ink)}
 
 /* telas baixas (celular deitado): o notebook não cabe em pé */
 @media(max-height:520px) and (orientation:landscape){
-  .persp{width:min(880px,100%,64vh)}
+  .persp{width:min(880px,calc(100% - 36px),64vh)}
   .stage{padding:calc(var(--bar) + 4px) 18px 18px}
   .hint{display:none}
+  .scrollcue{display:none}
 }
 
 @media(prefers-reduced-motion:reduce){

@@ -85,14 +85,32 @@ function useExperiences() {
   ], [e, k, now, language])
 }
 
+/* Só framework, linguagem e plataforma. HTML, CSS, Tailwind, Vite, Expo e GitHub
+   saíram: são pressupostos de qualquer front-end, e listá-los dilui o que pesa. */
 function useStacks() {
   const g = useTranslation().stack.groups
   return useMemo(() => ({
-    [g.web]: [['React', '⚛'], ['TypeScript', 'TS'], ['JavaScript', 'JS'], ['HTML', '<>'], ['CSS', '#'], ['Tailwind', '~'], ['Vite', 'V']],
-    [g.mobile]: [['React Native', '⚛'], ['Flutter', '◇'], ['Dart', '◑'], ['Expo', 'E']],
-    [g.backend]: [['Node.js', '⬡'], ['Django', 'dj'], ['Docker', '⛴'], ['Git', 'G'], ['GitHub', '◐'], ['Vercel', '▲']],
+    [g.web]: [['React', '⚛'], ['TypeScript', 'TS'], ['JavaScript', 'JS']],
+    [g.mobile]: [['React Native', '⚛'], ['Flutter', '◇'], ['Dart', '◑']],
+    [g.backend]: [['Node.js', '⬡'], ['Django', 'dj'], ['Docker', '⛴'], ['Git', 'G'], ['Vercel', '▲']],
     [g.database]: [['PostgreSQL', 'P'], ['Firebase', 'F'], ['Supabase', 'S']],
   }), [g])
+}
+
+/* Stacks principais. Antes isto era contado automaticamente pelas tags dos projetos,
+   e a contagem bruta media a coisa errada: Tailwind aparecia em 4 dos 6 repositórios
+   e liderava, enquanto React Native e Django — que sustentam o trabalho do dia a dia
+   no estágio — mal pontuavam. A lista é curada; o peso é o quanto cada uma carrega
+   hoje, e o rótulo diz onde ela é usada de verdade. */
+function useCoreStack() {
+  const c = useTranslation().stack.core
+  return useMemo(() => [
+    { k: 'React.js', w: 100, where: c.react },
+    { k: 'React Native', w: 88, where: c.reactNative },
+    { k: 'Django', w: 76, where: c.django },
+    { k: 'TypeScript', w: 70, where: c.typescript },
+    { k: 'PostgreSQL', w: 58, where: c.postgres },
+  ], [c])
 }
 
 /* ---------------- reveal ---------------- */
@@ -228,18 +246,33 @@ function Hero({ go }) {
   const t = useTranslation()
   const rig = useRef(null), stage = useRef(null), persp = useRef(null)
   const mbp = useRef(null), lid = useRef(null), deck = useRef(null), scr = useRef(null), hint = useRef(null)
+  const cue = useRef(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const soft = reduced()
-    let raf = null
+    let raf = null, baseW = 1, baseH = 1, baseSh = 1, lastW = -1
+
+    /* Tamanho natural do notebook (zoom = 1). Como o zoom é aplicado na largura real
+       e não em transform:scale, precisamos da base limpa: zeramos largura e --u
+       antes de medir, senão a medição herdaria o zoom do quadro anterior. */
+    const measure = () => {
+      const pe = persp.current; if (!pe) return
+      pe.style.width = ''
+      pe.style.removeProperty('--u')
+      baseW = pe.offsetWidth || 1
+      pe.style.setProperty('--u', (baseW / 100).toFixed(3) + 'px')
+      baseH = pe.offsetHeight || 1
+      baseSh = lid.current?.querySelector('.scr')?.offsetHeight || baseH
+      lastW = -1
+    }
+
     const frame = () => {
       raf = null
       const r = rig.current, pe = persp.current, sg = stage.current
       if (!r || !pe || !sg) return
-      const { w: vw, h: vh } = viewport()
 
       // progresso único 0→1 ao longo do trilho de scroll
-      const total = Math.max(1, r.offsetHeight - vh)
+      const total = Math.max(1, r.offsetHeight - viewport().h)
       const p = soft ? 1 : Math.min(1, Math.max(0, -r.getBoundingClientRect().top / total))
       const sm = (x) => { const s = Math.min(1, Math.max(0, x)); return s * s * (3 - 2 * s) }
       const e = soft ? 1 : sm(p / 0.46)           // fases 1+2: abertura da tampa
@@ -251,25 +284,33 @@ function Hero({ go }) {
       if (deck.current) deck.current.style.transform = `rotateX(${(90 - tilt).toFixed(2)}deg)` // mantém a base plana
       if (scr.current) scr.current.style.opacity = Math.max(0, Math.min(1, (e - 0.5) / 0.28))
 
-      // zoom: o fator é limitado pela ALTURA e pela LARGURA da viewport. Sem o limite
-      // de largura a tela escalada estourava a lateral no celular (bug do notebook).
-      const pw = pe.offsetWidth || 1, ph = pe.offsetHeight || 1, sh = ph - 18
-      const zx = Math.max(0, Math.min(1.6, Math.min((vh * 0.86) / sh - 1, (vw * 0.94) / pw - 1)))
-      const k = 1 + q * zx
-      const u = pe.offsetParent === sg ? pe.offsetTop : pe.offsetTop - sg.offsetTop
-      const oc = u + ph / 2, cy = oc + ((u + 9 + sh / 2) - oc) * k
-      pe.style.transform = `translateY(${(vh / 2 - cy).toFixed(1)}px) scale(${k.toFixed(3)})`
+      /* Zoom: quanto o notebook pode crescer sem estourar o palco — o limite vem da
+         ALTURA e da LARGURA (sem o de largura a tela vazava pela lateral no celular).
+         Medimos o palco, que é 100svh, e não innerHeight, que oscila com a barra de
+         URL. O fator vira LARGURA, não scale: assim o navegador reconstrói texto,
+         bordas e raios no tamanho final em vez de ampliar um bitmap. --u acompanha
+         a largura e mantém a proporção de todo o desenho. */
+      const sw = sg.clientWidth || viewport().w, sh = sg.clientHeight || viewport().h
+      const zx = Math.max(0, Math.min(1.6, Math.min((sh * 0.86) / baseSh - 1, (sw * 0.94) / baseW - 1)))
+      const w = baseW * (1 + q * zx)
+      if (Math.abs(w - lastW) > 0.4) {
+        lastW = w
+        pe.style.width = w.toFixed(1) + 'px'
+        pe.style.setProperty('--u', (w / 100).toFixed(3) + 'px')
+      }
 
       if (hint.current) hint.current.style.opacity = Math.max(0, 1 - p * 5)
+      if (cue.current) cue.current.style.opacity = Math.max(0, 1 - scrollY / 200)
     }
     const on = () => { if (raf == null) raf = requestAnimationFrame(frame) }
+    const remeasure = () => { measure(); frame() }
+    measure(); frame()
     addEventListener('scroll', on, { passive: true })
-    addEventListener('resize', on)
-    addEventListener('orientationchange', on)
-    on()
-    const tm = setTimeout(on, 220)
+    addEventListener('resize', remeasure)
+    addEventListener('orientationchange', remeasure)
+    const tm = setTimeout(remeasure, 220)
     return () => {
-      removeEventListener('scroll', on); removeEventListener('resize', on); removeEventListener('orientationchange', on)
+      removeEventListener('scroll', on); removeEventListener('resize', remeasure); removeEventListener('orientationchange', remeasure)
       clearTimeout(tm); if (raf != null) cancelAnimationFrame(raf)
     }
   }, [])
@@ -286,6 +327,11 @@ function Hero({ go }) {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M9 6l6 6-6 6" /></svg>
         </a>
       </Reveal>
+      {/* convite para rolar até o notebook; o JS apaga assim que a rolagem começa */}
+      <div className="scrollcue" ref={cue}>
+        <span>{t.hero.scrollCue}</span>
+        <i></i>
+      </div>
     </div>
 
     <div className="scrollrig" ref={rig}>
@@ -424,21 +470,14 @@ function Highlights({ open }) {
 
 /* ---------------- stack ---------------- */
 function Bars() {
-  const t = useTranslation()
-  const projects = useProjects()
-  // uso real: contado a partir das tags dos projetos publicados
-  const usage = useMemo(() => {
-    const count = new Map()
-    projects.forEach(p => p.tags.forEach(tag => count.set(tag, (count.get(tag) || 0) + 1)))
-    return [...count.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => ({ k, n }))
-  }, [projects])
+  const core = useCoreStack()
   const [ref, seen] = useInView(0.88)
-  const max = Math.max(...usage.map(u => u.n))
+  const max = Math.max(...core.map(u => u.w))
   return <div className="bars" ref={ref}>
-    {usage.map(u => (
+    {core.map(u => (
       <div className="bar" key={u.k}>
-        <div className="bl"><span>{u.k}</span><span>{u.n} {u.n === 1 ? t.stack.projectOne : t.stack.projectMany}</span></div>
-        <div className="track"><div className="fill" style={{ width: seen ? (u.n / max * 100) + '%' : 0 }}></div></div>
+        <div className="bl"><span>{u.k}</span><span>{u.where}</span></div>
+        <div className="track"><div className="fill" style={{ width: seen ? (u.w / max * 100) + '%' : 0 }}></div></div>
       </div>
     ))}
   </div>
