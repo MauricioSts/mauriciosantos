@@ -1,4 +1,4 @@
-import { LanguageProvider } from './contexts/LanguageContext'
+import { LanguageProvider } from './contexts/LanguageProvider'
 import Site from './Site'
 
 function App() {

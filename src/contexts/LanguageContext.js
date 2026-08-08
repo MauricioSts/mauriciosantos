@@ -1,6 +1,9 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext } from 'react'
 
-const LanguageContext = createContext()
+/* O contexto e o hook moram aqui, fora do arquivo do provider: o Fast Refresh do Vite
+   só funciona quando um módulo exporta apenas componentes, então misturar
+   LanguageProvider com useLanguage no mesmo arquivo derrubava o HMR a cada edição. */
+export const LanguageContext = createContext()
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext)
@@ -9,27 +12,3 @@ export const useLanguage = () => {
   }
   return context
 }
-
-export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState(() => {
-    // Verifica se há um idioma salvo no localStorage
-    const savedLanguage = localStorage.getItem('language')
-    return savedLanguage || 'pt'
-  })
-
-  useEffect(() => {
-    // Salva o idioma no localStorage quando mudar
-    localStorage.setItem('language', language)
-  }, [language])
-
-  const toggleLanguage = () => {
-    setLanguage(prev => prev === 'pt' ? 'en' : 'pt')
-  }
-
-  return (
-    <LanguageContext.Provider value={{ language, toggleLanguage }}>
-      {children}
-    </LanguageContext.Provider>
-  )
-}
-

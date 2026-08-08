@@ -344,7 +344,7 @@
           };
         }
         const up = () => {
-          try { this._spill.releasePointerCapture(e.pointerId); } catch {}
+          try { this._spill.releasePointerCapture(e.pointerId); } catch { /* ponteiro já liberado */ }
           this._spill.removeEventListener('pointermove', move);
           this._spill.removeEventListener('pointerup', up);
           this._spill.removeEventListener('pointercancel', up);
