@@ -47,8 +47,8 @@ function useProjects() {
       accent: 'linear-gradient(150deg,#0b2545,#1c5b9c)', ...p.bridgeAndBits,
     },
     {
-      /* rainbow: o único jogo da lista. O título sai do cinza do resto da página
-         para dizer, antes de qualquer texto, que aqui a coisa é outra. */
+      /* rainbow: o único jogo da lista. Colore só o rótulo do tipo, que é onde
+         está escrito o que ele é; o título fica igual ao dos outros projetos. */
       id: 'comidas-da-copa', num: '04', name: 'Comidas da Copa', year: '2026',
       images: ['/comidas-da-copa-2.png', '/comidas-da-copa-3.png'],
       tags: ['Next.js 16', 'Supabase', 'Realtime', 'TypeScript'],
@@ -462,8 +462,8 @@ function Highlights({ open }) {
         <Reveal as="article" key={p.id} className="hcard" delay={Math.min(i, 3) * 70}>
           <button className="hopen" onClick={() => open(i)} aria-label={p.name}>
             <div className="top">
-              <div className="n">{p.num} · {p.type.toUpperCase()}</div>
-              <h3 className={p.rainbow ? 'rainbow' : undefined}>{p.head}</h3>
+              <div className="n">{p.num} · <span className={p.rainbow ? 'rainbow' : undefined}>{p.type.toUpperCase()}</span></div>
+              <h3>{p.head}</h3>
               <p className="d">{p.description}</p>
             </div>
             <div className="art" style={{ background: p.accent }}>
@@ -671,8 +671,8 @@ function Detail({ index, close, goto }) {
     </div></div>
 
     <div className="dhero">
-      <div className="n">{t.detail.project.toUpperCase()} {p.num} · {p.type.toUpperCase()}</div>
-      <h1 className={p.rainbow ? 'rainbow' : undefined}>{p.name}</h1>
+      <div className="n">{t.detail.project.toUpperCase()} {p.num} · <span className={p.rainbow ? 'rainbow' : undefined}>{p.type.toUpperCase()}</span></div>
+      <h1>{p.name}</h1>
       <p className="t">{p.head}</p>
       <div className="dpanel" style={{ background: p.accent }}>
         <Shot src={p.images[0]} alt={p.name} eager />

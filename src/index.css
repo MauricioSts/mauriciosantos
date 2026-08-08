@@ -235,11 +235,13 @@ section{display:block;padding:140px 0;position:relative}
 .hcard h3{margin-top:10px;font-size:clamp(24px,2.6vw,30px);font-weight:600;letter-spacing:-.022em;line-height:1.14;text-wrap:pretty}
 .hcard .d{margin-top:12px;font-size:15px;color:var(--g);line-height:1.45;text-wrap:pretty}
 
-/* Título do jogo. O espectro é listado duas vezes e o fundo tem o dobro da largura
-   do texto, então a janela visível sempre mostra um arco-íris inteiro: a animação
-   só desliza esse fundo, e o quadro parado (reduced-motion, mais abaixo) continua
-   colorido em vez de cair num pedaço só do gradiente. Sem background-clip:text o
-   color:transparent apagaria o título, daí a guarda do @supports. */
+/* Rótulo do jogo, o "JOGO WEB" ao lado do número do projeto. O espectro é listado
+   duas vezes e o fundo tem o dobro da largura do texto, então a janela visível
+   sempre mostra um arco-íris inteiro: a animação só desliza esse fundo, e o quadro
+   parado (reduced-motion, mais abaixo) continua colorido em vez de cair num pedaço
+   só do gradiente. Sem background-clip:text o color:transparent apagaria o rótulo,
+   daí a guarda do @supports. As cores são todas claras porque o fundo é escuro e o
+   texto tem 12px. */
 .rainbow{background-image:linear-gradient(92deg,
     #ff7a7a,#ffb765,#ffe66d,#6ee7a8,#5ccfee,#8b9dff,#d78bff,
     #ff7a7a,#ffb765,#ffe66d,#6ee7a8,#5ccfee,#8b9dff,#d78bff,#ff7a7a);
