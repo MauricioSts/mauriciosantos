@@ -96,7 +96,7 @@ export const en = {
       description: 'Received amounts, notes and the fixed income history month by month.'
     },
     comidasDaCopa: {
-      type: 'Game',
+      type: 'Web game',
       role: 'Personal project',
       head: 'A live cooking game for two.',
       problem: 'I wanted to create a fun and interactive experience for me and my girlfriend to cook together, but nothing existed that combined the World Cup 2026 atmosphere with a live-synchronized culinary challenge between two phones.',

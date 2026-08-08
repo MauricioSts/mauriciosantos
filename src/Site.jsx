@@ -47,29 +47,31 @@ function useProjects() {
       accent: 'linear-gradient(150deg,#0b2545,#1c5b9c)', ...p.bridgeAndBits,
     },
     {
-      id: 'jerseyandbits', num: '04', name: 'JerseyAndBits', year: '2025',
+      /* rainbow: o único jogo da lista. O título sai do cinza do resto da página
+         para dizer, antes de qualquer texto, que aqui a coisa é outra. */
+      id: 'comidas-da-copa', num: '04', name: 'Comidas da Copa', year: '2026',
+      images: ['/comidas-da-copa-2.png', '/comidas-da-copa-3.png'],
+      tags: ['Next.js 16', 'Supabase', 'Realtime', 'TypeScript'],
+      href: 'https://cupfoods.mauriciosts.com/',
+      accent: 'linear-gradient(150deg,#3b2c0c,#9a7724)', rainbow: true, ...p.comidasDaCopa,
+    },
+    {
+      id: 'jerseyandbits', num: '05', name: 'JerseyAndBits', year: '2025',
       images: ['/jersey.jpeg'], tags: ['React.js', 'Firebase', 'Tailwind CSS'],
       href: 'https://jerseyandbits.vercel.app/',
       accent: 'linear-gradient(150deg,#06312a,#0f7a63)', ...p.jerseyAndBits,
     },
     {
-      id: 'salviano-burguer', num: '05', name: 'Salviano Burguer', year: '2024',
+      id: 'salviano-burguer', num: '06', name: 'Salviano Burguer', year: '2024',
       images: ['/salvianoburguer.png'], tags: ['JavaScript', 'Tailwind CSS', 'WhatsApp API'],
       href: 'https://salvianoburguer.vercel.app/',
       accent: 'linear-gradient(150deg,#3d1410,#8a3a2c)', ...p.salvianoBurguer,
     },
     {
-      id: 'chovinista', num: '06', name: 'Chovinista', year: '2024',
+      id: 'chovinista', num: '07', name: 'Chovinista', year: '2024',
       images: ['/chovinista.jpeg'], tags: ['React.js', 'Tailwind CSS'],
       href: null,
       accent: 'linear-gradient(150deg,#241a3d,#5b3f8f)', ...p.chovinista,
-    },
-    {
-      id: 'comidas-da-copa', num: '07', name: 'Comidas da Copa', year: '2026',
-      images: ['/comidas-da-copa-2.png', '/comidas-da-copa-3.png'],
-      tags: ['Next.js 16', 'Supabase', 'Realtime', 'TypeScript'],
-      href: 'https://cupfoods.mauriciosts.com/',
-      accent: 'linear-gradient(150deg,#3b2c0c,#9a7724)', ...p.comidasDaCopa,
     },
   ], [p])
 }
@@ -461,7 +463,7 @@ function Highlights({ open }) {
           <button className="hopen" onClick={() => open(i)} aria-label={p.name}>
             <div className="top">
               <div className="n">{p.num} · {p.type.toUpperCase()}</div>
-              <h3>{p.head}</h3>
+              <h3 className={p.rainbow ? 'rainbow' : undefined}>{p.head}</h3>
               <p className="d">{p.description}</p>
             </div>
             <div className="art" style={{ background: p.accent }}>
@@ -670,7 +672,7 @@ function Detail({ index, close, goto }) {
 
     <div className="dhero">
       <div className="n">{t.detail.project.toUpperCase()} {p.num} · {p.type.toUpperCase()}</div>
-      <h1>{p.name}</h1>
+      <h1 className={p.rainbow ? 'rainbow' : undefined}>{p.name}</h1>
       <p className="t">{p.head}</p>
       <div className="dpanel" style={{ background: p.accent }}>
         <Shot src={p.images[0]} alt={p.name} eager />

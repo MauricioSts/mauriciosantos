@@ -96,7 +96,7 @@ export const pt = {
       description: 'Registro de valores recebidos, anotações e histórico do rendimento fixo mês a mês.'
     },
     comidasDaCopa: {
-      type: 'Jogo',
+      type: 'Jogo web',
       role: 'Projeto pessoal',
       head: 'Um jogo de cozinha para dois, ao vivo.',
       problem: 'Queria criar uma experiência divertida e interativa para mim e minha namorada cozinharmos juntos, mas não havia nada que unisse o clima da Copa do Mundo 2026 com um desafio culinário sincronizado ao vivo entre dois celulares.',
