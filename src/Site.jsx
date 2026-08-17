@@ -179,6 +179,28 @@ function Shot({ src, alt, eager = false }) {
 }
 
 /* ---------------- tela do MacBook ---------------- */
+/* Fundo da célula do retrato: aparece enquanto o JPEG não chegou, para não piscar um
+   retângulo vazio no meio da abertura da tampa. Vetorial, então acompanha o --u. */
+function Portrait() {
+  return <svg className="avsvg" viewBox="0 0 120 150" preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="pf-bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#16283c" /><stop offset="1" stopColor="#0a0f16" />
+      </linearGradient>
+      <linearGradient id="pf-fg" x1=".2" y1="0" x2=".8" y2="1">
+        <stop offset="0" stopColor="#5ac8fa" /><stop offset="1" stopColor="#2997ff" />
+      </linearGradient>
+    </defs>
+    <rect width="120" height="150" fill="url(#pf-bg)" />
+    <g fill="none" stroke="#2997ff" strokeOpacity=".18">
+      <circle cx="60" cy="66" r="52" /><circle cx="60" cy="66" r="40" /><circle cx="60" cy="66" r="28" />
+    </g>
+    <path d="M60 108c-23 0-42 17-45 40v2h90v-2c-3-23-22-40-45-40z" fill="url(#pf-fg)" />
+    <circle cx="60" cy="62" r="27" fill="url(#pf-fg)" />
+  </svg>
+}
+
 function MacScreen() {
   const t = useTranslation()
   return <div className="osx">
@@ -194,7 +216,9 @@ function MacScreen() {
       </div>
       <div className="body">
         <div className="prof">
-          <div className="ph"><img src="/profile.jpeg" alt="Mauricio Santos" /></div>
+          {/* 750x1334 aguenta o mergulho: na tela cheia a célula pede ~710x1300 reais,
+              então a foto é reduzida, nunca ampliada */}
+          <div className="ph"><Portrait /><img src="/profile.jpeg" alt="Mauricio Santos" decoding="async" /></div>
           <div className="bio">
             <div className="h">{t.hero.aboutTitle}</div>
             <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP1 }} />
@@ -255,11 +279,11 @@ function Hero({ go }) {
   const t = useTranslation()
   const rig = useRef(null), stage = useRef(null), persp = useRef(null)
   const mbp = useRef(null), lid = useRef(null), deck = useRef(null), scr = useRef(null), hint = useRef(null)
-  const cue = useRef(null)
+  const cue = useRef(null), glare = useRef(null)
 
   useLayoutEffect(() => {
     const soft = reduced()
-    let raf = null, baseW = 1, baseH = 1, baseSh = 1, lastW = -1
+    let raf = null, baseW = 1, baseH = 1, baseSh = 1, baseSw = 1, lastW = -1
 
     /* Tamanho natural do notebook (zoom = 1). Como o zoom é aplicado na largura real
        e não em transform:scale, precisamos da base limpa: zeramos largura e --u
@@ -271,7 +295,9 @@ function Hero({ go }) {
       baseW = pe.offsetWidth || 1
       pe.style.setProperty('--u', (baseW / 100).toFixed(3) + 'px')
       baseH = pe.offsetHeight || 1
-      baseSh = lid.current?.querySelector('.scr')?.offsetHeight || baseH
+      const sc = lid.current?.querySelector('.scr')
+      baseSh = sc?.offsetHeight || baseH
+      baseSw = sc?.offsetWidth || baseW // o alvo do mergulho é a tela, não o chassi
       lastW = -1
     }
 
@@ -287,26 +313,43 @@ function Hero({ go }) {
       const e = soft ? 1 : sm(p / 0.46)           // fases 1+2: abertura da tampa
       const q = soft ? 0 : sm((p - 0.56) / 0.34)  // fase 3: câmera entra na tela
       const tilt = (1 - e) * 16 + 3 * (1 - q)
+      const ry = Math.sin(q * Math.PI) * 6 // órbita: a lente sai de lado e volta ao eixo
 
-      if (mbp.current) mbp.current.style.transform = `rotateX(${tilt.toFixed(2)}deg) scale(${(0.88 + e * 0.12).toFixed(3)})`
+      if (mbp.current) mbp.current.style.transform =
+        `rotateX(${tilt.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale(${(0.88 + e * 0.12).toFixed(3)})`
       if (lid.current) lid.current.style.transform = `rotateX(${(-90 + 90 * e).toFixed(2)}deg)`
       if (deck.current) deck.current.style.transform = `rotateX(${(90 - tilt).toFixed(2)}deg)` // mantém a base plana
       if (scr.current) scr.current.style.opacity = Math.max(0, Math.min(1, (e - 0.5) / 0.28))
+      if (glare.current) {
+        /* reflexo varrendo o vidro enquanto a tampa levanta. A faixa tem 45% da largura
+           e começa em -30%, então o percurso vai de fora à esquerda até fora à direita;
+           a opacidade é um sino em e, e com a tampa aberta ele já saiu de cena. */
+        glare.current.style.transform = `translate3d(${(-60 + 390 * e).toFixed(1)}%,0,0) rotate(16deg)`
+        glare.current.style.opacity = (Math.sin(e * Math.PI) * 0.85).toFixed(3)
+      }
 
-      /* Zoom: quanto o notebook pode crescer sem estourar o palco — o limite vem da
-         ALTURA e da LARGURA (sem o de largura a tela vazava pela lateral no celular).
-         Medimos o palco, que é 100svh, e não innerHeight, que oscila com a barra de
-         URL. O fator vira LARGURA, não scale: assim o navegador reconstrói texto,
-         bordas e raios no tamanho final em vez de ampliar um bitmap. --u acompanha
-         a largura e mantém a proporção de todo o desenho. */
+      /* Zoom: quanto o notebook pode crescer sem estourar o palco. Medimos o palco,
+         que é 100svh, e não innerHeight, que oscila com a barra de URL. O fator vira
+         LARGURA, não scale: assim o navegador reconstrói texto, bordas e raios no
+         tamanho final em vez de ampliar um bitmap. --u acompanha a largura e mantém a
+         proporção de todo o desenho.
+         O limite mede a TELA (baseSw/baseSh), não o chassi: a moldura de alumínio pode
+         vazar da viewport, é isso que dá a sensação de entrar dentro do monitor. Medindo
+         o chassi, no celular ele já nascia colado nas bordas e o mergulho ficava em ~3%
+         — a fase 3 virava rolagem parada. No estreito ainda passamos de 1 para o
+         conteúdo transbordar de vez. */
       const sw = sg.clientWidth || viewport().w, sh = sg.clientHeight || viewport().h
-      const zx = Math.max(0, Math.min(1.6, Math.min((sh * 0.86) / baseSh - 1, (sw * 0.94) / baseW - 1)))
+      const fill = sw < 900 ? 1.18 : 1
+      const zx = Math.max(0, Math.min(1.9, Math.min((sh * 0.94) / baseSh, (sw * fill) / baseSw) - 1))
       const w = baseW * (1 + q * zx)
       if (Math.abs(w - lastW) > 0.4) {
         lastW = w
         pe.style.width = w.toFixed(1) + 'px'
         pe.style.setProperty('--u', (w / 100).toFixed(3) + 'px')
       }
+      // a lente achata no fim do mergulho, para a tela aterrissar de frente
+      pe.style.perspective = `${Math.round(1700 + 1900 * q)}px`
+      pe.style.perspectiveOrigin = `50% ${(42 + 8 * q).toFixed(1)}%`
 
       if (hint.current) hint.current.style.opacity = Math.max(0, 1 - p * 5)
       if (cue.current) cue.current.style.opacity = Math.max(0, 1 - scrollY / 200)
@@ -351,6 +394,7 @@ function Hero({ go }) {
               <div className="scr">
                 <div className="notch"></div>
                 <div className="scrui" ref={scr}><MacScreen /></div>
+                <div className="glare" ref={glare}></div>
               </div>
               <div className="lidback"><span>MS</span></div>
             </div>

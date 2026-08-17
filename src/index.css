@@ -138,14 +138,20 @@ section{display:block;padding:140px 0;position:relative}
   width:min(880px,calc(100% - var(--pad) * 2),84vh);--u:8.8px;will-change:width}
 .mbp{position:relative;transform-style:preserve-3d;transform:rotateX(18deg) scale(.92)}
 .lid{position:relative;transform-style:preserve-3d;transform-origin:50% 100%;transform:rotateX(-90deg);
-  background:linear-gradient(#3b3b3f,#202024);padding:calc(var(--u) * 1.023);backface-visibility:hidden;
+  background:linear-gradient(#3b3b3f,#202024);padding:calc(var(--u) * 1.023);
   border-radius:calc(var(--u) * 1.7) calc(var(--u) * 1.7) calc(var(--u) * .57) calc(var(--u) * .57);
   box-shadow:0 calc(var(--u) * 3.9) calc(var(--u) * 9.1) rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.09) inset}
-.scr{position:relative;background:#000;border-radius:calc(var(--u) * 1.02);aspect-ratio:16/10;overflow:hidden;backface-visibility:hidden}
+/* translateZ separa tela e traseira no eixo Z. Coplanares elas disputavam o mesmo
+   plano (z-fighting) e em parte dos celulares a traseira de alumínio ganhava, cobrindo
+   a tela. A profundidade acompanha --u para não sumir quando o notebook cresce. */
+.scr{position:relative;background:#000;border-radius:calc(var(--u) * 1.02);aspect-ratio:16/10;overflow:hidden;
+  transform:translateZ(calc(var(--u) * .06))}
 .scrui{position:absolute;inset:0;opacity:0}
+.glare{position:absolute;top:-40%;bottom:-40%;left:-30%;width:45%;z-index:4;opacity:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.10) 42%,rgba(255,255,255,.2) 50%,rgba(255,255,255,.10) 58%,transparent)}
 .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:15%;height:3.4%;background:#0a0a0b;
-  border-radius:0 0 calc(var(--u) * .8) calc(var(--u) * .8);z-index:3}
-.lidback{position:absolute;inset:0;transform:rotateY(180deg);backface-visibility:hidden;
+  border-radius:0 0 calc(var(--u) * .8) calc(var(--u) * .8);z-index:5}
+.lidback{position:absolute;inset:0;transform:rotateY(180deg) translateZ(calc(var(--u) * .12));backface-visibility:hidden;
   background:linear-gradient(158deg,#5a5b60,#2c2d31 52%,#43444a);border-radius:calc(var(--u) * 1.7);display:grid;place-items:center;
   box-shadow:0 0 0 1px rgba(255,255,255,.12) inset}
 .lidback span{font-size:calc(var(--u) * 3.6);font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.24);transform:scaleX(-1)}
@@ -183,7 +189,8 @@ section{display:block;padding:140px 0;position:relative}
 .osx .h{color:#f5f5f7;font-weight:600;font-size:1.4em;letter-spacing:-.025em;flex:none}
 .osx .prof{display:grid;grid-template-columns:.85fr 1.5fr;gap:1.15em;flex:1;min-height:0}
 .osx .ph{position:relative;border-radius:.7em;overflow:hidden;background:#1a1a1d;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)}
-.osx .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.osx .ph .avsvg,.osx .ph img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.osx .ph img{object-fit:cover;object-position:center 20%}
 .osx .bio{display:flex;flex-direction:column;min-width:0}
 .osx .bio p{color:#8a8a8f;margin-top:.65em}
 .osx .bio b{color:#f5f5f7;font-weight:600}
@@ -394,11 +401,12 @@ footer b{font-weight:400;color:var(--ink)}
   .lnav .right .lk{display:none}
   .burger{display:block}
 
-  /* notebook: trilho mais curto e sem câmera fechando na tela
-     (o zoom é limitado pela largura no JS, então aqui ele só abre) */
-  .scrollrig{height:240svh}
+  /* notebook: trilho mais curto. O chassi descansa menor que a viewport de propósito —
+     é essa folga que dá espaço para a câmera mergulhar. Antes ele nascia colado nas
+     bordas e a fase 3 não tinha para onde crescer. */
+  .scrollrig{height:260svh}
   .stage{padding:calc(var(--bar) + 6px) 18px 30px}
-  .persp{width:min(880px,calc(100% - 36px),70vh);--u:3.5px}
+  .persp{width:min(880px,82%,68vh);--u:3.5px}
   /* a tela mostra menos coisa no celular, então a UI cabe maior em relação a ela */
   .osx{font-size:calc(var(--u) * 2.5)}
   .osx .bio{display:none}
