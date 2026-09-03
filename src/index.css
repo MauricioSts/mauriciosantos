@@ -291,6 +291,57 @@ section{display:block;padding:140px 0;position:relative}
 .chip:hover{background:rgba(255,255,255,.06);transform:translateY(-2px)}
 .chip i{font-style:normal;font-size:12px;font-weight:600;color:var(--g)}
 
+/* ---- hover preview (nome de ferramenta mostra o logo dela) ---- */
+.hp-target{position:relative;display:inline-block;text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:.16em;text-decoration-color:rgba(255,255,255,.22);transition:text-decoration-color .25s var(--ease)}
+.hp-target:hover{text-decoration-color:currentColor}
+.hp-clickable{cursor:pointer}
+/* fixed + portal: o preview nasce fora do carrossel e do accordion, que cortam
+   tudo que passa da borda */
+.hp-slot{position:fixed;z-index:9999;pointer-events:none;display:block}
+.hp-image{width:100%;height:100%;overflow:hidden;display:block;background:#0b0b0d;border:1px solid var(--line)}
+.hp-image img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.hp-logo{display:grid;place-items:center;background:rgba(22,22,24,.94);
+  backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px)}
+.hp-logo svg{width:52%;height:52%;color:inherit;filter:drop-shadow(0 0 18px currentColor)}
+/* sem mouse a imagem nunca sai do lugar certo e ainda tapa o texto */
+@media(hover:none){.hp-slot{display:none}.hp-target{text-decoration:none}}
+
+/* ---- aparelho (Device) ---- */
+.dv{width:calc(264px * var(--dv-scale,1));max-width:100%;perspective:1100px}
+.dv-body{position:relative;aspect-ratio:9/19.3;border-radius:13.5%/6.4%;padding:2.4%;
+  background:linear-gradient(150deg,#4a4a4f,#191a1d 42%,#101013 70%,#3a3a3f);
+  box-shadow:0 2px 0 rgba(255,255,255,.14) inset,0 26px 60px rgba(0,0,0,.55);transform-style:preserve-3d}
+.dv-screen{position:relative;width:100%;height:100%;border-radius:11.6%/5.6%;overflow:hidden;background:#000}
+.dv-screen img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.dv-scroll{overflow-y:auto;scroll-behavior:smooth;scrollbar-width:none}
+.dv-scroll::-webkit-scrollbar{display:none}
+.dv-scroll img{height:auto;object-fit:contain}
+.dv-island{position:absolute;top:4.2%;left:50%;transform:translateX(-50%);width:27%;height:2.6%;
+  border-radius:999px;background:#000;z-index:2}
+.dv-side{position:absolute;width:2%;border-radius:2px;background:#39393e}
+.dv-vol{left:-1%;top:22%;height:12%}
+.dv-pwr{right:-1%;top:30%;height:9%}
+
+/* ---- leque dos apps mobile ---- */
+.mobsec .fanwrap{margin-top:72px;padding:0 var(--pad)}
+.fanout{display:flex;justify-content:center;align-items:flex-end;perspective:1500px;min-height:520px}
+.fanit{position:relative;flex:none;border:0;padding:0;background:none;color:var(--w);cursor:pointer;
+  transition:transform .55s var(--ease),filter .55s var(--ease)}
+.fanit.l{transform:translateX(30%) rotate(-9deg) scale(.94);z-index:1}
+.fanit.r{transform:translateX(-30%) rotate(9deg) scale(.94);z-index:2}
+.fanit.c{z-index:3}
+.fanit:hover,.fanit:focus-visible{z-index:4;filter:drop-shadow(0 24px 50px rgba(0,0,0,.55))}
+.fanit.l:hover,.fanit.l:focus-visible{transform:translateX(26%) rotate(-3deg) scale(1) translateY(-14px)}
+.fanit.r:hover,.fanit.r:focus-visible{transform:translateX(-26%) rotate(3deg) scale(1) translateY(-14px)}
+.fanit.c:hover,.fanit.c:focus-visible{transform:translateY(-16px)}
+.fanlbl{display:block;margin-top:22px;text-align:center}
+.fanlbl b{display:block;font-size:17px;font-weight:600;letter-spacing:-.02em}
+.fanlbl i{display:block;font-style:normal;font-size:13px;color:var(--g);margin-top:3px}
+/* o rótulo do centro fica na frente dos aparelhos das pontas */
+.fanit.c .fanlbl{position:relative;z-index:1}
+.dpanel.portrait{aspect-ratio:16/9;padding:26px}
+
 /* ---- experiência ---- */
 .exp{position:relative;border-top:1px solid var(--line);margin-top:56px;padding-left:34px}
 .exp .vrail{position:absolute;left:4px;top:0;bottom:0;width:1px;background:var(--line)}
@@ -354,9 +405,20 @@ footer .fr{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 footer b{font-weight:400;color:var(--ink)}
 
 /* ---- detalhe do projeto ---- */
-.detail{position:fixed;inset:0;z-index:1000;background:#000;overflow-y:auto;-webkit-overflow-scrolling:touch;
-  animation:dIn .5s var(--ease)}
-@keyframes dIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+/* ---- modal do projeto (Modal Cards) ---- */
+.mc-root{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:24px}
+.mc-backdrop{position:absolute;inset:0;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.mc-modal{position:relative;width:min(1180px,100%);height:min(92vh,100%);border-radius:30px;overflow:hidden;
+  background:#000;border:1px solid rgba(255,255,255,.1);box-shadow:0 40px 120px rgba(0,0,0,.7);outline:none}
+.mc-body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.mc-close{position:absolute;top:14px;right:16px;z-index:20;width:36px;height:36px;border:0;border-radius:50%;
+  display:grid;place-items:center;cursor:pointer;color:var(--w);background:rgba(60,60,64,.72);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:.2s var(--ease)}
+.mc-close:hover{background:rgba(90,90,96,.9)}
+.mc-close svg{width:17px;height:17px}
+/* o botão de fechar flutua sobre a barra, então o conteúdo dela recua */
+.mc-body .dbar-in{padding-right:64px}
+.detail{background:#000}
 .dbar{position:sticky;top:0;z-index:5;height:var(--bar);background:rgba(29,29,31,.72);
   backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:1px solid rgba(255,255,255,.08)}
@@ -373,6 +435,10 @@ footer b{font-weight:400;color:var(--ink)}
 .dgal{max-width:1024px;margin:18px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 .dgal .gpic{border-radius:18px;overflow:hidden;background:var(--panel);border:1px solid rgba(255,255,255,.08)}
 .dgal .gpic img{width:100%;height:100%;object-fit:cover;object-position:top center}
+/* captura de celular é alta: em coluna larga ela viraria uma tira do topo */
+.dgal.portrait{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));max-width:820px}
+.dgal.portrait .gpic{aspect-ratio:9/19.3;border-radius:22px}
+.dgal.portrait .gpic img{object-fit:contain;object-position:center}
 .dbody{max-width:1024px;margin:0 auto;padding:80px var(--pad) 40px}
 .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
 .dgrid .lbl{font-size:19px;font-weight:600;color:var(--g);margin-bottom:12px}
@@ -393,6 +459,16 @@ footer b{font-weight:400;color:var(--ink)}
    TABLET / CELULAR
    ========================================================= */
 @media(max-width:900px){
+  /* no celular o leque vira fila que rola: sobreposto, nenhum aparelho abre */
+  .mobsec .fanwrap{padding:0}
+  .fanout{min-height:0;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;
+    gap:18px;padding:10px var(--pad) 4px;perspective:none}
+  .fanout::-webkit-scrollbar{display:none}
+  .fanit,.fanit.l,.fanit.r,.fanit.c{transform:none}
+  .fanit.l:hover,.fanit.r:hover,.fanit.c:hover{transform:none}
+  .dv{width:calc(210px * var(--dv-scale,1))}
+  .mc-root{padding:0}
+  .mc-modal{width:100%;height:100%;border-radius:0;border:0}
   section{padding:96px 0}
   .subhead{margin-top:72px}
 

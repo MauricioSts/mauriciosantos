@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useLayoutEffect, useMemo, useCallback } from 'react'
 import { useLanguage } from './contexts/LanguageContext'
 import { useTranslation } from './hooks/useTranslation'
+import TechScan from './components/TechScan'
+import ModalCard from './components/ModalCards'
+import Device from './components/Device'
 
 const MAIL = 'contatomauriciosts@gmail.com'
 const LINKS = {
@@ -28,10 +31,10 @@ function useProjects() {
   return useMemo(() => [
     {
       id: 'patchmap', num: '01', name: 'PatchMap', year: '2026',
-      images: ['/patchmap-site.png'],
+      images: ['/patchmap02.png'],
       tags: ['React Native', 'Expo', 'TypeScript', 'Django', 'PostgreSQL'],
       href: 'https://patchmap.mauriciosts.com/',
-      accent: 'linear-gradient(150deg,#04201f,#0f6f6a)', ...p.patchMap,
+      accent: 'linear-gradient(150deg,#04162c,#1f6fd0)', ...p.patchMap,
     },
     {
       id: 'cadsol', num: '02', name: 'CADSOL-RN', year: '2026',
@@ -92,6 +95,50 @@ function useExperiences() {
       tags: [language === 'pt' ? 'Suporte de TI' : 'IT Support'], ...e.secretaria,
     },
   ], [e, k, now, language])
+}
+
+/* Apps que só existem no celular. PLP e SSK ficam fora da lista de projetos
+   de propósito: abrem o mesmo modal de detalhe, mas não entram no carrossel
+   nem na navegação anterior/próximo dele. O PatchMap aponta para o índice da
+   lista, então continua sendo o mesmo projeto em todo lugar. */
+function useMobileApps() {
+  const projects = useProjects()
+  const t = useTranslation()
+  const p = t.projects
+  const m = t.mobile
+  return useMemo(() => {
+    const patchmap = projects.findIndex(x => x.id === 'patchmap')
+    return [
+      {
+        id: 'plp', name: 'Programa Leite Potiguar', tag: m.maintained,
+        image: '/plp-login.jpg',
+        target: {
+          id: 'plp', num: '07', name: 'Programa Leite Potiguar', year: '2026',
+          images: ['/plp-login.jpg'], portrait: true,
+          tags: ['React Native', 'TypeScript'],
+          href: 'https://play.google.com/store/apps/details?id=com.colaborador_pontt',
+          accent: 'linear-gradient(150deg,#111a45,#c2447c)', ...p.plp,
+        },
+      },
+      {
+        id: 'patchmap', name: 'PatchMap', tag: m.built,
+        image: '/patchmap-app.png', target: patchmap,
+      },
+      {
+        id: 'ssk', name: 'SSK', tag: m.building,
+        image: '/ssk-1.png',
+        target: {
+          id: 'ssk', num: '08', name: 'SSK', year: '2026',
+          /* 1 é o login, que também vai no aparelho do leque; o resto é a
+             galeria do detalhe, na ordem em que o app é usado. */
+          images: ['/ssk-1.png', '/ssk-2.png', '/ssk-3.png', '/ssk-4.png', '/ssk-5.png', '/ssk-6.png', '/ssk-7.png', '/ssk-8.png'],
+          portrait: true,
+          tags: ['React Native', 'TypeScript'],
+          accent: 'linear-gradient(150deg,#06211c,#1f9d78)', ...p.ssk,
+        },
+      },
+    ]
+  }, [projects, p, m])
 }
 
 /* Só framework, linguagem e plataforma. HTML, CSS, Tailwind, Vite, Expo e GitHub
@@ -442,7 +489,7 @@ function Latest({ open }) {
   }, [seen])
 
   if (!p) return null
-  return <section id="ultimo" className="latest" ref={ref}>
+  return <TechScan><section id="ultimo" className="latest" ref={ref}>
     <div className="wrap">
       <Reveal className="chapter" y={14}>{t.latest.chapter}</Reveal>
       <Reveal as="h2" className="big" delay={50}>{t.latest.title}<span className="dim">{t.latest.dim}</span></Reveal>
@@ -465,7 +512,7 @@ function Latest({ open }) {
         </span>
       </button>
     </Reveal>
-  </section>
+  </section></TechScan>
 }
 
 /* ---------------- projetos ---------------- */
@@ -489,7 +536,7 @@ function Highlights({ open }) {
     const card = el.querySelector('.hcard')
     el.scrollBy({ left: d * ((card?.offsetWidth || 320) + 20), behavior: 'smooth' })
   }
-  return <section id="projetos" className="projsec">
+  return <TechScan><section id="projetos" className="projsec">
     <div className="gal-head">
       <Reveal as="h2" y={18}>{t.portfolio.title}</Reveal>
       <Reveal className="arrows" delay={80} y={0}>
@@ -518,7 +565,33 @@ function Highlights({ open }) {
         </Reveal>
       ))}
     </div>
-  </section>
+  </section></TechScan>
+}
+
+/* ---------------- apps mobile ---------------- */
+const FAN = ['l', 'c', 'r']
+
+function MobileApps({ open }) {
+  const t = useTranslation()
+  const apps = useMobileApps()
+  return <TechScan><section id="mobile" className="mobsec">
+    <div className="wrap">
+      <Reveal className="chapter" y={14}>{t.mobile.chapter}</Reveal>
+      <Reveal as="h2" className="big" delay={50}>{t.mobile.title}<span className="dim">{t.mobile.dim}</span></Reveal>
+      <Reveal className="lede" delay={110}>{t.mobile.lede}</Reveal>
+    </div>
+    <Reveal className="fanwrap" delay={80} y={34}>
+      <div className="fanout">
+        {apps.map((a, i) => (
+          <button key={a.id} className={'fanit ' + FAN[i]} onClick={() => open(a.target)}
+            aria-label={`${t.mobile.open}: ${a.name}`}>
+            <Device image={a.image} alt={a.name} scale={i === 1 ? 1 : 0.86} parallaxStrength={10} rotateStrength={4} />
+            <span className="fanlbl"><b>{a.name}</b><i>{a.tag}</i></span>
+          </button>
+        ))}
+      </div>
+    </Reveal>
+  </section></TechScan>
 }
 
 /* ---------------- stack ---------------- */
@@ -543,7 +616,7 @@ function Stack() {
   const [tab, setTab] = useState(0)
   const firstKey = keys[0]
   useEffect(() => { setTab(0) }, [firstKey]) // troca de idioma reordena as abas
-  return <section id="stack">
+  return <TechScan><section id="stack">
     <div className="wrap">
       <Reveal className="chapter" y={14}>{t.stack.chapter}</Reveal>
       <Reveal as="h2" className="big" delay={50}>{t.stack.title}<span className="dim">{t.stack.dim}</span></Reveal>
@@ -566,7 +639,7 @@ function Stack() {
         <p className="foot">{t.stack.usageNote}</p>
       </Reveal>
     </div>
-  </section>
+  </section></TechScan>
 }
 
 /* ---------------- experiência ---------------- */
@@ -593,7 +666,7 @@ function Experience() {
     addEventListener('scroll', on, { passive: true }); addEventListener('resize', on); on()
     return () => { removeEventListener('scroll', on); removeEventListener('resize', on); if (raf != null) cancelAnimationFrame(raf) }
   }, [])
-  return <section id="experiencia">
+  return <TechScan><section id="experiencia">
     <div className="wrap">
       <Reveal className="chapter" y={14}>{t.experience.chapter}</Reveal>
       <Reveal as="h2" className="big" delay={50}>{t.experience.title}<span className="dim">{t.experience.dim}</span></Reveal>
@@ -643,7 +716,7 @@ function Experience() {
         ))}
       </div>
     </div>
-  </section>
+  </section></TechScan>
 }
 
 /* ---------------- contato ---------------- */
@@ -682,28 +755,47 @@ function Contact() {
 }
 
 /* ---------------- detalhe do projeto ---------------- */
+/* O brilho do fundo do modal vem do próprio projeto: a cor clara do gradiente
+   do card, que é a última do `accent`. */
+function glowOf(accent) {
+  const hex = accent && accent.match(/#[0-9a-f]{3,8}/gi)
+  return hex ? hex[hex.length - 1] : '#0a84ff'
+}
+
 function Detail({ index, close, goto }) {
   const t = useTranslation()
   const projects = useProjects()
   const open = index != null
-  const p = open ? projects[index] : null
+  /* Número é projeto da lista; objeto é app que só vive na seção mobile. */
+  const p = open ? (typeof index === 'number' ? projects[index] : index) : null
   const topRef = useRef(null)
-  useEffect(() => {
-    if (!open) return
-    const y = window.scrollY
-    document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = ''; window.scrollTo(0, y) }
-  }, [open])
-  useEffect(() => {
-    const k = (ev) => { if (ev.key === 'Escape') close() }
-    addEventListener('keydown', k)
-    return () => removeEventListener('keydown', k)
-  }, [close])
+  /* Trocar de projeto pelo par anterior/próximo mantém o modal aberto, então a
+     rolagem precisa voltar ao topo na mão. */
   useEffect(() => { topRef.current?.scrollTo({ top: 0 }) }, [index])
-  if (!open) return null
-  const prev = (index - 1 + projects.length) % projects.length
-  const next = (index + 1) % projects.length
-  return <div className="detail" ref={topRef}>
+  return <ModalCard
+    open={open}
+    onClose={close}
+    scrollRef={topRef}
+    gradientColor={glowOf(p?.accent)}
+    animationVariant="scale"
+    animationSpeed="normal"
+    springStiffness={240}
+    springDamping={28}
+    ariaLabel={p ? p.name : t.detail.project}
+    closeLabel={t.detail.back}
+    backdropGradientPosition="50% 8%"
+  >
+    {p && <DetailContent p={p} index={index} close={close} goto={goto} />}
+  </ModalCard>
+}
+
+function DetailContent({ p, index, close, goto }) {
+  const t = useTranslation()
+  const projects = useProjects()
+  const listed = typeof index === 'number'
+  const prev = listed ? (index - 1 + projects.length) % projects.length : 0
+  const next = listed ? (index + 1) % projects.length : 0
+  return <TechScan><div className="detail">
     <div className="dbar"><div className="dbar-in">
       <button className="back" onClick={close}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M15 6l-6 6 6 6" /></svg> {t.detail.back}
@@ -718,11 +810,13 @@ function Detail({ index, close, goto }) {
       <div className="n">{t.detail.project.toUpperCase()} {p.num} · <span className={p.rainbow ? 'rainbow' : undefined}>{p.type.toUpperCase()}</span></div>
       <h1>{p.name}</h1>
       <p className="t">{p.head}</p>
-      <div className="dpanel" style={{ background: p.accent }}>
-        <Shot src={p.images[0]} alt={p.name} eager />
+      <div className={p.portrait ? 'dpanel portrait' : 'dpanel'} style={{ background: p.accent }}>
+        {p.portrait
+          ? <Device image={p.images[0]} alt={p.name} scale={0.62} autoAnimate />
+          : <Shot src={p.images[0]} alt={p.name} eager />}
       </div>
       {p.images.length > 1 && (
-        <div className="dgal">
+        <div className={p.portrait ? 'dgal portrait' : 'dgal'}>
           {p.images.slice(1).map((img, i) => (
             <div className="gpic" key={img}><img src={img} alt={`${p.name} ${i + 2}`} loading="lazy" /></div>
           ))}
@@ -746,11 +840,13 @@ function Detail({ index, close, goto }) {
       </div>
     </div>
 
-    <div className="dpair">
-      <button onClick={() => goto(prev)}><small>{t.detail.prev}</small><h4>{projects[prev].name}</h4></button>
-      <button className="nx" onClick={() => goto(next)}><small>{t.detail.next}</small><h4>{projects[next].name}</h4></button>
-    </div>
-  </div>
+    {listed && (
+      <div className="dpair">
+        <button onClick={() => goto(prev)}><small>{t.detail.prev}</small><h4>{projects[prev].name}</h4></button>
+        <button className="nx" onClick={() => goto(next)}><small>{t.detail.next}</small><h4>{projects[next].name}</h4></button>
+      </div>
+    )}
+  </div></TechScan>
 }
 
 /* ---------------- app ---------------- */
@@ -787,6 +883,7 @@ export default function Site() {
     <Nav active={active} go={go} />
     <Hero go={go} />
     <Latest open={setDetail} />
+    <MobileApps open={setDetail} />
     <Highlights open={setDetail} />
     <Stack />
     <Experience />

@@ -47,6 +47,22 @@ export const pt = {
   },
 
   projects: {
+    plp: {
+      type: 'App mobile',
+      role: 'Manutenção',
+      head: 'O Leite Potiguar operando pelo celular.',
+      problem: 'O Programa Leite Potiguar entrega leite todo dia em vários pontos do estado, e a equipe registra essa operação pelo celular, com o app já publicado na Play Store.',
+      solution: 'Entrei no app depois dele no ar: mantenho o que já roda, corrijo o que aparece e sigo evoluindo as telas da operação, do login ao registro no ponto de distribuição.',
+      description: 'App do Programa Leite Potiguar na Play Store, onde eu faço a manutenção.'
+    },
+    ssk: {
+      type: 'App mobile',
+      role: 'Produto próprio',
+      head: 'Uma senha-mestra que não sai do aparelho.',
+      problem: 'Gerenciador de senhas quase sempre pede confiança em um servidor: a chave que abre tudo fica do outro lado.',
+      solution: 'O SSK — Sethas Security Keys — guarda os cofres no próprio aparelho, com criptografia local: a senha-mestra não é enviada e não pode ser recuperada por mim. Destranca por senha-mestra ou biometria, aceita mais de um cofre no mesmo aparelho e tem kit de recuperação para quem esquece. Está em desenvolvimento.',
+      description: 'Cofre de senhas com criptografia local: nada sai do aparelho. Em desenvolvimento.'
+    },
     patchMap: {
       type: 'App mobile',
       role: 'Full-stack',
@@ -106,6 +122,18 @@ export const pt = {
   },
 
   // Stack
+  // Apps mobile
+  mobile: {
+    chapter: 'Mobile',
+    title: 'Três apps no bolso.',
+    dim: 'Toque no aparelho para abrir o projeto.',
+    lede: 'Dois eu levantei do zero: o PatchMap, que roda em campo na SETHAS, e o SSK, ainda em desenvolvimento. No terceiro, o app do Programa Leite Potiguar, entrei depois que ele já estava na Play Store e cuido da manutenção.',
+    open: 'Abrir',
+    built: 'Criado do zero',
+    building: 'Do zero · em desenvolvimento',
+    maintained: 'Manutenção'
+  },
+
   stack: {
     chapter: 'Stack',
     title: 'React. TypeScript. React Native.',
