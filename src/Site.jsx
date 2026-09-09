@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useLayoutEffect, useMemo, useCallback } from 'react'
 import { useLanguage } from './contexts/LanguageContext'
 import { useTranslation } from './hooks/useTranslation'
+import TechScan from './components/TechScan'
+import ModalCard from './components/ModalCards'
+import Device from './components/Device'
 
 const MAIL = 'contatomauriciosts@gmail.com'
 const LINKS = {
@@ -28,10 +31,10 @@ function useProjects() {
   return useMemo(() => [
     {
       id: 'patchmap', num: '01', name: 'PatchMap', year: '2026',
-      images: ['/patchmap-site.png'],
+      images: ['/patchmap02.png'],
       tags: ['React Native', 'Expo', 'TypeScript', 'Django', 'PostgreSQL'],
       href: 'https://patchmap.mauriciosts.com/',
-      accent: 'linear-gradient(150deg,#04201f,#0f6f6a)', ...p.patchMap,
+      accent: 'linear-gradient(150deg,#04162c,#1f6fd0)', ...p.patchMap,
     },
     {
       id: 'cadsol', num: '02', name: 'CADSOL-RN', year: '2026',
@@ -92,6 +95,50 @@ function useExperiences() {
       tags: [language === 'pt' ? 'Suporte de TI' : 'IT Support'], ...e.secretaria,
     },
   ], [e, k, now, language])
+}
+
+/* Apps que só existem no celular. PLP e SSK ficam fora da lista de projetos
+   de propósito: abrem o mesmo modal de detalhe, mas não entram no carrossel
+   nem na navegação anterior/próximo dele. O PatchMap aponta para o índice da
+   lista, então continua sendo o mesmo projeto em todo lugar. */
+function useMobileApps() {
+  const projects = useProjects()
+  const t = useTranslation()
+  const p = t.projects
+  const m = t.mobile
+  return useMemo(() => {
+    const patchmap = projects.findIndex(x => x.id === 'patchmap')
+    return [
+      {
+        id: 'plp', name: 'Programa Leite Potiguar', tag: m.maintained,
+        image: '/plp-login.jpg',
+        target: {
+          id: 'plp', num: '07', name: 'Programa Leite Potiguar', year: '2026',
+          images: ['/plp-login.jpg'], portrait: true,
+          tags: ['React Native', 'TypeScript'],
+          href: 'https://play.google.com/store/apps/details?id=com.colaborador_pontt',
+          accent: 'linear-gradient(150deg,#111a45,#c2447c)', ...p.plp,
+        },
+      },
+      {
+        id: 'patchmap', name: 'PatchMap', tag: m.built,
+        image: '/patchmap-app.png', target: patchmap,
+      },
+      {
+        id: 'ssk', name: 'SSK', tag: m.building,
+        image: '/ssk-1.png',
+        target: {
+          id: 'ssk', num: '08', name: 'SSK', year: '2026',
+          /* 1 é o login, que também vai no aparelho do leque; o resto é a
+             galeria do detalhe, na ordem em que o app é usado. */
+          images: ['/ssk-1.png', '/ssk-2.png', '/ssk-3.png', '/ssk-4.png', '/ssk-5.png', '/ssk-6.png', '/ssk-7.png', '/ssk-8.png'],
+          portrait: true,
+          tags: ['React Native', 'TypeScript'],
+          accent: 'linear-gradient(150deg,#06211c,#1f9d78)', ...p.ssk,
+        },
+      },
+    ]
+  }, [projects, p, m])
 }
 
 /* Só framework, linguagem e plataforma. HTML, CSS, Tailwind, Vite, Expo e GitHub
@@ -179,6 +226,28 @@ function Shot({ src, alt, eager = false }) {
 }
 
 /* ---------------- tela do MacBook ---------------- */
+/* Fundo da célula do retrato: aparece enquanto o JPEG não chegou, para não piscar um
+   retângulo vazio no meio da abertura da tampa. Vetorial, então acompanha o --u. */
+function Portrait() {
+  return <svg className="avsvg" viewBox="0 0 120 150" preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="pf-bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#16283c" /><stop offset="1" stopColor="#0a0f16" />
+      </linearGradient>
+      <linearGradient id="pf-fg" x1=".2" y1="0" x2=".8" y2="1">
+        <stop offset="0" stopColor="#5ac8fa" /><stop offset="1" stopColor="#2997ff" />
+      </linearGradient>
+    </defs>
+    <rect width="120" height="150" fill="url(#pf-bg)" />
+    <g fill="none" stroke="#2997ff" strokeOpacity=".18">
+      <circle cx="60" cy="66" r="52" /><circle cx="60" cy="66" r="40" /><circle cx="60" cy="66" r="28" />
+    </g>
+    <path d="M60 108c-23 0-42 17-45 40v2h90v-2c-3-23-22-40-45-40z" fill="url(#pf-fg)" />
+    <circle cx="60" cy="62" r="27" fill="url(#pf-fg)" />
+  </svg>
+}
+
 function MacScreen() {
   const t = useTranslation()
   return <div className="osx">
@@ -194,7 +263,9 @@ function MacScreen() {
       </div>
       <div className="body">
         <div className="prof">
-          <div className="ph"><img src="/profile.jpeg" alt="Mauricio Santos" /></div>
+          {/* 750x1334 aguenta o mergulho: na tela cheia a célula pede ~710x1300 reais,
+              então a foto é reduzida, nunca ampliada */}
+          <div className="ph"><Portrait /><img src="/profile.jpeg" alt="Mauricio Santos" decoding="async" /></div>
           <div className="bio">
             <div className="h">{t.hero.aboutTitle}</div>
             <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP1 }} />
@@ -255,11 +326,11 @@ function Hero({ go }) {
   const t = useTranslation()
   const rig = useRef(null), stage = useRef(null), persp = useRef(null)
   const mbp = useRef(null), lid = useRef(null), deck = useRef(null), scr = useRef(null), hint = useRef(null)
-  const cue = useRef(null)
+  const cue = useRef(null), glare = useRef(null)
 
   useLayoutEffect(() => {
     const soft = reduced()
-    let raf = null, baseW = 1, baseH = 1, baseSh = 1, lastW = -1
+    let raf = null, baseW = 1, baseH = 1, baseSh = 1, baseSw = 1, lastW = -1
 
     /* Tamanho natural do notebook (zoom = 1). Como o zoom é aplicado na largura real
        e não em transform:scale, precisamos da base limpa: zeramos largura e --u
@@ -271,7 +342,9 @@ function Hero({ go }) {
       baseW = pe.offsetWidth || 1
       pe.style.setProperty('--u', (baseW / 100).toFixed(3) + 'px')
       baseH = pe.offsetHeight || 1
-      baseSh = lid.current?.querySelector('.scr')?.offsetHeight || baseH
+      const sc = lid.current?.querySelector('.scr')
+      baseSh = sc?.offsetHeight || baseH
+      baseSw = sc?.offsetWidth || baseW // o alvo do mergulho é a tela, não o chassi
       lastW = -1
     }
 
@@ -287,26 +360,43 @@ function Hero({ go }) {
       const e = soft ? 1 : sm(p / 0.46)           // fases 1+2: abertura da tampa
       const q = soft ? 0 : sm((p - 0.56) / 0.34)  // fase 3: câmera entra na tela
       const tilt = (1 - e) * 16 + 3 * (1 - q)
+      const ry = Math.sin(q * Math.PI) * 6 // órbita: a lente sai de lado e volta ao eixo
 
-      if (mbp.current) mbp.current.style.transform = `rotateX(${tilt.toFixed(2)}deg) scale(${(0.88 + e * 0.12).toFixed(3)})`
+      if (mbp.current) mbp.current.style.transform =
+        `rotateX(${tilt.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale(${(0.88 + e * 0.12).toFixed(3)})`
       if (lid.current) lid.current.style.transform = `rotateX(${(-90 + 90 * e).toFixed(2)}deg)`
       if (deck.current) deck.current.style.transform = `rotateX(${(90 - tilt).toFixed(2)}deg)` // mantém a base plana
       if (scr.current) scr.current.style.opacity = Math.max(0, Math.min(1, (e - 0.5) / 0.28))
+      if (glare.current) {
+        /* reflexo varrendo o vidro enquanto a tampa levanta. A faixa tem 45% da largura
+           e começa em -30%, então o percurso vai de fora à esquerda até fora à direita;
+           a opacidade é um sino em e, e com a tampa aberta ele já saiu de cena. */
+        glare.current.style.transform = `translate3d(${(-60 + 390 * e).toFixed(1)}%,0,0) rotate(16deg)`
+        glare.current.style.opacity = (Math.sin(e * Math.PI) * 0.85).toFixed(3)
+      }
 
-      /* Zoom: quanto o notebook pode crescer sem estourar o palco — o limite vem da
-         ALTURA e da LARGURA (sem o de largura a tela vazava pela lateral no celular).
-         Medimos o palco, que é 100svh, e não innerHeight, que oscila com a barra de
-         URL. O fator vira LARGURA, não scale: assim o navegador reconstrói texto,
-         bordas e raios no tamanho final em vez de ampliar um bitmap. --u acompanha
-         a largura e mantém a proporção de todo o desenho. */
+      /* Zoom: quanto o notebook pode crescer sem estourar o palco. Medimos o palco,
+         que é 100svh, e não innerHeight, que oscila com a barra de URL. O fator vira
+         LARGURA, não scale: assim o navegador reconstrói texto, bordas e raios no
+         tamanho final em vez de ampliar um bitmap. --u acompanha a largura e mantém a
+         proporção de todo o desenho.
+         O limite mede a TELA (baseSw/baseSh), não o chassi: a moldura de alumínio pode
+         vazar da viewport, é isso que dá a sensação de entrar dentro do monitor. Medindo
+         o chassi, no celular ele já nascia colado nas bordas e o mergulho ficava em ~3%
+         — a fase 3 virava rolagem parada. No estreito ainda passamos de 1 para o
+         conteúdo transbordar de vez. */
       const sw = sg.clientWidth || viewport().w, sh = sg.clientHeight || viewport().h
-      const zx = Math.max(0, Math.min(1.6, Math.min((sh * 0.86) / baseSh - 1, (sw * 0.94) / baseW - 1)))
+      const fill = sw < 900 ? 1.18 : 1
+      const zx = Math.max(0, Math.min(1.9, Math.min((sh * 0.94) / baseSh, (sw * fill) / baseSw) - 1))
       const w = baseW * (1 + q * zx)
       if (Math.abs(w - lastW) > 0.4) {
         lastW = w
         pe.style.width = w.toFixed(1) + 'px'
         pe.style.setProperty('--u', (w / 100).toFixed(3) + 'px')
       }
+      // a lente achata no fim do mergulho, para a tela aterrissar de frente
+      pe.style.perspective = `${Math.round(1700 + 1900 * q)}px`
+      pe.style.perspectiveOrigin = `50% ${(42 + 8 * q).toFixed(1)}%`
 
       if (hint.current) hint.current.style.opacity = Math.max(0, 1 - p * 5)
       if (cue.current) cue.current.style.opacity = Math.max(0, 1 - scrollY / 200)
@@ -351,6 +441,7 @@ function Hero({ go }) {
               <div className="scr">
                 <div className="notch"></div>
                 <div className="scrui" ref={scr}><MacScreen /></div>
+                <div className="glare" ref={glare}></div>
               </div>
               <div className="lidback"><span>MS</span></div>
             </div>
@@ -398,7 +489,7 @@ function Latest({ open }) {
   }, [seen])
 
   if (!p) return null
-  return <section id="ultimo" className="latest" ref={ref}>
+  return <TechScan><section id="ultimo" className="latest" ref={ref}>
     <div className="wrap">
       <Reveal className="chapter" y={14}>{t.latest.chapter}</Reveal>
       <Reveal as="h2" className="big" delay={50}>{t.latest.title}<span className="dim">{t.latest.dim}</span></Reveal>
@@ -421,7 +512,7 @@ function Latest({ open }) {
         </span>
       </button>
     </Reveal>
-  </section>
+  </section></TechScan>
 }
 
 /* ---------------- projetos ---------------- */
@@ -445,7 +536,7 @@ function Highlights({ open }) {
     const card = el.querySelector('.hcard')
     el.scrollBy({ left: d * ((card?.offsetWidth || 320) + 20), behavior: 'smooth' })
   }
-  return <section id="projetos" className="projsec">
+  return <TechScan><section id="projetos" className="projsec">
     <div className="gal-head">
       <Reveal as="h2" y={18}>{t.portfolio.title}</Reveal>
       <Reveal className="arrows" delay={80} y={0}>
@@ -474,7 +565,33 @@ function Highlights({ open }) {
         </Reveal>
       ))}
     </div>
-  </section>
+  </section></TechScan>
+}
+
+/* ---------------- apps mobile ---------------- */
+const FAN = ['l', 'c', 'r']
+
+function MobileApps({ open }) {
+  const t = useTranslation()
+  const apps = useMobileApps()
+  return <TechScan><section id="mobile" className="mobsec">
+    <div className="wrap">
+      <Reveal className="chapter" y={14}>{t.mobile.chapter}</Reveal>
+      <Reveal as="h2" className="big" delay={50}>{t.mobile.title}<span className="dim">{t.mobile.dim}</span></Reveal>
+      <Reveal className="lede" delay={110}>{t.mobile.lede}</Reveal>
+    </div>
+    <Reveal className="fanwrap" delay={80} y={34}>
+      <div className="fanout">
+        {apps.map((a, i) => (
+          <button key={a.id} className={'fanit ' + FAN[i]} onClick={() => open(a.target)}
+            aria-label={`${t.mobile.open}: ${a.name}`}>
+            <Device image={a.image} alt={a.name} scale={i === 1 ? 1 : 0.86} parallaxStrength={10} rotateStrength={4} />
+            <span className="fanlbl"><b>{a.name}</b><i>{a.tag}</i></span>
+          </button>
+        ))}
+      </div>
+    </Reveal>
+  </section></TechScan>
 }
 
 /* ---------------- stack ---------------- */
@@ -499,7 +616,7 @@ function Stack() {
   const [tab, setTab] = useState(0)
   const firstKey = keys[0]
   useEffect(() => { setTab(0) }, [firstKey]) // troca de idioma reordena as abas
-  return <section id="stack">
+  return <TechScan><section id="stack">
     <div className="wrap">
       <Reveal className="chapter" y={14}>{t.stack.chapter}</Reveal>
       <Reveal as="h2" className="big" delay={50}>{t.stack.title}<span className="dim">{t.stack.dim}</span></Reveal>
@@ -522,7 +639,7 @@ function Stack() {
         <p className="foot">{t.stack.usageNote}</p>
       </Reveal>
     </div>
-  </section>
+  </section></TechScan>
 }
 
 /* ---------------- experiência ---------------- */
@@ -549,7 +666,7 @@ function Experience() {
     addEventListener('scroll', on, { passive: true }); addEventListener('resize', on); on()
     return () => { removeEventListener('scroll', on); removeEventListener('resize', on); if (raf != null) cancelAnimationFrame(raf) }
   }, [])
-  return <section id="experiencia">
+  return <TechScan><section id="experiencia">
     <div className="wrap">
       <Reveal className="chapter" y={14}>{t.experience.chapter}</Reveal>
       <Reveal as="h2" className="big" delay={50}>{t.experience.title}<span className="dim">{t.experience.dim}</span></Reveal>
@@ -599,7 +716,7 @@ function Experience() {
         ))}
       </div>
     </div>
-  </section>
+  </section></TechScan>
 }
 
 /* ---------------- contato ---------------- */
@@ -638,28 +755,47 @@ function Contact() {
 }
 
 /* ---------------- detalhe do projeto ---------------- */
+/* O brilho do fundo do modal vem do próprio projeto: a cor clara do gradiente
+   do card, que é a última do `accent`. */
+function glowOf(accent) {
+  const hex = accent && accent.match(/#[0-9a-f]{3,8}/gi)
+  return hex ? hex[hex.length - 1] : '#0a84ff'
+}
+
 function Detail({ index, close, goto }) {
   const t = useTranslation()
   const projects = useProjects()
   const open = index != null
-  const p = open ? projects[index] : null
+  /* Número é projeto da lista; objeto é app que só vive na seção mobile. */
+  const p = open ? (typeof index === 'number' ? projects[index] : index) : null
   const topRef = useRef(null)
-  useEffect(() => {
-    if (!open) return
-    const y = window.scrollY
-    document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = ''; window.scrollTo(0, y) }
-  }, [open])
-  useEffect(() => {
-    const k = (ev) => { if (ev.key === 'Escape') close() }
-    addEventListener('keydown', k)
-    return () => removeEventListener('keydown', k)
-  }, [close])
+  /* Trocar de projeto pelo par anterior/próximo mantém o modal aberto, então a
+     rolagem precisa voltar ao topo na mão. */
   useEffect(() => { topRef.current?.scrollTo({ top: 0 }) }, [index])
-  if (!open) return null
-  const prev = (index - 1 + projects.length) % projects.length
-  const next = (index + 1) % projects.length
-  return <div className="detail" ref={topRef}>
+  return <ModalCard
+    open={open}
+    onClose={close}
+    scrollRef={topRef}
+    gradientColor={glowOf(p?.accent)}
+    animationVariant="scale"
+    animationSpeed="normal"
+    springStiffness={240}
+    springDamping={28}
+    ariaLabel={p ? p.name : t.detail.project}
+    closeLabel={t.detail.back}
+    backdropGradientPosition="50% 8%"
+  >
+    {p && <DetailContent p={p} index={index} close={close} goto={goto} />}
+  </ModalCard>
+}
+
+function DetailContent({ p, index, close, goto }) {
+  const t = useTranslation()
+  const projects = useProjects()
+  const listed = typeof index === 'number'
+  const prev = listed ? (index - 1 + projects.length) % projects.length : 0
+  const next = listed ? (index + 1) % projects.length : 0
+  return <TechScan><div className="detail">
     <div className="dbar"><div className="dbar-in">
       <button className="back" onClick={close}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M15 6l-6 6 6 6" /></svg> {t.detail.back}
@@ -674,11 +810,13 @@ function Detail({ index, close, goto }) {
       <div className="n">{t.detail.project.toUpperCase()} {p.num} · <span className={p.rainbow ? 'rainbow' : undefined}>{p.type.toUpperCase()}</span></div>
       <h1>{p.name}</h1>
       <p className="t">{p.head}</p>
-      <div className="dpanel" style={{ background: p.accent }}>
-        <Shot src={p.images[0]} alt={p.name} eager />
+      <div className={p.portrait ? 'dpanel portrait' : 'dpanel'} style={{ background: p.accent }}>
+        {p.portrait
+          ? <Device image={p.images[0]} alt={p.name} scale={0.62} autoAnimate />
+          : <Shot src={p.images[0]} alt={p.name} eager />}
       </div>
       {p.images.length > 1 && (
-        <div className="dgal">
+        <div className={p.portrait ? 'dgal portrait' : 'dgal'}>
           {p.images.slice(1).map((img, i) => (
             <div className="gpic" key={img}><img src={img} alt={`${p.name} ${i + 2}`} loading="lazy" /></div>
           ))}
@@ -702,11 +840,13 @@ function Detail({ index, close, goto }) {
       </div>
     </div>
 
-    <div className="dpair">
-      <button onClick={() => goto(prev)}><small>{t.detail.prev}</small><h4>{projects[prev].name}</h4></button>
-      <button className="nx" onClick={() => goto(next)}><small>{t.detail.next}</small><h4>{projects[next].name}</h4></button>
-    </div>
-  </div>
+    {listed && (
+      <div className="dpair">
+        <button onClick={() => goto(prev)}><small>{t.detail.prev}</small><h4>{projects[prev].name}</h4></button>
+        <button className="nx" onClick={() => goto(next)}><small>{t.detail.next}</small><h4>{projects[next].name}</h4></button>
+      </div>
+    )}
+  </div></TechScan>
 }
 
 /* ---------------- app ---------------- */
@@ -743,6 +883,7 @@ export default function Site() {
     <Nav active={active} go={go} />
     <Hero go={go} />
     <Latest open={setDetail} />
+    <MobileApps open={setDetail} />
     <Highlights open={setDetail} />
     <Stack />
     <Experience />

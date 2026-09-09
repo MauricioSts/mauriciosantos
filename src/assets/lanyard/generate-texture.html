@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Textura da Fita</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: #1a1a1a;
+            border-radius: 1rem;
+            border: 2px solid #34d399;
+            box-shadow: 0 0 30px rgba(52, 211, 153, 0.25);
+        }
+        h1 { color: #34d399; margin-bottom: 1rem; }
+        canvas {
+            border: 2px solid #34d399;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+        button {
+            background: #34d399;
+            color: #0a0a0a;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        button:hover {
+            background: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Gerador de Textura da Fita</h1>
+        <p>Visualize e baixe a textura para o cordão</p>
+        <canvas id="canvas" width="512" height="512"></canvas>
+        <br>
+        <button onclick="downloadTexture()">⬇️ Baixar lanyard.png</button>
+        <button onclick="regenerate()">🔄 Gerar Nova</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function generateTexture() {
+            // Fundo base - cor esmeralda
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#34d399');
+            gradient.addColorStop(0.5, '#10b981');
+            gradient.addColorStop(1, '#059669');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Adicionar listras diagonais para textura de tecido
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 2;
+            for (let i = -canvas.height; i < canvas.width + canvas.height; i += 8) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i + canvas.height, canvas.height);
+                ctx.stroke();
+            }
+
+            // Adicionar bordas mais escuras
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, 30);
+            ctx.fillRect(0, canvas.height - 30, canvas.width, 30);
+
+            // Adicionar linhas de costura
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(0, 20);
+            ctx.lineTo(canvas.width, 20);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height - 20);
+            ctx.lineTo(canvas.width, canvas.height - 20);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Adicionar texto/logo (opcional)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('MAURICIO', canvas.width / 2, canvas.height / 2);
+            
+            // Adicionar textura de tecido
+            for (let i = 0; i < 1000; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 2;
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.1})`;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+
+        function downloadTexture() {
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'lanyard.png';
+                link.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        function regenerate() {
+            generateTexture();
+        }
+
+        // Gerar textura inicial
+        generateTexture();
+    </script>
+</body>
+</html>

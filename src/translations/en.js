@@ -47,6 +47,22 @@ export const en = {
   },
 
   projects: {
+    plp: {
+      type: 'Mobile app',
+      role: 'Maintenance',
+      head: 'Leite Potiguar running from the phone.',
+      problem: 'The Leite Potiguar programme delivers milk every day across several points in the state, and the staff records that operation on the phone, with the app already published on the Play Store.',
+      solution: 'I joined the app after it was live: I keep what already runs working, fix what comes up and keep evolving the operation screens, from login to the record at the distribution point.',
+      description: 'The Leite Potiguar app on the Play Store, where I handle maintenance.'
+    },
+    ssk: {
+      type: 'Mobile app',
+      role: 'Own product',
+      head: 'A master password that never leaves the device.',
+      problem: 'A password manager almost always asks you to trust a server: the key that opens everything sits on the other side.',
+      solution: 'SSK — Sethas Security Keys — keeps the vaults on the device itself, encrypted locally: the master password is never sent and cannot be recovered by me. It unlocks by master password or biometrics, holds more than one vault on the same device, and ships a recovery kit for whoever forgets. Under development.',
+      description: 'Password vault encrypted locally: nothing leaves the device. Under development.'
+    },
     patchMap: {
       type: 'Mobile app',
       role: 'Full-stack',
@@ -106,6 +122,18 @@ export const en = {
   },
 
   // Stack
+  // Mobile apps
+  mobile: {
+    chapter: 'Mobile',
+    title: 'Three apps in your pocket.',
+    dim: 'Tap a device to open the project.',
+    lede: 'Two I built from scratch: PatchMap, running in the field at SETHAS, and SSK, still under development. On the third, the Leite Potiguar programme app, I came in after it was already on the Play Store and I keep it maintained.',
+    open: 'Open',
+    built: 'Built from scratch',
+    building: 'From scratch · in development',
+    maintained: 'Maintenance'
+  },
+
   stack: {
     chapter: 'Stack',
     title: 'React. TypeScript. React Native.',

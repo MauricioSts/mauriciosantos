@@ -1,0 +1,36 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradiente de fundo esmeralda -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#34d399;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="diagonal" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+    </pattern>
+    <pattern id="dots" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.5" fill="rgba(255,255,255,0.05)"/>
+    </pattern>
+  </defs>
+  
+  <!-- Fundo com gradiente -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  
+  <!-- Textura diagonal -->
+  <rect width="512" height="512" fill="url(#diagonal)"/>
+  
+  <!-- Textura de pontos -->
+  <rect width="512" height="512" fill="url(#dots)"/>
+  
+  <!-- Bordas superiores e inferiores -->
+  <rect x="0" y="0" width="512" height="30" fill="rgba(0,0,0,0.2)"/>
+  <rect x="0" y="482" width="512" height="30" fill="rgba(0,0,0,0.2)"/>
+  
+  <!-- Linhas de costura -->
+  <line x1="0" y1="20" x2="512" y2="20" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="5,5"/>
+  <line x1="0" y1="492" x2="512" y2="492" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="5,5"/>
+  
+  <!-- Texto -->
+  <text x="256" y="256" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="rgba(255,255,255,0.15)">MAURICIO</text>
+</svg>
