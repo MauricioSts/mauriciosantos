@@ -14,15 +14,18 @@ import './MacbookScroll.css'
 
 const ICON = { className: 'mbs-ico' }
 
-export default function MacbookScroll({ src, alt = '', title, badge, showGradient = false }) {
+export default function MacbookScroll({ src, alt = '', title, badge, children, showGradient = false }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => { if (window.innerWidth < 768) setIsMobile(true) }, [])
 
-  const scaleX = useTransform(scrollYProgress, [0, 0.3], [1.2, isMobile ? 1 : 1.5])
-  const scaleY = useTransform(scrollYProgress, [0, 0.3], [0.6, isMobile ? 1 : 1.5])
+  /* o chassi aqui é bem maior que os 32rem do original, então a tela cresce menos
+     no fim: 1.5x estouraria a largura da janela em telas de 1366px */
+  const zoom = isMobile ? 1 : 1.3
+  const scaleX = useTransform(scrollYProgress, [0, 0.3], [1.2, zoom])
+  const scaleY = useTransform(scrollYProgress, [0, 0.3], [0.6, zoom])
   const translate = useTransform(scrollYProgress, [0, 1], [0, 1500])
   const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3], [-28, -28, 0])
   const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 100])
@@ -35,7 +38,9 @@ export default function MacbookScroll({ src, alt = '', title, badge, showGradien
       {title}
     </Motion.h2>
 
-    <Lid src={src} alt={alt} scaleX={scaleX} scaleY={scaleY} rotate={rotate} translate={translate} />
+    <Lid scaleX={scaleX} scaleY={scaleY} rotate={rotate} translate={translate} src={src} alt={alt}>
+      {children}
+    </Lid>
 
     {/* base: barra acima do teclado, alto-falantes, teclado e trackpad */}
     <div className="mbs-base">
@@ -53,7 +58,8 @@ export default function MacbookScroll({ src, alt = '', title, badge, showGradien
   </div></div>
 }
 
-function Lid({ scaleX, scaleY, rotate, translate, src, alt }) {
+/* a tela aceita conteúdo vivo (children) ou um screenshot (src) */
+function Lid({ scaleX, scaleY, rotate, translate, src, alt, children }) {
   return <div className="mbs-lid">
     <div className="mbs-lidback">
       <div className="mbs-lidlogo"><span>MS</span></div>
@@ -63,7 +69,9 @@ function Lid({ scaleX, scaleY, rotate, translate, src, alt }) {
       style={{ scaleX, scaleY, rotateX: rotate, translateY: translate, transformStyle: 'preserve-3d', transformOrigin: 'top' }}
     >
       <div className="mbs-screenbg" />
-      {src && <img src={src} alt={alt} />}
+      {children
+        ? <div className="mbs-screenui">{children}</div>
+        : src && <img src={src} alt={alt} />}
     </Motion.div>
   </div>
 }

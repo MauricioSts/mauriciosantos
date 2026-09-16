@@ -226,6 +226,63 @@ function Shot({ src, alt, eager = false }) {
   </div>
 }
 
+/* ---------------- tela do MacBook ---------------- */
+/* Fundo da célula do retrato: aparece enquanto o JPEG não chegou, para não piscar um
+   retângulo vazio no meio da abertura da tampa. Vetorial, então acompanha o --u. */
+function Portrait() {
+  return <svg className="avsvg" viewBox="0 0 120 150" preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="pf-bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#16283c" /><stop offset="1" stopColor="#0a0f16" />
+      </linearGradient>
+      <linearGradient id="pf-fg" x1=".2" y1="0" x2=".8" y2="1">
+        <stop offset="0" stopColor="#5ac8fa" /><stop offset="1" stopColor="#2997ff" />
+      </linearGradient>
+    </defs>
+    <rect width="120" height="150" fill="url(#pf-bg)" />
+    <g fill="none" stroke="#2997ff" strokeOpacity=".18">
+      <circle cx="60" cy="66" r="52" /><circle cx="60" cy="66" r="40" /><circle cx="60" cy="66" r="28" />
+    </g>
+    <path d="M60 108c-23 0-42 17-45 40v2h90v-2c-3-23-22-40-45-40z" fill="url(#pf-fg)" />
+    <circle cx="60" cy="62" r="27" fill="url(#pf-fg)" />
+  </svg>
+}
+
+function MacScreen() {
+  const t = useTranslation()
+  return <div className="osx">
+    <div className="tb"><i></i><i></i><i></i><span className="url">{t.hero.url}</span></div>
+    <div className="cols">
+      <div className="side">
+        <div className="av"><b>MS</b> Mauricio</div>
+        <div className="nv">{t.nav.projects}</div>
+        <div className="nv on">{t.hero.aboutNav}</div>
+        <div className="nv">{t.nav.stack}</div>
+        <div className="nv">{t.nav.experience}</div>
+        <div className="nv">{t.nav.contact}</div>
+      </div>
+      <div className="body">
+        <div className="prof">
+          {/* 750x1334 aguenta o mergulho: na tela cheia a célula pede ~710x1300 reais,
+              então a foto é reduzida, nunca ampliada */}
+          <div className="ph"><Portrait /><img src="/profile.jpeg" alt="Mauricio Santos" decoding="async" /></div>
+          <div className="bio">
+            <div className="h">{t.hero.aboutTitle}</div>
+            <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP1 }} />
+            <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP2 }} />
+          </div>
+        </div>
+        <div className="sts">
+          <div className="st"><b>7</b>{t.hero.stats.projects}</div>
+          <div className="st"><b>2+</b>{t.hero.stats.years}</div>
+          <div className="st"><b>2</b>{t.hero.stats.degrees}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
 /* ---------------- header ---------------- */
 function Nav({ active, go }) {
   const t = useTranslation()
@@ -297,9 +354,9 @@ function Hero({ go }) {
       </div>
     </div>
 
-    <MacbookScroll src="/patchmap02.png" alt="PatchMap" title={t.hero.scrollHint} />
+    <MacbookScroll title={t.hero.scrollHint}><MacScreen /></MacbookScroll>
 
-    {/* "sobre": fora do notebook, já que a tela agora mostra um projeto */}
+    {/* fallback do "sobre" no celular, onde a tela do notebook fica pequena demais */}
     <div className="mbio">
       <div className="mphoto"><img src="/profile.jpeg" alt="Mauricio Santos" /></div>
       <h3>{t.hero.aboutTitle}</h3>
