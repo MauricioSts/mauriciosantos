@@ -202,6 +202,36 @@ function Reveal({ as = 'div', className = '', style, delay = 0, y = 26, children
   </Tag>
 }
 
+/* Parallax: o elemento anda em sentido contrário à rolagem, numa fração da
+   distância percorrida, e o CSS lê o deslocamento em --py. Escrever uma variável
+   (e não o transform inteiro) deixa a regra livre para compor com escala. */
+function useParallax(rate = 0.18, max = 140) {
+  const ref = useRef(null)
+  useEffect(() => {
+    if (reduced()) return
+    let raf = null
+    const frame = () => {
+      raf = null
+      const el = ref.current; if (!el) return
+      const r = el.getBoundingClientRect()
+      if (r.bottom < -200 || r.top > viewport().h + 200) return // fora de vista, não gasta quadro
+      const mid = r.top + r.height / 2 - viewport().h / 2
+      /* inteiro: meio pixel de deslocamento borraria o texto no antialiasing */
+      const py = Math.round(Math.max(-max, Math.min(max, -mid * rate)))
+      el.style.setProperty('--py', py + 'px')
+    }
+    const on = () => { if (raf == null) raf = requestAnimationFrame(frame) }
+    addEventListener('scroll', on, { passive: true })
+    addEventListener('resize', on)
+    frame()
+    return () => {
+      removeEventListener('scroll', on); removeEventListener('resize', on)
+      if (raf != null) cancelAnimationFrame(raf)
+    }
+  }, [rate, max])
+  return ref
+}
+
 function useInView(threshold = 0.85) {
   const ref = useRef(null); const [seen, setSeen] = useState(false)
   useEffect(() => {
@@ -326,6 +356,8 @@ function Nav({ active, go }) {
 function Hero({ go }) {
   const t = useTranslation()
   const cue = useRef(null)
+  const intro = useParallax(0.22, 180)   // o bloco de abertura sobe mais devagar que a página
+  const photo = useParallax(0.1, 60)     // a foto do "sobre" desliza dentro da moldura
 
   /* o convite de rolagem some assim que a página sai do topo, para não competir
      com o notebook que abre logo abaixo */
@@ -336,7 +368,7 @@ function Hero({ go }) {
   }, [])
 
   return <section id="home" className="hero">
-    <div className="wrap hero-in">
+    <div className="wrap hero-in" ref={intro}>
       <Reveal className="kick" y={14}>{t.hero.kick}</Reveal>
       <Reveal as="h1" delay={60} y={18}>Mauricio Santos</Reveal>
       <Reveal className="sub" delay={130} y={18}><b>{t.hero.role}</b></Reveal>
@@ -358,7 +390,7 @@ function Hero({ go }) {
 
     {/* fallback do "sobre" no celular, onde a tela do notebook fica pequena demais */}
     <div className="mbio">
-      <div className="mphoto"><img src="/profile.jpeg" alt="Mauricio Santos" /></div>
+      <div className="mphoto"><img src="/profile.jpeg" alt="Mauricio Santos" ref={photo} /></div>
       <h3>{t.hero.aboutTitle}</h3>
       <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP1 }} />
       <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP2 }} />

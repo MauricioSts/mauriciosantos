@@ -35,9 +35,9 @@
 }
 .mbs-lidlogo span{font-size:calc(var(--u) * 2.8);font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.35)}
 .mbs-screen{
-  position:absolute;inset:0;height:calc(var(--u) * 62.5);width:calc(var(--u) * 100);
+  position:absolute;top:0;left:50%;aspect-ratio:16/10;width:calc(var(--u) * 100);
   border-radius:calc(var(--u) * 3.125);background:#010101;padding:calc(var(--u) * 1.5625);
-  will-change:transform;
+  will-change:width,transform;
 }
 .mbs-screenbg{position:absolute;inset:0;border-radius:calc(var(--u) * 1.5625);background:#272729}
 .mbs-screen img{

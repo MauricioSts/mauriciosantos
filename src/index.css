@@ -106,6 +106,10 @@ section{display:block;padding:140px 0;position:relative}
 .hero .cta{display:flex;gap:26px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:30px}
 .hero-foot{text-align:center;padding-top:72px}
 
+/* parallax: --py vem do JS (useParallax) e vale 0 antes do primeiro quadro */
+.hero-in{transform:translate3d(0,var(--py,0),0);will-change:transform}
+.mbio .mphoto img{transform:translate3d(0,var(--py,0),0) scale(1.14);will-change:transform}
+
 /* Convite discreto para rolar: um fio vertical por onde "escorre" uma gota de luz.
    O JS apaga o bloco assim que a rolagem começa, para não competir com o notebook.
    A entrada fica nos filhos (e não no bloco) porque o opacity do pai é do JS. */

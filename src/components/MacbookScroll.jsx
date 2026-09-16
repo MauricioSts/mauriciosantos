@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion as Motion, useScroll, useTransform } from 'framer-motion'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { motion as Motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import {
   TbBrightnessDown, TbBrightnessUp, TbTable, TbSearch, TbMicrophone, TbMoon,
   TbPlayerTrackPrev, TbPlayerSkipForward, TbPlayerTrackNext,
@@ -21,11 +21,30 @@ export default function MacbookScroll({ src, alt = '', title, badge, children, s
 
   useEffect(() => { if (window.innerWidth < 768) setIsMobile(true) }, [])
 
-  /* o chassi aqui é bem maior que os 32rem do original, então a tela cresce menos
-     no fim: 1.5x estouraria a largura da janela em telas de 1366px */
-  const zoom = isMobile ? 1 : 1.3
-  const scaleX = useTransform(scrollYProgress, [0, 0.3], [1.2, zoom])
-  const scaleY = useTransform(scrollYProgress, [0, 0.3], [0.6, zoom])
+  /* O original cresce a tela com transform:scale, e é daí que vem o borrão: o
+     navegador rasteriza a tela no tamanho de layout e amplia o bitmap. Aqui o
+     zoom é a LARGURA real do elemento, escrita a cada quadro, e --u (1% dessa
+     largura) acompanha — então texto, foto e bordas são re-renderizados no
+     tamanho final. O chassi é bem maior que os 32rem do original, então 1.5x
+     estouraria a largura da janela em telas de 1366px. */
+  const screen = useRef(null)
+  const zoom = isMobile ? 1.2 : 1.34   // a tela nasce em 1.2 para cobrir o vidro da tampa, como no original
+  const resize = useCallback((p) => {
+    const el = screen.current; if (!el) return
+    const e = Math.min(1, Math.max(0, p / 0.3))
+    const w = el.parentElement.offsetWidth * (1.2 + (zoom - 1.2) * e * e * (3 - 2 * e))
+    el.style.width = w.toFixed(1) + 'px'
+    el.style.setProperty('--u', (w / 100).toFixed(3) + 'px')
+  }, [zoom])
+  useMotionValueEvent(scrollYProgress, 'change', resize)
+  /* o evento só dispara quando o progresso muda, então o primeiro quadro (e cada
+     mudança de largura da janela) precisa do valor atual na mão */
+  useEffect(() => {
+    const on = () => resize(scrollYProgress.get())
+    on()
+    addEventListener('resize', on)
+    return () => removeEventListener('resize', on)
+  }, [resize, scrollYProgress])
   const translate = useTransform(scrollYProgress, [0, 1], [0, 1500])
   const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3], [-28, -28, 0])
   const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 100])
@@ -38,7 +57,7 @@ export default function MacbookScroll({ src, alt = '', title, badge, children, s
       {title}
     </Motion.h2>
 
-    <Lid scaleX={scaleX} scaleY={scaleY} rotate={rotate} translate={translate} src={src} alt={alt}>
+    <Lid screen={screen} rotate={rotate} translate={translate} src={src} alt={alt}>
       {children}
     </Lid>
 
@@ -59,14 +78,15 @@ export default function MacbookScroll({ src, alt = '', title, badge, children, s
 }
 
 /* a tela aceita conteúdo vivo (children) ou um screenshot (src) */
-function Lid({ scaleX, scaleY, rotate, translate, src, alt, children }) {
+function Lid({ screen, rotate, translate, src, alt, children }) {
   return <div className="mbs-lid">
     <div className="mbs-lidback">
       <div className="mbs-lidlogo"><span>MS</span></div>
     </div>
     <Motion.div
+      ref={screen}
       className="mbs-screen"
-      style={{ scaleX, scaleY, rotateX: rotate, translateY: translate, transformStyle: 'preserve-3d', transformOrigin: 'top' }}
+      style={{ x: '-50%', rotateX: rotate, translateY: translate, transformStyle: 'preserve-3d', transformOrigin: 'top' }}
     >
       <div className="mbs-screenbg" />
       {children
