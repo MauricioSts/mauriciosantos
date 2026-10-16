@@ -35,20 +35,20 @@ function useProjects() {
       images: ['/patchmap02.png'],
       tags: ['React Native', 'Expo', 'TypeScript', 'Django', 'PostgreSQL'],
       href: 'https://patchmap.mauriciosts.com/',
-      accent: 'linear-gradient(150deg,#04162c,#1f6fd0)', ...p.patchMap,
+      accent: '#04162c', glow: '#1f6fd0', ...p.patchMap,
     },
     {
       id: 'cadsol', num: '02', name: 'CADSOL-RN', year: '2026',
       images: ['/cadsol.png'],
       tags: ['React.js', 'TypeScript', 'Clean Architecture', 'GitHub Actions'],
       href: 'https://cadsol.sethas.rn.gov.br/',
-      accent: 'linear-gradient(150deg,#04222c,#0891b2)', ...p.cadsol,
+      accent: '#04222c', glow: '#0891b2', ...p.cadsol,
     },
     {
       id: 'bridgeandbits', num: '03', name: 'BridgeAndBits', year: '2025',
       images: ['/bridge.png'], tags: ['React.js', 'PostgreSQL', 'Tailwind CSS'],
       href: 'https://bridgeandbits.mauriciosts.com/',
-      accent: 'linear-gradient(150deg,#0b2545,#1c5b9c)', ...p.bridgeAndBits,
+      accent: '#0b2545', glow: '#1c5b9c', ...p.bridgeAndBits,
     },
     {
       /* rainbow: o único jogo da lista. Colore só o rótulo do tipo, que é onde
@@ -57,25 +57,25 @@ function useProjects() {
       images: ['/comidas-da-copa-2.png', '/comidas-da-copa-3.png'],
       tags: ['Next.js 16', 'Supabase', 'Realtime', 'TypeScript'],
       href: 'https://cupfoods.mauriciosts.com/',
-      accent: 'linear-gradient(150deg,#3b2c0c,#9a7724)', rainbow: true, ...p.comidasDaCopa,
+      accent: '#3b2c0c', glow: '#9a7724', rainbow: true, ...p.comidasDaCopa,
     },
     {
       id: 'jerseyandbits', num: '05', name: 'JerseyAndBits', year: '2025',
       images: ['/jersey.jpeg'], tags: ['React.js', 'Firebase', 'Tailwind CSS'],
       href: 'https://jerseyandbits.vercel.app/',
-      accent: 'linear-gradient(150deg,#06312a,#0f7a63)', ...p.jerseyAndBits,
+      accent: '#06312a', glow: '#0f7a63', ...p.jerseyAndBits,
     },
     {
       id: 'salviano-burguer', num: '06', name: 'Salviano Burguer', year: '2024',
       images: ['/salvianoburguer.png'], tags: ['JavaScript', 'Tailwind CSS', 'WhatsApp API'],
       href: 'https://salvianoburguer.vercel.app/',
-      accent: 'linear-gradient(150deg,#3d1410,#8a3a2c)', ...p.salvianoBurguer,
+      accent: '#3d1410', glow: '#8a3a2c', ...p.salvianoBurguer,
     },
     {
       id: 'chovinista', num: '07', name: 'Chovinista', year: '2024',
       images: ['/chovinista.jpeg'], tags: ['React.js', 'Tailwind CSS'],
       href: null,
-      accent: 'linear-gradient(150deg,#241a3d,#5b3f8f)', ...p.chovinista,
+      accent: '#241a3d', glow: '#5b3f8f', ...p.chovinista,
     },
   ], [p])
 }
@@ -118,7 +118,7 @@ function useMobileApps() {
           images: ['/plp-login.jpg'], portrait: true,
           tags: ['React Native', 'TypeScript'],
           href: 'https://play.google.com/store/apps/details?id=com.colaborador_pontt',
-          accent: 'linear-gradient(150deg,#111a45,#c2447c)', ...p.plp,
+          accent: '#111a45', glow: '#c2447c', ...p.plp,
         },
       },
       {
@@ -135,7 +135,7 @@ function useMobileApps() {
           images: ['/ssk-1.png', '/ssk-2.png', '/ssk-3.png', '/ssk-4.png', '/ssk-5.png', '/ssk-6.png', '/ssk-7.png', '/ssk-8.png'],
           portrait: true,
           tags: ['React Native', 'TypeScript'],
-          accent: 'linear-gradient(150deg,#06211c,#1f9d78)', ...p.ssk,
+          accent: '#06211c', glow: '#1f9d78', ...p.ssk,
         },
       },
     ]
@@ -171,8 +171,8 @@ function useCoreStack() {
 }
 
 /* ---------------- reveal ---------------- */
-const EASE = 'cubic-bezier(.22,.61,.36,1)'
-const TRANS = `opacity .9s ${EASE}, transform .9s ${EASE}`
+const EASE = 'cubic-bezier(.32,.72,0,1)'
+const TRANS = `opacity 1s ${EASE}, transform 1.1s ${EASE}, filter 1s ${EASE}`
 function Reveal({ as = 'div', className = '', style, delay = 0, y = 26, children, ...rest }) {
   const ref = useRef(null)
   const [st, setSt] = useState('show')
@@ -197,7 +197,7 @@ function Reveal({ as = 'div', className = '', style, delay = 0, y = 26, children
   const hidden = st === 'pre'
   const Tag = as
   return <Tag ref={ref} className={className} {...rest}
-    style={{ ...style, opacity: hidden ? 0 : 1, transform: hidden ? `translateY(${y}px)` : 'none', transition: TRANS, transitionDelay: (hidden ? 0 : delay) + 'ms' }}>
+    style={{ ...style, opacity: hidden ? 0 : 1, transform: hidden ? `translateY(${y}px)` : 'none', filter: hidden ? 'blur(10px)' : 'none', transition: TRANS, transitionDelay: (hidden ? 0 : delay) + 'ms' }}>
     {children}
   </Tag>
 }
@@ -304,7 +304,7 @@ function MacScreen() {
           </div>
         </div>
         <div className="sts">
-          <div className="st"><b>7</b>{t.hero.stats.projects}</div>
+          <div className="st"><b>9</b>{t.hero.stats.projects}</div>
           <div className="st"><b>2+</b>{t.hero.stats.years}</div>
           <div className="st"><b>2</b>{t.hero.stats.degrees}</div>
         </div>
@@ -318,7 +318,7 @@ function Nav({ active, go }) {
   const t = useTranslation()
   const { language, toggleLanguage } = useLanguage()
   const [open, setOpen] = useState(false)
-  const items = [[t.nav.overview, 'home'], [t.nav.projects, 'projetos'], [t.nav.stack, 'stack'], [t.nav.experience, 'experiencia']]
+  const items = [[t.nav.overview, 'home'], [t.nav.products, 'produtos'], [t.nav.projects, 'projetos'], [t.nav.stack, 'stack'], [t.nav.experience, 'experiencia']]
   useEffect(() => {
     if (!open) return
     const k = (ev) => { if (ev.key === 'Escape') setOpen(false) }
@@ -373,7 +373,7 @@ function Hero({ go }) {
       <Reveal as="h1" delay={60} y={18}>Mauricio Santos</Reveal>
       <Reveal className="sub" delay={130} y={18}><b>{t.hero.role}</b></Reveal>
       <Reveal className="cta" delay={200} y={14}>
-        <button className="btn" onClick={() => go('projetos')}>{t.hero.ctaProjects}</button>
+        <button className="btn" onClick={() => go('projetos')}>{t.hero.ctaProjects}<span className="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M5 12h13M13 6l6 6-6 6" /></svg></span></button>
         <a className="alink" href="#contato" onClick={(ev) => { ev.preventDefault(); go('contato') }}>
           {t.hero.ctaTalk}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M9 6l6 6-6 6" /></svg>
@@ -395,7 +395,7 @@ function Hero({ go }) {
       <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP1 }} />
       <p dangerouslySetInnerHTML={{ __html: t.hero.aboutP2 }} />
       <div className="sb2">
-        <div><b>7</b><span>{t.hero.stats.projects}</span></div>
+        <div><b>9</b><span>{t.hero.stats.projects}</span></div>
         <div><b>2+</b><span>{t.hero.stats.years}</span></div>
         <div><b>2</b><span>{t.hero.stats.degrees}</span></div>
       </div>
@@ -429,7 +429,7 @@ function Latest({ open }) {
       <Reveal className="lede" delay={110}>{p.head}</Reveal>
     </div>
     <Reveal className="lvwrap" delay={80}>
-      <button className="lvideo" style={{ background: p.accent }} onClick={() => open(i)}
+      <button className="lvideo" style={{ '--acc': p.accent, '--glow': p.glow }} onClick={() => open(i)}
         aria-label={`${t.latest.cta}: ${p.name}`}>
         <span className="lframe">
           {seen
@@ -490,13 +490,104 @@ function Highlights({ open }) {
               <h3>{p.head}</h3>
               <p className="d">{p.description}</p>
             </div>
-            <div className="art" style={{ background: p.accent }}>
+            <div className="art" style={{ '--acc': p.accent, '--glow': p.glow }}>
               <Shot src={p.images[0]} alt={p.name} eager={i < 2} />
               <span className="plus">+</span>
             </div>
           </button>
         </Reveal>
       ))}
+    </div>
+  </section></TechScan>
+}
+
+/* ---------------- produtos próprios ---------------- */
+/* DevConcursado e MINIMAU ficam fora da lista de projetos, como os apps mobile:
+   abrem o mesmo modal de detalhe, mas não entram no carrossel. */
+function useProducts() {
+  const p = useTranslation().projects
+  return useMemo(() => ({
+    dc: {
+      id: 'devconcursado', num: '01', name: 'DevConcursado', year: '2026',
+      images: ['/devconcursado.jpg'],
+      tags: ['React.js', 'TypeScript', 'Node.js', 'Prisma', 'PostgreSQL'],
+      href: 'https://questoes.mauriciosts.com/',
+      accent: '#100c26', glow: '#7c5cff', ...p.devConcursado,
+    },
+    mm: {
+      id: 'minimau', num: '02', name: 'MINIMAU', year: '2026',
+      /* telas do modo demonstração do próprio app, sem dado real */
+      images: ['/minimau-1.jpg', '/minimau-2.jpg', '/minimau-3.jpg', '/minimau-4.jpg'], portrait: true,
+      tags: ['React.js', 'Node.js', 'SQLite', 'Ollama', 'WebAuthn'],
+      href: 'https://gastos.mauriciosts.com/',
+      accent: '#0a1206', glow: '#9cff3a', ...p.minimau,
+    },
+  }), [p])
+}
+
+/* Luz que segue o cursor dentro do card: o CSS lê a posição em --mx/--my. */
+function spot(ev) {
+  const r = ev.currentTarget.getBoundingClientRect()
+  ev.currentTarget.style.setProperty('--mx', (ev.clientX - r.left) + 'px')
+  ev.currentTarget.style.setProperty('--my', (ev.clientY - r.top) + 'px')
+}
+
+function Products({ open }) {
+  const t = useTranslation()
+  const { dc, mm } = useProducts()
+  const [ref, seen] = useInView(0.9)
+  const [shot, setShot] = useState(0)
+
+  /* o iPhone do MINIMAU troca de tela sozinho, só depois de entrar na tela */
+  useEffect(() => {
+    if (!seen || reduced()) return
+    const id = setInterval(() => setShot(i => (i + 1) % mm.images.length), 2800)
+    return () => clearInterval(id)
+  }, [seen, mm.images.length])
+
+  const Arrow = () => <span className="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M5 12h13M13 6l6 6-6 6" /></svg></span>
+
+  return <TechScan><section id="produtos" className="prodsec" ref={ref}>
+    <div className="wrap">
+      <Reveal className="chapter" y={14}>{t.products.chapter}</Reveal>
+      <Reveal as="h2" className="big" delay={50}>{t.products.title}<span className="dim">{t.products.dim}</span></Reveal>
+      <Reveal className="lede" delay={110}>{t.products.lede}</Reveal>
+    </div>
+    <div className="bento">
+      <Reveal as="article" className="bcard bcard-dc" delay={60} y={40}>
+        <button className="bopen" style={{ '--acc': dc.accent, '--glow': dc.glow }} onMouseMove={spot}
+          onClick={() => open(dc)} aria-label={`${t.products.open}: ${dc.name}`}>
+          <span className="bmeta"><span className="live"><i></i>{t.products.live}</span><span>{dc.type}</span></span>
+          <h3>{dc.name}</h3>
+          <p className="bhead">{dc.head}</p>
+          <span className="bfeat">{t.products.dcFeatures.map(f => <span key={f}>{f}</span>)}</span>
+          <span className="bshot"><Shot src={dc.images[0]} alt={dc.name} /></span>
+          <span className="bcta">{t.products.open}<Arrow /></span>
+        </button>
+      </Reveal>
+      <Reveal as="article" className="bcard bcard-mm" delay={160} y={40}>
+        <button className="bopen" style={{ '--acc': mm.accent, '--glow': mm.glow }} onMouseMove={spot}
+          onClick={() => open(mm)} aria-label={`${t.products.open}: ${mm.name}`}>
+          <span className="bmeta"><span className="live"><i></i>{t.products.live}</span><span>{mm.type}</span></span>
+          <h3>{mm.name}</h3>
+          <p className="bhead">{mm.head}</p>
+          <span className="bphone">
+            <Device scale={0.86} parallaxStrength={8} rotateStrength={5}>
+              <span className="cycle">
+                {mm.images.map((src, k) => (
+                  <img key={src} src={src} alt={k === shot ? mm.name : ''} className={k === shot ? 'on' : ''}
+                    loading="lazy" decoding="async" draggable="false" />
+                ))}
+              </span>
+            </Device>
+            <span className="dots" aria-hidden="true">
+              {mm.images.map((src, k) => <i key={src} className={k === shot ? 'on' : ''}></i>)}
+            </span>
+          </span>
+          <span className="bfeat">{t.products.mmFeatures.map(f => <span key={f}>{f}</span>)}</span>
+          <span className="bcta">{t.products.open}<Arrow /></span>
+        </button>
+      </Reveal>
     </div>
   </section></TechScan>
 }
@@ -673,7 +764,7 @@ function Contact() {
       <Reveal as="h2" className="big" delay={50}>{t.contact.title}<span className="dim">{t.contact.dim}</span></Reveal>
       <Reveal className="lede" delay={110}>{t.contact.lede}</Reveal>
       <Reveal className="crow" delay={170}>
-        <a className="btn" href={'mailto:' + MAIL}>{t.contact.send}</a>
+        <a className="btn" href={'mailto:' + MAIL}>{t.contact.send}<span className="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M5 12h13M13 6l6 6-6 6" /></svg></span></a>
         <button className="btn ghost" onClick={copy}>{copied ? t.contact.copied : t.contact.copy}</button>
       </Reveal>
       <Reveal className="foot" delay={220} style={{ textAlign: 'center' }}>{MAIL}</Reveal>
@@ -709,7 +800,7 @@ function Detail({ index, close, goto }) {
     open={open}
     onClose={close}
     scrollRef={topRef}
-    gradientColor={glowOf(p?.accent)}
+    gradientColor={p?.glow || glowOf(p?.accent)}
     animationVariant="scale"
     animationSpeed="normal"
     springStiffness={240}
@@ -743,7 +834,7 @@ function DetailContent({ p, index, close, goto }) {
       <div className="n">{t.detail.project.toUpperCase()} {p.num} · <span className={p.rainbow ? 'rainbow' : undefined}>{p.type.toUpperCase()}</span></div>
       <h1>{p.name}</h1>
       <p className="t">{p.head}</p>
-      <div className={p.portrait ? 'dpanel portrait' : 'dpanel'} style={{ background: p.accent }}>
+      <div className={p.portrait ? 'dpanel portrait' : 'dpanel'} style={{ '--acc': p.accent, '--glow': p.glow }}>
         {p.portrait
           ? <Device image={p.images[0]} alt={p.name} scale={0.62} autoAnimate />
           : <Shot src={p.images[0]} alt={p.name} eager />}
@@ -768,7 +859,7 @@ function DetailContent({ p, index, close, goto }) {
         <div><div className="k">{t.detail.stack}</div><div className="v">{p.tags.join(' · ')}</div></div>
       </div>
       <div className="dcta">
-        {p.href && <a className="btn" href={p.href} target="_blank" rel="noopener noreferrer">{t.detail.access}</a>}
+        {p.href && <a className="btn" href={p.href} target="_blank" rel="noopener noreferrer">{t.detail.access}<span className="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M5 12h13M13 6l6 6-6 6" /></svg></span></a>}
         <button className="btn ghost" onClick={close}>{t.detail.others}</button>
       </div>
     </div>
@@ -783,7 +874,7 @@ function DetailContent({ p, index, close, goto }) {
 }
 
 /* ---------------- app ---------------- */
-const IDS = ['home', 'projetos', 'stack', 'experiencia', 'contato']
+const IDS = ['home', 'produtos', 'projetos', 'stack', 'experiencia', 'contato']
 
 export default function Site() {
   const t = useTranslation()
@@ -816,6 +907,7 @@ export default function Site() {
     <Nav active={active} go={go} />
     <Hero go={go} />
     <Latest open={setDetail} />
+    <Products open={setDetail} />
     <MobileApps open={setDetail} />
     <Highlights open={setDetail} />
     <Stack />

@@ -1,6 +1,7 @@
 export const en = {
   // Header / navigation
   nav: {
+    products: 'Products',
     overview: 'Overview',
     projects: 'Projects',
     stack: 'Stack',
@@ -47,6 +48,22 @@ export const en = {
   },
 
   projects: {
+    devConcursado: {
+      type: 'Study platform',
+      role: 'Own product · full-stack',
+      head: 'Studying for public exams the way you write code.',
+      problem: 'I studied for Brazilian civil-service exams with exam PDFs, a spreadsheet of scores and a paper notebook. I got the same question wrong three times without noticing, kept breaking my streak and had no way to review only what I still did not know.',
+      solution: 'I built DevConcursado: a question bank with spaced repetition that brings each question back on the day you are about to forget it. It supports several exams per account, shared study tracks, a rich-text notebook, a daily streak with vacation mode, mock exams, AI import of exam PDFs and a roguelite Pokémon Battle where answering correctly is what moves your team forward. The Node, Express and Prisma back end runs on my own VM with PostgreSQL; the React and TypeScript front end is on Vercel, with Mercado Pago subscriptions and two-step email verification.',
+      description: 'Spaced-repetition question bank with study tracks, a notebook, AI for PDFs and a Pokémon Battle powered by right answers.'
+    },
+    minimau: {
+      type: 'Personal finance app',
+      role: 'Own product · full-stack',
+      head: 'How much I can spend today, without lying to myself.',
+      problem: 'Every expense app shows your gross income and leaves the math for later: the credit card bill arrives, installments and fixed bills show up, and the money that looked free was already committed.',
+      solution: 'MINIMAU starts from a different equation: income minus what is already locked (fixed bills and open installments) minus free spending is what is actually available, split across the days left until the card bill. I log an expense the way I speak, like "lunch 24 reais", and a language model running on my own VM, with no paid API, turns it into an entry. The advisor answers whether a purchase fits using my own numbers, computed on the server. It is a PWA installed on my iPhone, with Face ID login through passkeys.',
+      description: 'PWA that shows what is truly available until the card bill, understands "lunch 24 reais" with local AI and signs in with Face ID.'
+    },
     plp: {
       type: 'Mobile app',
       role: 'Maintenance',
@@ -122,6 +139,19 @@ export const en = {
   },
 
   // Stack
+  // Own products
+  products: {
+    chapter: 'Own products',
+    title: 'Built for me.',
+    dim: 'Used every day.',
+    lede: 'Two products I designed, coded and host on my own, from the database to the server. They started by solving a problem of mine and stay online because I use both every day.',
+    open: 'See the product',
+    live: 'Live',
+    dcFeatures: ['Spaced repetition', 'Study tracks', 'AI for PDFs', 'Pokémon Battle'],
+    mmFeatures: ['Local AI', 'Face ID', 'PWA'],
+    mmStat: 'truly available until the card bill'
+  },
+
   // Mobile apps
   mobile: {
     chapter: 'Mobile',

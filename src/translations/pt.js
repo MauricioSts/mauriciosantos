@@ -1,6 +1,7 @@
 export const pt = {
   // Header / navegação
   nav: {
+    products: 'Produtos',
     overview: 'Visão geral',
     projects: 'Projetos',
     stack: 'Stack',
@@ -47,6 +48,22 @@ export const pt = {
   },
 
   projects: {
+    devConcursado: {
+      type: 'Plataforma de estudo',
+      role: 'Produto próprio · full-stack',
+      head: 'Estudar para concurso como quem escreve código.',
+      problem: 'Eu estudava para concurso com PDF de prova, planilha de acertos e caderno de papel. Errava a mesma questão três vezes sem perceber, perdia o fio da ofensiva e não tinha onde revisar só o que eu ainda não sabia.',
+      solution: 'Criei o DevConcursado: banco de questões com repetição espaçada, que traz de volta cada questão no dia em que ela está para ser esquecida. Tem vários concursos por conta, trilhas compartilhadas, caderno com editor rico, ofensiva diária com modo férias, simulados, importação de prova em PDF com IA e uma Batalha Pokémon roguelite em que acertar questão é o que faz o time andar. O back-end em Node, Express e Prisma roda na minha própria VM com PostgreSQL; o front em React e TypeScript fica na Vercel, com assinatura pelo Mercado Pago e verificação em duas etapas por e-mail.',
+      description: 'Banco de questões com repetição espaçada, trilhas, caderno, IA para PDF e uma Batalha Pokémon movida a acertos.'
+    },
+    minimau: {
+      type: 'App de finanças pessoais',
+      role: 'Produto próprio · full-stack',
+      head: 'Quanto eu posso gastar hoje, sem mentir para mim.',
+      problem: 'Todo app de gastos mostra a renda bruta e deixa a conta para depois: a fatura do cartão chega, as parcelas e as contas fixas aparecem, e o dinheiro que parecia sobrar já estava comprometido.',
+      solution: 'O MINIMAU parte de outra conta: renda menos o que já está travado (contas fixas e parcelas em aberto) menos o gasto livre é o disponível de fato, dividido pelos dias que faltam até a fatura. Eu lanço o gasto escrevendo do jeito que falo, tipo "almoço 24 reais", e um modelo de linguagem rodando na minha própria VM, sem API paga, transforma isso em lançamento. O consultor responde se uma compra cabe usando os meus números, calculados no servidor. É um PWA instalado no iPhone, com login por Face ID via passkey.',
+      description: 'PWA que mostra o disponível de fato até a fatura, entende "almoço 24 reais" com IA local e entra com Face ID.'
+    },
     plp: {
       type: 'App mobile',
       role: 'Manutenção',
@@ -122,6 +139,19 @@ export const pt = {
   },
 
   // Stack
+  // Produtos próprios
+  products: {
+    chapter: 'Produtos próprios',
+    title: 'Feitos para mim.',
+    dim: 'Usados todo dia.',
+    lede: 'Dois produtos que eu desenhei, programei e hospedo sozinho, do banco de dados ao servidor. Começaram resolvendo um problema meu e continuam no ar porque eu uso os dois todo dia.',
+    open: 'Ver o produto',
+    live: 'No ar',
+    dcFeatures: ['Repetição espaçada', 'Trilhas', 'IA para PDF', 'Batalha Pokémon'],
+    mmFeatures: ['IA local', 'Face ID', 'PWA'],
+    mmStat: 'disponível de fato até a fatura'
+  },
+
   // Apps mobile
   mobile: {
     chapter: 'Mobile',
